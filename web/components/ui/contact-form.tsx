@@ -11,7 +11,7 @@ const ContactForm: React.FC = () => {
   const [subscribeNewsletter, setSubscribeNewsletter] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(
-    null
+    null,
   );
 
   const validateEmail = (email: string) => {

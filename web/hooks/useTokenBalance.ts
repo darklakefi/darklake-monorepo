@@ -4,7 +4,7 @@ import { useCluster } from '../components/cluster/cluster-data-access';
 
 export function useTokenBalance(
   walletAddress: PublicKey | null,
-  tokenAddress: string
+  tokenAddress: string,
 ) {
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -60,7 +60,7 @@ export function useTokenBalance(
             ' walletAddress: ',
             walletAddress.toBase58(),
             ' tokenAddress: ',
-            tokenAddress
+            tokenAddress,
           );
           console.log(data.error);
           throw new Error(data.error.message);

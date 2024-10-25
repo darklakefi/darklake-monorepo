@@ -12,7 +12,7 @@
     "dev": "nx serve web",
     "snarkjs": "node snarkjs/cli.js",
     "prettier": "prettier --write .",
-    "eslint": "eslint ."
+    "eslint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern 'node_modules/*'"
   },
   "private": true,
   "dependencies": {

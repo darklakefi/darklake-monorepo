@@ -18,7 +18,7 @@ interface ContactFormData {
 }
 
 export async function subscribeToNewsletter(
-  data: SubscribeData
+  data: SubscribeData,
 ): Promise<boolean> {
   try {
     const response = await axios.post(
@@ -36,7 +36,7 @@ export async function subscribeToNewsletter(
           'Content-Type': 'application/json',
           'api-key': API_KEY,
         },
-      }
+      },
     );
 
     return response.status === 201;
@@ -47,7 +47,7 @@ export async function subscribeToNewsletter(
 }
 
 export async function submitContactForm(
-  data: ContactFormData
+  data: ContactFormData,
 ): Promise<boolean> {
   try {
     // Use Brevo API to send an email
@@ -68,7 +68,7 @@ export async function submitContactForm(
           'Content-Type': 'application/json',
           'api-key': API_KEY,
         },
-      }
+      },
     );
 
     if (response.status === 201) {

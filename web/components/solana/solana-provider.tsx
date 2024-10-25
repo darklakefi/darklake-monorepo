@@ -19,7 +19,7 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 export const WalletButton = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
-  { ssr: false }
+  { ssr: false },
 );
 
 export function SolanaProvider({ children }: { children: ReactNode }) {

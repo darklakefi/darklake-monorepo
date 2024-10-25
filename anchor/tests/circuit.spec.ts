@@ -6,7 +6,8 @@ import * as path from 'path';
 function isWithinTolerance(
   actual: bigint,
   expected: bigint,
-  tolerancePercent: number = 5
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+  tolerancePercent: number = 5,
 ): boolean {
   const tolerance = (expected * BigInt(tolerancePercent)) / BigInt(100);
   const lowerBound = expected - tolerance;
@@ -23,7 +24,7 @@ describe('ZK Constant Sum AMM Swap', () => {
       path.join(__dirname, '../../circuits', 'swap.circom'),
       {
         include: [path.join(__dirname, '../../')],
-      }
+      },
     );
   });
 
@@ -39,7 +40,7 @@ describe('ZK Constant Sum AMM Swap', () => {
     console.log('Initial state:', input);
     console.log(
       'Initial constant product:',
-      input.publicBalanceX * input.publicBalanceY
+      input.publicBalanceX * input.publicBalanceY,
     );
 
     const witness = await circuit.calculateWitness(input);
@@ -57,17 +58,17 @@ describe('ZK Constant Sum AMM Swap', () => {
     console.log('Amount Received:', witness[amountReceived.varIdx].toString());
     console.log(
       'Final constant product:',
-      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx])
+      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx]),
     );
 
     expect(isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 1100n)).toBe(
-      true
+      true,
     );
     expect(isWithinTolerance(BigInt(witness[newBalanceY.varIdx]), 909n)).toBe(
-      true
+      true,
     );
     expect(isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 91n)).toBe(
-      true
+      true,
     );
   });
 
@@ -95,17 +96,17 @@ describe('ZK Constant Sum AMM Swap', () => {
     console.log('Amount Received:', witness[amountReceived.varIdx].toString());
     console.log(
       'Final constant product:',
-      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx])
+      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx]),
     );
 
     expect(
-      isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 1200000n)
+      isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 1200000n),
     ).toBe(true);
     expect(
-      isWithinTolerance(BigInt(witness[newBalanceY.varIdx]), 1741667n)
+      isWithinTolerance(BigInt(witness[newBalanceY.varIdx]), 1741667n),
     ).toBe(true);
     expect(
-      isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 158333n)
+      isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 158333n),
     ).toBe(true);
   });
 
@@ -134,17 +135,17 @@ describe('ZK Constant Sum AMM Swap', () => {
     console.log('Amount Received:', witness[amountReceived.varIdx].toString());
     console.log(
       'Final constant product:',
-      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx])
+      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx]),
     );
 
     expect(isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 909n)).toBe(
-      true
+      true,
     );
     expect(isWithinTolerance(BigInt(witness[newBalanceY.varIdx]), 1100n)).toBe(
-      true
+      true,
     );
     expect(isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 91n)).toBe(
-      true
+      true,
     );
   });
 });
@@ -158,7 +159,7 @@ describe('ReciprocalDivision', () => {
       path.join(__dirname, '../../circuits', 'division_test.circom'),
       {
         include: [path.join(__dirname, '../../')],
-      }
+      },
     );
   });
 
@@ -186,7 +187,7 @@ describe('ReciprocalDivision', () => {
       const quotient = witness[quotientSymbol.varIdx];
 
       console.log(
-        `Dividend: ${dividend}, Divisor: ${divisor}, Quotient: ${quotient}, Expected: ${expected}`
+        `Dividend: ${dividend}, Divisor: ${divisor}, Quotient: ${quotient}, Expected: ${expected}`,
       );
 
       // Allow for small rounding errors
@@ -214,7 +215,7 @@ describe('ReciprocalDivision', () => {
       const quotient = witness[quotientSymbol.varIdx];
 
       console.log(
-        `Edge case - Dividend: ${dividend}, Divisor: ${divisor}, Quotient: ${quotient}, Expected: ${expected}`
+        `Edge case - Dividend: ${dividend}, Divisor: ${divisor}, Quotient: ${quotient}, Expected: ${expected}`,
       );
 
       expect(quotient).toBe(expected);
