@@ -1,7 +1,8 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
-  "plugins": ["@nx"],
+  "ignorePatterns": ["node_modules/*", "snarkjs/*", "web/.next/*", "groth16-solana/*", "dist/**/*", "web/public/**/*"],
+  "plugins": ["@nx", "prettier"],
+  "extends": ["plugin:prettier/recommended"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

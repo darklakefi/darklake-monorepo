@@ -15,7 +15,7 @@ export async function generateProof(
     publicBalanceX: string;
     publicBalanceY: string;
     isSwapXtoY: number;
-  }
+  },
 ): Promise<{
   proofA: Uint8Array;
   proofB: Uint8Array;
@@ -38,7 +38,7 @@ export async function generateProof(
   const { proof, publicSignals } = await snarkjs.groth16.fullProve(
     input,
     wasmPath,
-    zkeyPath
+    zkeyPath,
   );
 
   console.log('Original proof:', JSON.stringify(proof, null, 2));

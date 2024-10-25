@@ -28,8 +28,21 @@ jobs:
           node-version: '20'
           solana-cli-version: '1.18.9'
           
-      - name: Install circom
-        run: npm install -g circom
+      - name: Install Circom dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes \
+            build-essential \
+            libgmp-dev \
+            libsodium-dev \
+            nasm \
+            nlohmann-json3-dev
+
+      - name: Download Circom Binary v2.1.8
+        run: |
+          wget -qO /home/runner/work/circom https://github.com/iden3/circom/releases/download/v2.1.8/circom-linux-amd64
+          chmod +x /home/runner/work/circom
+          sudo mv /home/runner/work/circom /bin/circom
 
       - name: Generate new keypair
         run: solana-keygen new --no-bip39-passphrase

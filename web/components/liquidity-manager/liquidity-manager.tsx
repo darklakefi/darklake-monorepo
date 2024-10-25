@@ -53,11 +53,11 @@ export function LiquidityManager() {
   const { publicKey } = useWallet();
   const { balance: tokenXBalance } = useTokenBalance(
     publicKey,
-    pair.tokenX.address
+    pair.tokenX.address,
   );
   const { balance: tokenYBalance } = useTokenBalance(
     publicKey,
-    pair.tokenY.address
+    pair.tokenY.address,
   );
   const { connection } = useConnection();
   const wallet = useAnchorWallet();
@@ -72,10 +72,10 @@ export function LiquidityManager() {
     const program = getDarklakeProgram(provider);
 
     const tokenX = new PublicKey(
-      pair.tokenX.address === 'NATIVE' ? NATIVE_MINT : pair.tokenX.address
+      pair.tokenX.address === 'NATIVE' ? NATIVE_MINT : pair.tokenX.address,
     );
     const tokenY = new PublicKey(
-      pair.tokenY.address === 'NATIVE' ? NATIVE_MINT : pair.tokenY.address
+      pair.tokenY.address === 'NATIVE' ? NATIVE_MINT : pair.tokenY.address,
     );
 
     const tokenXProgram =
@@ -96,57 +96,57 @@ export function LiquidityManager() {
     try {
       const [poolPubkey] = PublicKey.findProgramAddressSync(
         [Buffer.from('pool'), tokenX.toBuffer(), tokenY.toBuffer()],
-        program.programId
+        program.programId,
       );
 
       const [lpMintPubkey] = PublicKey.findProgramAddressSync(
         [Buffer.from('lp'), tokenX.toBuffer(), tokenY.toBuffer()],
-        program.programId
+        program.programId,
       );
 
       const userTokenAccountX = await getAssociatedTokenAddress(
         tokenX,
         wallet.publicKey,
         false,
-        tokenXProgram
+        tokenXProgram,
       );
 
       const userTokenAccountY = await getAssociatedTokenAddress(
         tokenY,
         wallet.publicKey,
         false,
-        tokenYProgram
+        tokenYProgram,
       );
 
       const userTokenAccountLp = await getAssociatedTokenAddress(
         lpMintPubkey,
         wallet.publicKey,
         false,
-        tokenLpProgram
+        tokenLpProgram,
       );
 
       const poolTokenAccountX = await getAssociatedTokenAddress(
         tokenX,
         poolPubkey,
         true,
-        tokenXProgram
+        tokenXProgram,
       );
 
       const poolTokenAccountY = await getAssociatedTokenAddress(
         tokenY,
         poolPubkey,
         true,
-        tokenYProgram
+        tokenYProgram,
       );
 
       const tx = new Transaction();
 
       // Adding liquidity
       const amountX = new BN(
-        parseFloat(inputLpTokens) * Math.pow(10, pair.tokenX.decimals)
+        parseFloat(inputLpTokens) * Math.pow(10, pair.tokenX.decimals),
       );
       const amountY = new BN(
-        parseFloat(inputLpTokens) * Math.pow(10, pair.tokenY.decimals)
+        parseFloat(inputLpTokens) * Math.pow(10, pair.tokenY.decimals),
       );
 
       if (isAdding) {
@@ -158,9 +158,8 @@ export function LiquidityManager() {
             lamports: amountX.toNumber(),
           });
 
-          const syncNativeIx = await createSyncNativeInstruction(
-            userTokenAccountX
-          );
+          const syncNativeIx =
+            await createSyncNativeInstruction(userTokenAccountX);
 
           tx.add(wrapSolIx, syncNativeIx);
         } else if (isYNative) {
@@ -171,9 +170,8 @@ export function LiquidityManager() {
             lamports: amountY.toNumber(),
           });
 
-          const syncNativeIx = await createSyncNativeInstruction(
-            userTokenAccountY
-          );
+          const syncNativeIx =
+            await createSyncNativeInstruction(userTokenAccountY);
 
           tx.add(wrapSolIx, syncNativeIx);
         }
@@ -200,7 +198,7 @@ export function LiquidityManager() {
       } else {
         // Removing liquidity
         const lpTokensToRemove = new BN(
-          parseFloat(inputLpTokens) * Math.pow(10, 9)
+          parseFloat(inputLpTokens) * Math.pow(10, 9),
         );
 
         const removeLiquidityIx = await program.methods
@@ -256,7 +254,7 @@ export function LiquidityManager() {
       console.log(
         `${
           isAdding ? 'Added' : 'Removed'
-        } liquidity: ${inputLpTokens} LP tokens`
+        } liquidity: ${inputLpTokens} LP tokens`,
       );
     } catch (error) {
       console.error('Error managing liquidity:', error);
@@ -337,10 +335,10 @@ function PairSelector({ pair, setPair }: PairSelectorProps) {
     tokens.slice(index + 1).map((tokenY) => {
       // Ensure consistent ordering of tokens in pair
       const [first, second] = [tokenX, tokenY].sort((a, b) =>
-        a.address.localeCompare(b.address)
+        a.address.localeCompare(b.address),
       );
       return { tokenX: first, tokenY: second };
-    })
+    }),
   );
 
   return (

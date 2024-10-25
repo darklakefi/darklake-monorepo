@@ -20,11 +20,11 @@ const darklakeIdl = require('../target/idl/darklake.json') as Idl;
 
 // Constants
 const PYUSD_MINT = new PublicKey(
-  'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM'
+  'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM',
 );
 
 function getDarklakeProgram(
-  provider: AnchorProvider
+  provider: AnchorProvider,
 ): Program<typeof darklakeIdl> {
   return new Program<typeof darklakeIdl>(darklakeIdl, provider);
 }
@@ -44,19 +44,19 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
   const programId = getDarklakeProgramId('devnet');
 
   const [token0, token1] = [PYUSD_MINT, NATIVE_MINT].sort((a, b) =>
-    a.toBuffer().compare(b.toBuffer())
+    a.toBuffer().compare(b.toBuffer()),
   );
 
   // Find pool PDA using sorted token public keys
   const [poolPubkey] = PublicKey.findProgramAddressSync(
     [Buffer.from('pool'), token0.toBuffer(), token1.toBuffer()],
-    programId
+    programId,
   );
 
   // Find LP token mint PDA
   const [lpTokenMint] = PublicKey.findProgramAddressSync(
     [Buffer.from('lp'), token0.toBuffer(), token1.toBuffer()],
-    programId
+    programId,
   );
 
   // Find metadata account PDA
@@ -66,7 +66,7 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
       new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s').toBuffer(),
       lpTokenMint.toBuffer(),
     ],
-    new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s')
+    new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'),
   );
 
   // Upgrade the pool
@@ -99,7 +99,7 @@ async function main() {
   // Initialize connection to devnet
   const connection = new Connection(
     'https://api.devnet.solana.com',
-    'confirmed'
+    'confirmed',
   );
 
   // Create AnchorProvider
@@ -122,5 +122,5 @@ main().then(
   (err) => {
     console.error(err);
     process.exit(-1);
-  }
+  },
 );

@@ -11,7 +11,8 @@
     "build": "nx build web",
     "dev": "nx serve web",
     "snarkjs": "node snarkjs/cli.js",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "eslint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern 'node_modules/*'"
   },
   "private": true,
   "dependencies": {
@@ -78,9 +79,10 @@
     "circomlib": "^2.0.5",
     "eslint": "~8.57.0",
     "eslint-config-next": "14.0.4",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "ffjavascript": "^0.3.0",
@@ -89,7 +91,7 @@
     "jest-environment-node": "^29.4.1",
     "nx": "19.0.0",
     "postcss": "8.4.41",
-    "prettier": "^2.6.2",
+    "prettier": "^3.3.3",
     "snarkjs": "^0.7.4",
     "tailwindcss": "3.2.7",
     "ts-jest": "^29.1.0",

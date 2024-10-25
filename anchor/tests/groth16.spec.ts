@@ -30,7 +30,7 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
     const wasmPath = path.join(
       __dirname,
       '../../circuits/swap_js',
-      'swap.wasm'
+      'swap.wasm',
     );
     const zkeyPath = path.join(__dirname, '../../circuits', 'swap_0001.zkey');
 
@@ -48,7 +48,7 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
     const { proof, publicSignals } = await snarkjs.groth16.fullProve(
       input,
       wasmPath,
-      zkeyPath
+      zkeyPath,
     );
 
     console.log('Original proof:', JSON.stringify(proof, null, 2));
@@ -131,19 +131,19 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
     const wasmPath = path.join(
       __dirname,
       '../../circuits/swap_js',
-      'swap.wasm'
+      'swap.wasm',
     );
     const zkeyPath = path.join(__dirname, '../../circuits', 'swap_0001.zkey');
     const vKeyPath = path.join(
       __dirname,
       '../../circuits',
-      'verification_key.json'
+      'verification_key.json',
     );
 
     const { proof, publicSignals } = await snarkjs.groth16.fullProve(
       input,
       wasmPath,
-      zkeyPath
+      zkeyPath,
     );
 
     const vKey = JSON.parse(fs.readFileSync(vKeyPath, 'utf8'));
@@ -168,12 +168,12 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
     const vKeyPath = path.join(
       __dirname,
       '../../circuits',
-      'verification_key.json'
+      'verification_key.json',
     );
     const wasmPath = path.join(
       __dirname,
       '../../circuits/swap_js',
-      'swap.wasm'
+      'swap.wasm',
     );
 
     const inputPath = path.join(__dirname, '../../input.json');
@@ -186,17 +186,17 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
 
     // Generate the witness
     execSync(
-      `node ${snarkjsCli} wtns calculate ${wasmPath} ${inputPath} ${witnessPath}`
+      `node ${snarkjsCli} wtns calculate ${wasmPath} ${inputPath} ${witnessPath}`,
     );
 
     // Generate the proof
     execSync(
-      `node ${snarkjsCli} groth16 prove ${zkeyPath} ${witnessPath} ${proofPath} ${publicPath}`
+      `node ${snarkjsCli} groth16 prove ${zkeyPath} ${witnessPath} ${proofPath} ${publicPath}`,
     );
 
     // Verify the proof
     const result = execSync(
-      `node ${snarkjsCli} groth16 verify ${vKeyPath} ${publicPath} ${proofPath}`
+      `node ${snarkjsCli} groth16 verify ${vKeyPath} ${publicPath} ${proofPath}`,
     );
 
     expect(result.toString()).toContain('OK!');
