@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
+  "ignorePatterns": ["node_modules/*", "snarkjs/*", "web/.next/*", "groth16-solana/*", "dist/**/*", "web/public/**/*"],
   "plugins": ["@nx", "prettier"],
   "extends": ["plugin:prettier/recommended"],
   "overrides": [

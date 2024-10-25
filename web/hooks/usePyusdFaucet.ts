@@ -10,7 +10,7 @@ const usePyusdFaucet = () => {
   const [error, setError] = useState<string | null>(null);
 
   const requestPyusd = async (
-    walletAddress: string
+    walletAddress: string,
   ): Promise<FaucetResponse> => {
     setIsLoading(true);
     setError(null);
@@ -30,7 +30,7 @@ const usePyusdFaucet = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -42,7 +42,7 @@ const usePyusdFaucet = () => {
     } catch (err) {
       setIsLoading(false);
       setError(
-        err instanceof Error ? err.message : 'An unknown error occurred'
+        err instanceof Error ? err.message : 'An unknown error occurred',
       );
       return { success: false, message: 'Failed to request PYUSD tokens' };
     }

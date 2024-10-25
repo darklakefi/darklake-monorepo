@@ -18,7 +18,7 @@ import {
 
 // Constants
 const PYUSD_MINT = new PublicKey(
-  'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM'
+  'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM',
 );
 const WSOL_MINT = new PublicKey('So11111111111111111111111111111111111111112');
 const PYUSD_AMOUNT = 100 * 10 ** 6; // 100 PYUSD (assuming 6 decimals)
@@ -31,29 +31,29 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
   // Find pool PDA
   const [poolPubkey] = PublicKey.findProgramAddressSync(
     [Buffer.from('pool'), PYUSD_MINT.toBuffer(), WSOL_MINT.toBuffer()],
-    programId
+    programId,
   );
 
   // Create associated token accounts for the pool
   const poolPYUSDAccount = await getAssociatedTokenAddress(
     PYUSD_MINT,
     poolPubkey,
-    true
+    true,
   );
   const poolWSOLAccount = await getAssociatedTokenAddress(
     WSOL_MINT,
     poolPubkey,
-    true
+    true,
   );
 
   // Create user's associated token accounts
   const userPYUSDAccount = await getAssociatedTokenAddress(
     PYUSD_MINT,
-    provider.wallet.publicKey
+    provider.wallet.publicKey,
   );
   const userWSOLAccount = await getAssociatedTokenAddress(
     WSOL_MINT,
-    provider.wallet.publicKey
+    provider.wallet.publicKey,
   );
 
   // Initialize the pool
@@ -84,8 +84,8 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
       userPYUSDAccount,
       poolPYUSDAccount,
       provider.wallet.publicKey,
-      PYUSD_AMOUNT
-    )
+      PYUSD_AMOUNT,
+    ),
   );
 
   // Transfer WSOL
@@ -94,14 +94,14 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
       userWSOLAccount,
       poolWSOLAccount,
       provider.wallet.publicKey,
-      WSOL_AMOUNT
-    )
+      WSOL_AMOUNT,
+    ),
   );
 
   const transferSig = await provider.sendAndConfirm(transferTx);
   console.log(
     'Initial liquidity transferred. Transaction signature:',
-    transferSig
+    transferSig,
   );
 }
 

@@ -11,7 +11,7 @@ import { generateProof } from '../lib/prepare-proof';
 export function useSwapEstimate(
   sourceToken: Token,
   destToken: Token,
-  sourceAmount: string
+  sourceAmount: string,
 ) {
   const [estimatedDestAmount, setEstimatedDestAmount] = useState<string>('');
   const { connection } = useConnection();
@@ -40,7 +40,7 @@ export function useSwapEstimate(
             ? NATIVE_MINT
             : new PublicKey(destToken.address);
         const [tokenX, tokenY] = [sourceAddress, destAddress].sort((a, b) =>
-          a.toBuffer().compare(b.toBuffer())
+          a.toBuffer().compare(b.toBuffer()),
         );
 
         // Determine if we're swapping from X to Y
@@ -49,7 +49,7 @@ export function useSwapEstimate(
         // Find pool PDA using sorted token public keys
         const [poolPubkey] = PublicKey.findProgramAddressSync(
           [Buffer.from('pool'), tokenX.toBuffer(), tokenY.toBuffer()],
-          programId
+          programId,
         );
 
         // Fetch pool account data
@@ -63,7 +63,7 @@ export function useSwapEstimate(
         };
 
         const sourceAmountBN = BigInt(
-          Math.floor(parseFloat(sourceAmount) * 10 ** sourceToken.decimals)
+          Math.floor(parseFloat(sourceAmount) * 10 ** sourceToken.decimals),
         );
 
         const privateInputs = {
@@ -74,7 +74,7 @@ export function useSwapEstimate(
         // Generate proof
         const { publicSignals } = await generateProof(
           privateInputs,
-          publicInputs
+          publicInputs,
         );
 
         // Extract the third element (index 2) from publicSignals

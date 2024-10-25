@@ -49,10 +49,10 @@ const tokens: Token[] = tokenList;
 
 export function TokenSwapper() {
   const [sourceToken, setSourceToken] = useState<Token>(
-    tokens.find((t) => t.symbol === 'PYUSD') || tokens[0]
+    tokens.find((t) => t.symbol === 'PYUSD') || tokens[0],
   );
   const [destToken, setDestToken] = useState<Token>(
-    tokens.find((t) => t.symbol === 'SOL') || tokens[1]
+    tokens.find((t) => t.symbol === 'SOL') || tokens[1],
   );
   const [sourceAmount, setSourceAmount] = useState<string>('');
   const [destAmount, setDestAmount] = useState<string>('');
@@ -66,7 +66,7 @@ export function TokenSwapper() {
   const { publicKey } = useWallet();
   const { balance: sourceTokenBalance } = useTokenBalance(
     publicKey,
-    sourceToken.address
+    sourceToken.address,
   );
   const { connection } = useConnection();
   const wallet = useWallet();
@@ -78,7 +78,7 @@ export function TokenSwapper() {
   const estimatedDestAmount = useSwapEstimate(
     sourceToken,
     destToken,
-    sourceAmount
+    sourceAmount,
   );
 
   const handleSwap = () => {
@@ -149,12 +149,12 @@ export function TokenSwapper() {
       console.log(
         'Source token:',
         sourceToken.symbol,
-        sourceTokenPublicKey.toBase58()
+        sourceTokenPublicKey.toBase58(),
       );
       console.log(
         'Destination token:',
         destToken.symbol,
-        destTokenPublicKey.toBase58()
+        destTokenPublicKey.toBase58(),
       );
 
       // Wrap SOL if the source token is native SOL
@@ -162,21 +162,21 @@ export function TokenSwapper() {
         console.log('Wrapping SOL');
         wrappedSolAccount = await getAssociatedTokenAddress(
           NATIVE_MINT,
-          publicKey
+          publicKey,
         );
         transaction.add(
           createAssociatedTokenAccountInstruction(
             publicKey, // payer
             wrappedSolAccount,
             publicKey, // owner
-            NATIVE_MINT
+            NATIVE_MINT,
           ),
           SystemProgram.transfer({
             fromPubkey: publicKey,
             toPubkey: wrappedSolAccount,
             lamports: LAMPORTS_PER_SOL * parseFloat(sourceAmount),
           }),
-          createSyncNativeInstruction(wrappedSolAccount)
+          createSyncNativeInstruction(wrappedSolAccount),
         );
         console.log('Added SOL wrapping instructions');
       }
@@ -190,13 +190,12 @@ export function TokenSwapper() {
         destTokenPublicKey,
         publicKey,
         false,
-        destTokenProgram
+        destTokenProgram,
       );
       let destTokenAccountInfo;
       try {
-        destTokenAccountInfo = await connection.getAccountInfo(
-          destTokenAccount
-        );
+        destTokenAccountInfo =
+          await connection.getAccountInfo(destTokenAccount);
       } catch (error) {
         destTokenAccountInfo = null;
       }
@@ -209,18 +208,18 @@ export function TokenSwapper() {
             destTokenAccount,
             publicKey, // owner
             destTokenPublicKey,
-            destTokenProgram
-          )
+            destTokenProgram,
+          ),
         );
         console.log('Added create associated token account instruction');
       }
 
       // Add confidential swap instruction
       const sourceAmountInteger = BigInt(
-        Math.floor(parseFloat(sourceAmount) * 10 ** sourceToken.decimals)
+        Math.floor(parseFloat(sourceAmount) * 10 ** sourceToken.decimals),
       );
       const minReceivedInteger = BigInt(
-        Math.floor(minReceived * 10 ** destToken.decimals)
+        Math.floor(minReceived * 10 ** destToken.decimals),
       );
 
       console.log('Preparing confidential swap');
@@ -236,7 +235,7 @@ export function TokenSwapper() {
         sourceToken.tokenProgram,
         destToken.tokenProgram,
         sourceToken.decimals,
-        destToken.decimals
+        destToken.decimals,
       );
 
       if (!result.success || !result.transaction) {
@@ -252,21 +251,21 @@ export function TokenSwapper() {
         console.log('Adding SOL unwrapping instruction');
         const wrappedSolAccount = await getAssociatedTokenAddress(
           NATIVE_MINT,
-          publicKey
+          publicKey,
         );
         transaction.add(
           createCloseAccountInstruction(
             wrappedSolAccount,
             publicKey, // owner
-            publicKey // destination
-          )
+            publicKey, // destination
+          ),
         );
         console.log('Added SOL unwrapping instruction');
       }
 
       console.log(
         'Transaction built. Instruction count:',
-        transaction.instructions.length
+        transaction.instructions.length,
       );
 
       transaction.recentBlockhash = (
@@ -324,7 +323,7 @@ export function TokenSwapper() {
     } catch (error) {
       console.error('Swap error:', error);
       errorToast(
-        error instanceof Error ? error.message : 'An unexpected error occurred'
+        error instanceof Error ? error.message : 'An unexpected error occurred',
       );
 
       // Track failed swap
@@ -469,8 +468,8 @@ export function TokenSwapper() {
             {isSwapping
               ? 'Swapping...'
               : isValidPool
-              ? 'Swap'
-              : "This pool isn't available yet."}
+                ? 'Swap'
+                : "This pool isn't available yet."}
           </Button>
         </div>
       </div>

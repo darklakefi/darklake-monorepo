@@ -15,7 +15,7 @@ export function useSolanaFaucet() {
 
     await connection.confirmTransaction(
       { signature, ...latestBlockhash },
-      'confirmed'
+      'confirmed',
     );
 
     transactionToast(signature);

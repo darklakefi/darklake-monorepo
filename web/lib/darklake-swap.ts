@@ -25,7 +25,7 @@ export async function prepareConfidentialSwap(
   sourceTokenProgram: string,
   destTokenProgram: string,
   sourceDecimals: number,
-  destDecimals: number
+  destDecimals: number,
 ): Promise<SwapResult> {
   try {
     console.log(`Swap parameters:
@@ -42,7 +42,7 @@ export async function prepareConfidentialSwap(
 
     // Sort token public keys to ensure consistent pool seed calculation
     const [tokenX, tokenY] = [sourceToken, destToken].sort((a, b) =>
-      a.toBuffer().compare(b.toBuffer())
+      a.toBuffer().compare(b.toBuffer()),
     );
 
     // Determine if we're swapping from X to Y
@@ -51,7 +51,7 @@ export async function prepareConfidentialSwap(
     // Find pool PDA using sorted token public keys
     const [poolPubkey] = PublicKey.findProgramAddressSync(
       [Buffer.from('pool'), tokenX.toBuffer(), tokenY.toBuffer()],
-      programId
+      programId,
     );
 
     // Determine the token program for each token
@@ -60,28 +60,28 @@ export async function prepareConfidentialSwap(
         ? TOKEN_2022_PROGRAM_ID
         : TOKEN_PROGRAM_ID
       : destTokenProgram === 'Token-2022'
-      ? TOKEN_2022_PROGRAM_ID
-      : TOKEN_PROGRAM_ID;
+        ? TOKEN_2022_PROGRAM_ID
+        : TOKEN_PROGRAM_ID;
     const tokenYProgramId = tokenY.equals(destToken)
       ? destTokenProgram === 'Token-2022'
         ? TOKEN_2022_PROGRAM_ID
         : TOKEN_PROGRAM_ID
       : sourceTokenProgram === 'Token-2022'
-      ? TOKEN_2022_PROGRAM_ID
-      : TOKEN_PROGRAM_ID;
+        ? TOKEN_2022_PROGRAM_ID
+        : TOKEN_PROGRAM_ID;
 
     // Get user token account addresses
     const userTokenAccountX = await getAssociatedTokenAddress(
       tokenX,
       payer.publicKey,
       false,
-      tokenXProgramId
+      tokenXProgramId,
     );
     const userTokenAccountY = await getAssociatedTokenAddress(
       tokenY,
       payer.publicKey,
       false,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     // Get pool token account addresses
@@ -89,13 +89,13 @@ export async function prepareConfidentialSwap(
       tokenX,
       poolPubkey,
       true,
-      tokenXProgramId
+      tokenXProgramId,
     );
     const poolTokenAccountY = await getAssociatedTokenAddress(
       tokenY,
       poolPubkey,
       true,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     // Fetch pool account data
@@ -107,11 +107,11 @@ export async function prepareConfidentialSwap(
 
     console.log(`Token order:
       tokenX: ${tokenX.toBase58()} (decimals: ${
-      tokenX.equals(sourceToken) ? sourceDecimals : destDecimals
-    })
+        tokenX.equals(sourceToken) ? sourceDecimals : destDecimals
+      })
       tokenY: ${tokenY.toBase58()} (decimals: ${
-      tokenY.equals(destToken) ? destDecimals : sourceDecimals
-    })
+        tokenY.equals(destToken) ? destDecimals : sourceDecimals
+      })
       isSwapXtoY: ${isSwapXtoY}
     `);
 
@@ -138,7 +138,7 @@ export async function prepareConfidentialSwap(
     // Generate proof
     const { proofA, proofB, proofC, publicSignals } = await generateProof(
       privateInputs,
-      publicInputs
+      publicInputs,
     );
 
     // Create the transaction
@@ -152,7 +152,7 @@ export async function prepareConfidentialSwap(
           Array.from(proofB),
           Array.from(proofC),
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          publicSignals.map((signal: any) => Array.from(signal))
+          publicSignals.map((signal: any) => Array.from(signal)),
         )
         .accountsPartial({
           tokenMintX: tokenX,
@@ -168,7 +168,7 @@ export async function prepareConfidentialSwap(
           associatedTokenProgram: utils.token.ASSOCIATED_PROGRAM_ID,
           systemProgram: SystemProgram.programId,
         })
-        .instruction()
+        .instruction(),
     );
 
     return { success: true, transaction };
@@ -196,7 +196,7 @@ export function useConfidentialSwap() {
     sourceTokenProgram: string,
     destTokenProgram: string,
     sourceDecimals: number,
-    destDecimals: number
+    destDecimals: number,
   ): Promise<SwapResult> => {
     return prepareConfidentialSwap(
       provider,
@@ -208,7 +208,7 @@ export function useConfidentialSwap() {
       sourceTokenProgram,
       destTokenProgram,
       sourceDecimals,
-      destDecimals
+      destDecimals,
     );
   };
 }

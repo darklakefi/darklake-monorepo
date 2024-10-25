@@ -29,13 +29,13 @@ const darklakeIdl = require('../target/idl/darklake.json') as Idl;
 
 // Constants
 const PYUSD_MINT = new PublicKey(
-  'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM'
+  'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM',
 );
 const PYUSD_AMOUNT = 100 * 10 ** 6; // 100 PYUSD (assuming 6 decimals)
 const WSOL_AMOUNT = 1 * 10 ** 9; // 1 WSOL (9 decimals)
 
 function getDarklakeProgram(
-  provider: AnchorProvider
+  provider: AnchorProvider,
 ): Program<typeof darklakeIdl> {
   return new Program<typeof darklakeIdl>(darklakeIdl, provider);
 }
@@ -55,13 +55,13 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
   const programId = getDarklakeProgramId('devnet');
 
   const [token0, token1] = [PYUSD_MINT, NATIVE_MINT].sort((a, b) =>
-    a.toBuffer().compare(b.toBuffer())
+    a.toBuffer().compare(b.toBuffer()),
   );
 
   // Find pool PDA using sorted token public keys
   const [poolPubkey] = PublicKey.findProgramAddressSync(
     [Buffer.from('pool'), token0.toBuffer(), token1.toBuffer()],
-    programId
+    programId,
   );
 
   // Check if the pool already exists
@@ -75,21 +75,19 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
       PYUSD_MINT,
       poolPubkey,
       true,
-      TOKEN_2022_PROGRAM_ID
+      TOKEN_2022_PROGRAM_ID,
     );
     const poolWSOLAccount = await getAssociatedTokenAddress(
       NATIVE_MINT,
       poolPubkey,
-      true
+      true,
     );
 
     // Check if pool token accounts exist
-    const poolPYUSDAccountInfo = await provider.connection.getAccountInfo(
-      poolPYUSDAccount
-    );
-    const poolWSOLAccountInfo = await provider.connection.getAccountInfo(
-      poolWSOLAccount
-    );
+    const poolPYUSDAccountInfo =
+      await provider.connection.getAccountInfo(poolPYUSDAccount);
+    const poolWSOLAccountInfo =
+      await provider.connection.getAccountInfo(poolWSOLAccount);
 
     const createATAsTx = new web3.Transaction();
     let needToCreateATAs = false;
@@ -102,8 +100,8 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
           poolPYUSDAccount,
           poolPubkey,
           PYUSD_MINT,
-          TOKEN_2022_PROGRAM_ID
-        )
+          TOKEN_2022_PROGRAM_ID,
+        ),
       );
       needToCreateATAs = true;
     }
@@ -115,8 +113,8 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
           provider.wallet.publicKey,
           poolWSOLAccount,
           poolPubkey,
-          NATIVE_MINT
-        )
+          NATIVE_MINT,
+        ),
       );
       needToCreateATAs = true;
     }
@@ -143,7 +141,7 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
   // Create user's associated token accounts
   const userWSOLAccount = await getAssociatedTokenAddress(
     NATIVE_MINT,
-    provider.wallet.publicKey
+    provider.wallet.publicKey,
   );
 
   // Get pool token accounts
@@ -151,21 +149,20 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
     PYUSD_MINT,
     poolPubkey,
     true,
-    TOKEN_2022_PROGRAM_ID
+    TOKEN_2022_PROGRAM_ID,
   );
   const poolWSOLAccount = await getAssociatedTokenAddress(
     NATIVE_MINT,
     poolPubkey,
-    true
+    true,
   );
 
   // Check and create pool token accounts if they don't exist
   const createPoolATAsTx = new web3.Transaction();
   let needToCreatePoolATAs = false;
 
-  const poolPYUSDAccountInfo = await provider.connection.getAccountInfo(
-    poolPYUSDAccount
-  );
+  const poolPYUSDAccountInfo =
+    await provider.connection.getAccountInfo(poolPYUSDAccount);
   if (!poolPYUSDAccountInfo) {
     console.log('Creating pool PYUSD ATA...');
     createPoolATAsTx.add(
@@ -174,15 +171,14 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
         poolPYUSDAccount,
         poolPubkey,
         PYUSD_MINT,
-        TOKEN_2022_PROGRAM_ID
-      )
+        TOKEN_2022_PROGRAM_ID,
+      ),
     );
     needToCreatePoolATAs = true;
   }
 
-  const poolWSOLAccountInfo = await provider.connection.getAccountInfo(
-    poolWSOLAccount
-  );
+  const poolWSOLAccountInfo =
+    await provider.connection.getAccountInfo(poolWSOLAccount);
   if (!poolWSOLAccountInfo) {
     console.log('Creating pool WSOL ATA...');
     createPoolATAsTx.add(
@@ -190,8 +186,8 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
         provider.wallet.publicKey,
         poolWSOLAccount,
         poolPubkey,
-        NATIVE_MINT
-      )
+        NATIVE_MINT,
+      ),
     );
     needToCreatePoolATAs = true;
   }
@@ -204,12 +200,10 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
   // Check current pool balances
   let poolPYUSDBalance, poolWSOLBalance;
   try {
-    poolPYUSDBalance = await provider.connection.getTokenAccountBalance(
-      poolPYUSDAccount
-    );
-    poolWSOLBalance = await provider.connection.getTokenAccountBalance(
-      poolWSOLAccount
-    );
+    poolPYUSDBalance =
+      await provider.connection.getTokenAccountBalance(poolPYUSDAccount);
+    poolWSOLBalance =
+      await provider.connection.getTokenAccountBalance(poolWSOLAccount);
 
     console.log('Current pool balances:');
     console.log('PYUSD:', poolPYUSDBalance.value.uiAmount);
@@ -231,22 +225,20 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
       PYUSD_MINT,
       provider.wallet.publicKey,
       false,
-      TOKEN_2022_PROGRAM_ID
+      TOKEN_2022_PROGRAM_ID,
     );
-    const userPYUSDAccountInfo = await provider.connection.getAccountInfo(
-      userPYUSDAccount
-    );
+    const userPYUSDAccountInfo =
+      await provider.connection.getAccountInfo(userPYUSDAccount);
 
     if (!userPYUSDAccountInfo) {
       console.log(
-        "User's PYUSD account doesn't exist. Please fund your account with PYUSD first."
+        "User's PYUSD account doesn't exist. Please fund your account with PYUSD first.",
       );
       return;
     }
 
-    const userPYUSDBalance = await provider.connection.getTokenAccountBalance(
-      userPYUSDAccount
-    );
+    const userPYUSDBalance =
+      await provider.connection.getTokenAccountBalance(userPYUSDAccount);
     if (
       userPYUSDBalance.value.uiAmount === null ||
       userPYUSDBalance.value.uiAmount < PYUSD_AMOUNT / 10 ** 6
@@ -254,7 +246,7 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
       console.log(
         `Insufficient PYUSD balance. You need at least ${
           PYUSD_AMOUNT / 10 ** 6
-        } PYUSD.`
+        } PYUSD.`,
       );
       return;
     }
@@ -263,23 +255,22 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
       userPYUSDAccountInfo.owner.toString() !== TOKEN_2022_PROGRAM_ID.toString()
     ) {
       console.log(
-        "User's PYUSD account is not a Token-2022 account. Please check the account."
+        "User's PYUSD account is not a Token-2022 account. Please check the account.",
       );
       return;
     }
 
     // Check if WSOL account exists, if not, create it
-    const userWSOLInfo = await provider.connection.getAccountInfo(
-      userWSOLAccount
-    );
+    const userWSOLInfo =
+      await provider.connection.getAccountInfo(userWSOLAccount);
     if (!userWSOLInfo) {
       transferTx.add(
         createAssociatedTokenAccountInstruction(
           provider.wallet.publicKey,
           userWSOLAccount,
           provider.wallet.publicKey,
-          NATIVE_MINT
-        )
+          NATIVE_MINT,
+        ),
       );
     }
 
@@ -289,7 +280,7 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
         fromPubkey: provider.wallet.publicKey,
         toPubkey: userWSOLAccount,
         lamports: WSOL_AMOUNT,
-      })
+      }),
     );
     transferTx.add(createSyncNativeInstruction(userWSOLAccount));
 
@@ -299,7 +290,7 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
 
     // Call add_liquidity method on Darklake
     const [sortedToken0, sortedToken1] = [PYUSD_MINT, NATIVE_MINT].sort(
-      (a, b) => a.toBuffer().compare(b.toBuffer())
+      (a, b) => a.toBuffer().compare(b.toBuffer()),
     );
 
     const [sortedAmount0, sortedAmount1] = sortedToken0.equals(PYUSD_MINT)
@@ -338,7 +329,7 @@ async function createPYUSDWSOLPool(provider: AnchorProvider) {
     console.log('Liquidity added. Transaction signature:', addLiquidityTx);
   } else {
     console.log(
-      'Pool already has liquidity. Skipping initial liquidity transfer.'
+      'Pool already has liquidity. Skipping initial liquidity transfer.',
     );
   }
 }
@@ -353,7 +344,7 @@ async function main() {
   // Initialize connection to devnet
   const connection = new Connection(
     'https://api.devnet.solana.com',
-    'confirmed'
+    'confirmed',
   );
 
   // Create AnchorProvider
@@ -376,5 +367,5 @@ main().then(
   (err) => {
     console.error(err);
     process.exit(-1);
-  }
+  },
 );

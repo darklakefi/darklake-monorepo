@@ -13,7 +13,7 @@ declare const snarkjs: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       input: any,
       wasmPath: string,
-      zkeyPath: string
+      zkeyPath: string,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<{ proof: any; publicSignals: any }>;
   };
@@ -25,7 +25,7 @@ export async function generateProof(
     publicBalanceX: bigint;
     publicBalanceY: bigint;
     isSwapXtoY: number;
-  }
+  },
 ): Promise<{
   proofA: Uint8Array;
   proofB: Uint8Array;
@@ -52,7 +52,7 @@ export async function generateProof(
   const { proof, publicSignals } = await snarkjs.groth16.fullProve(
     input,
     wasmPath,
-    zkeyPath
+    zkeyPath,
   );
 
   console.log('Original proof:', JSON.stringify(proof, null, 2));
@@ -68,11 +68,11 @@ export async function generateProof(
   const proofB = g2Uncompressed(curve, proofProc.pi_b);
   const proofC = g1Uncompressed(curve, proofProc.pi_c);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formattedPublicSignals = publicSignalsUnstrigified.map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (signal: any) => {
       return to32ByteBuffer(BigInt(signal));
-    }
+    },
   );
 
   return {
