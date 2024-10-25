@@ -23,7 +23,7 @@
     "@radix-ui/react-slider": "^1.2.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@sentry/nextjs": "^8.34.0",
-    "@solana-developers/preset-next": "3.0.1",
+    "@solana-developers/preset-next": "3.1.0",
     "@solana/spl-token": "0.4.6",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
