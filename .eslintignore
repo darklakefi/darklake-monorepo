@@ -1,1 +1,4 @@
 node_modules
+groth16-solana
+anchor/target
+snarkjs

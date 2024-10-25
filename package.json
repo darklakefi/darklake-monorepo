@@ -11,7 +11,8 @@
     "build": "nx build web",
     "dev": "nx serve web",
     "snarkjs": "node snarkjs/cli.js",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "eslint": "eslint ."
   },
   "private": true,
   "dependencies": {
