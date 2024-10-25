@@ -10,7 +10,8 @@
     "feature": "nx generate @solana-developers/preset-react:feature",
     "build": "nx build web",
     "dev": "nx serve web",
-    "snarkjs": "node snarkjs/cli.js"
+    "snarkjs": "node snarkjs/cli.js",
+    "prettier": "prettier --write ."
   },
   "private": true,
   "dependencies": {
