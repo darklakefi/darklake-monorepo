@@ -20,3 +20,4 @@ snarkjs/
 /.nx-cache
 /web/.next
 /web/public
+/anchor/target
