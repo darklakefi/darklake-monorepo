@@ -34,7 +34,7 @@ describe('darklake', () => {
   const setupMint = async () => {
     const airdropSignature = await provider.connection.requestAirdrop(
       payer.publicKey,
-      10 * anchor.web3.LAMPORTS_PER_SOL
+      10 * anchor.web3.LAMPORTS_PER_SOL,
     );
     await provider.connection.confirmTransaction(airdropSignature);
 
@@ -47,7 +47,7 @@ describe('darklake', () => {
       tokenMint0Decimals,
       undefined,
       undefined,
-      TOKEN_2022_PROGRAM_ID
+      TOKEN_2022_PROGRAM_ID,
     );
     const tokenMint1 = await createMint(
       provider.connection,
@@ -57,7 +57,7 @@ describe('darklake', () => {
       tokenMint1Decimals,
       undefined,
       undefined,
-      TOKEN_PROGRAM_ID
+      TOKEN_PROGRAM_ID,
     );
 
     // Sort token mints by address
@@ -75,14 +75,14 @@ describe('darklake', () => {
 
     [poolPubkey] = anchor.web3.PublicKey.findProgramAddressSync(
       [Buffer.from('pool'), tokenX.toBuffer(), tokenY.toBuffer()],
-      program.programId
+      program.programId,
     );
 
     console.log(
       `Payer: ${payer.publicKey.toBase58()}
 Pool PDA: ${poolPubkey.toBase58()}
 Token X: ${tokenX.toBase58()}
-Token Y: ${tokenY.toBase58()}`
+Token Y: ${tokenY.toBase58()}`,
     );
   };
 
@@ -120,7 +120,7 @@ Token Y: ${tokenY.toBase58()}`
       false,
       undefined,
       undefined,
-      tokenXProgramId
+      tokenXProgramId,
     );
 
     const userTokenAccountY = await getOrCreateAssociatedTokenAccount(
@@ -131,7 +131,7 @@ Token Y: ${tokenY.toBase58()}`
       false,
       undefined,
       undefined,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     const poolTokenAccountX = await getOrCreateAssociatedTokenAccount(
@@ -142,7 +142,7 @@ Token Y: ${tokenY.toBase58()}`
       true,
       undefined,
       undefined,
-      tokenXProgramId
+      tokenXProgramId,
     );
 
     const poolTokenAccountY = await getOrCreateAssociatedTokenAccount(
@@ -153,7 +153,7 @@ Token Y: ${tokenY.toBase58()}`
       true,
       undefined,
       undefined,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     const amountX = 1_000_000; // 1 token with 6 decimals
@@ -167,7 +167,7 @@ Token Y: ${tokenY.toBase58()}`
       amountX,
       undefined,
       undefined,
-      tokenXProgramId
+      tokenXProgramId,
     );
     await mintTo(
       provider.connection,
@@ -178,7 +178,7 @@ Token Y: ${tokenY.toBase58()}`
       amountY,
       undefined,
       undefined,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     try {
@@ -208,13 +208,13 @@ Token Y: ${tokenY.toBase58()}`
         provider.connection,
         userTokenAccountX.address,
         undefined,
-        tokenXProgramId
+        tokenXProgramId,
       );
       const userAccountYInfo = await getAccount(
         provider.connection,
         userTokenAccountY.address,
         undefined,
-        tokenYProgramId
+        tokenYProgramId,
       );
 
       expect(Number(userAccountXInfo.amount)).toBe(0);
@@ -236,7 +236,7 @@ Token Y: ${tokenY.toBase58()}`
       true,
       undefined,
       undefined,
-      tokenXProgramId
+      tokenXProgramId,
     );
 
     const userTokenAccountY = await getOrCreateAssociatedTokenAccount(
@@ -247,7 +247,7 @@ Token Y: ${tokenY.toBase58()}`
       true,
       undefined,
       undefined,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     const poolTokenAccountX = await getOrCreateAssociatedTokenAccount(
@@ -258,7 +258,7 @@ Token Y: ${tokenY.toBase58()}`
       true,
       undefined,
       undefined,
-      tokenXProgramId
+      tokenXProgramId,
     );
 
     const poolTokenAccountY = await getOrCreateAssociatedTokenAccount(
@@ -269,7 +269,7 @@ Token Y: ${tokenY.toBase58()}`
       true,
       undefined,
       undefined,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     const amountToMint = 1_000_000; // 1 token with 6 decimals for tokenX
@@ -282,7 +282,7 @@ Token Y: ${tokenY.toBase58()}`
       amountToMint,
       undefined,
       undefined,
-      tokenXProgramId
+      tokenXProgramId,
     );
 
     const publicInputs = {
@@ -298,7 +298,7 @@ Token Y: ${tokenY.toBase58()}`
 
     const { proofA, proofB, proofC, publicSignals } = await generateProof(
       privateInputs,
-      publicInputs
+      publicInputs,
     );
 
     try {
@@ -307,7 +307,7 @@ Token Y: ${tokenY.toBase58()}`
           Array.from(proofA),
           Array.from(proofB),
           Array.from(proofC),
-          publicSignals.map((signal) => Array.from(signal))
+          publicSignals.map((signal) => Array.from(signal)),
         )
         .accountsPartial({
           tokenMintX: tokenX,
@@ -326,7 +326,7 @@ Token Y: ${tokenY.toBase58()}`
       tx.instructions.unshift(
         anchor.web3.ComputeBudgetProgram.setComputeUnitLimit({
           units: 2_000_000,
-        })
+        }),
       );
 
       await provider.sendAndConfirm(tx);
@@ -335,13 +335,13 @@ Token Y: ${tokenY.toBase58()}`
         provider.connection,
         userTokenAccountX.address,
         undefined,
-        tokenXProgramId
+        tokenXProgramId,
       );
       const userAccountYAfterSwap = await getAccount(
         provider.connection,
         userTokenAccountY.address,
         undefined,
-        tokenYProgramId
+        tokenYProgramId,
       );
 
       expect(Number(userAccountXAfterSwap.amount)).toBeLessThan(amountToMint);
@@ -351,13 +351,13 @@ Token Y: ${tokenY.toBase58()}`
         provider.connection,
         poolTokenAccountX.address,
         undefined,
-        tokenXProgramId
+        tokenXProgramId,
       );
       const poolAccountYAfterSwap = await getAccount(
         provider.connection,
         poolTokenAccountY.address,
         undefined,
-        tokenYProgramId
+        tokenYProgramId,
       );
 
       expect(Number(poolAccountXAfterSwap.amount)).toBeGreaterThan(0);
@@ -376,7 +376,7 @@ Token Y: ${tokenY.toBase58()}`
 
     const [lpMintPubkey] = anchor.web3.PublicKey.findProgramAddressSync(
       [Buffer.from('lp'), tokenX.toBuffer(), tokenY.toBuffer()],
-      program.programId
+      program.programId,
     );
 
     const userTokenAccountX = await getOrCreateAssociatedTokenAccount(
@@ -387,7 +387,7 @@ Token Y: ${tokenY.toBase58()}`
       false,
       undefined,
       undefined,
-      tokenXProgramId
+      tokenXProgramId,
     );
 
     const userTokenAccountY = await getOrCreateAssociatedTokenAccount(
@@ -398,7 +398,7 @@ Token Y: ${tokenY.toBase58()}`
       false,
       undefined,
       undefined,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     const userTokenAccountLp = await getOrCreateAssociatedTokenAccount(
@@ -409,7 +409,7 @@ Token Y: ${tokenY.toBase58()}`
       false,
       undefined,
       undefined,
-      TOKEN_PROGRAM_ID
+      TOKEN_PROGRAM_ID,
     );
 
     const poolTokenAccountX = await getOrCreateAssociatedTokenAccount(
@@ -420,7 +420,7 @@ Token Y: ${tokenY.toBase58()}`
       true,
       undefined,
       undefined,
-      tokenXProgramId
+      tokenXProgramId,
     );
 
     const poolTokenAccountY = await getOrCreateAssociatedTokenAccount(
@@ -431,15 +431,15 @@ Token Y: ${tokenY.toBase58()}`
       true,
       undefined,
       undefined,
-      tokenYProgramId
+      tokenYProgramId,
     );
 
     // Get the current LP token balance
     const lpTokenBalance = await provider.connection.getTokenAccountBalance(
-      userTokenAccountLp.address
+      userTokenAccountLp.address,
     );
     const halfLpTokens = new anchor.BN(lpTokenBalance.value.amount).div(
-      new anchor.BN(2)
+      new anchor.BN(2),
     );
 
     try {
@@ -465,12 +465,12 @@ Token Y: ${tokenY.toBase58()}`
       const updatedPoolAccount = await program.account.pool.fetch(poolPubkey);
       const updatedUserLpBalance =
         await provider.connection.getTokenAccountBalance(
-          userTokenAccountLp.address
+          userTokenAccountLp.address,
         );
 
       // Check that LP tokens were burned
       expect(new anchor.BN(updatedUserLpBalance.value.amount)).toEqual(
-        new anchor.BN(lpTokenBalance.value.amount).sub(halfLpTokens)
+        new anchor.BN(lpTokenBalance.value.amount).sub(halfLpTokens),
       );
 
       // Check that reserves were reduced by approximately half
@@ -480,11 +480,11 @@ Token Y: ${tokenY.toBase58()}`
       // Check that user received tokens
       const updatedUserXBalance =
         await provider.connection.getTokenAccountBalance(
-          userTokenAccountX.address
+          userTokenAccountX.address,
         );
       const updatedUserYBalance =
         await provider.connection.getTokenAccountBalance(
-          userTokenAccountY.address
+          userTokenAccountY.address,
         );
       expect(Number(updatedUserXBalance.value.amount)).toBeGreaterThan(0);
       expect(Number(updatedUserYBalance.value.amount)).toBeGreaterThan(0);
