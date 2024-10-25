@@ -3,8 +3,8 @@ import axios from 'axios';
 const API_KEY = process.env.NEXT_PUBLIC_BREVO_API_KEY;
 const LIST_ID = '2';
 const API_SERVER = 'https://api.brevo.com/v3';
-const FROM_EMAIL = 'no-reply@blackpool.capital';
-const TO_EMAIL = 'contact@blackpool.capital';
+const FROM_EMAIL = 'no-reply@darklake.fi';
+const TO_EMAIL = 'contact@darklake.fi';
 
 interface SubscribeData {
   email: string;
@@ -17,7 +17,9 @@ interface ContactFormData {
   subscribeNewsletter: boolean;
 }
 
-export async function subscribeToNewsletter(data: SubscribeData): Promise<boolean> {
+export async function subscribeToNewsletter(
+  data: SubscribeData
+): Promise<boolean> {
   try {
     const response = await axios.post(
       `${API_SERVER}/contacts/doubleOptinConfirmation`,
@@ -44,7 +46,9 @@ export async function subscribeToNewsletter(data: SubscribeData): Promise<boolea
   }
 }
 
-export async function submitContactForm(data: ContactFormData): Promise<boolean> {
+export async function submitContactForm(
+  data: ContactFormData
+): Promise<boolean> {
   try {
     // Use Brevo API to send an email
     const response = await axios.post(

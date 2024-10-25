@@ -1,5 +1,5 @@
 {
-  "name": "@blackpool/source",
+  "name": "@darklakefi/source",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
@@ -10,7 +10,8 @@
     "feature": "nx generate @solana-developers/preset-react:feature",
     "build": "nx build web",
     "dev": "nx serve web",
-    "snarkjs": "node snarkjs/cli.js"
+    "snarkjs": "node snarkjs/cli.js",
+    "prettier": "prettier --write ."
   },
   "private": true,
   "dependencies": {
@@ -73,7 +74,7 @@
     "@typescript-eslint/parser": "^7.3.0",
     "autoprefixer": "10.4.13",
     "circom": "^0.5.46",
-    "circom_tester": "github:blackpooldao/circom_tester",
+    "circom_tester": "github:darklakefi/circom_tester",
     "circomlib": "^2.0.5",
     "eslint": "~8.57.0",
     "eslint-config-next": "14.0.4",
