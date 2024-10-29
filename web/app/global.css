@@ -48,52 +48,10 @@ body {
   font-family: var(--font-base);
 }
 
-.wallet-adapter-button-trigger {
-  background-color: #a1a1aa !important;
-  border-radius: 0.5rem !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
-  color: black !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-}
-
-/* New styles from solana-provider.tsx */
-.wallet-adapter-button:hover {
-  background-color: #71717a !important;
-}
-
-.wallet-adapter-button-trigger:hover {
-  background-color: #71717a !important;
-}
-
-.wallet-adapter-button-start-icon img {
-  border-radius: 50% !important;
-  filter: grayscale(100%) !important;
-}
-
-.wallet-adapter-button-trigger:hover .wallet-adapter-button-start-icon img {
-  filter: grayscale(100%) invert(1) !important;
-}
-
-.wallet-adapter-dropdown-list,
-.wallet-adapter-button {
-  font-family: inherit !important;
-}
-
 .font-base {
   font-family: var(--font-base);
 }
 
 .font-light {
   font-family: var(--font-light);
-}
-
-/* New rule to add margin-top to the text inside the wallet adapter button */
-.wallet-adapter-button-trigger {
-  padding-top: 0.25rem !important; /* equivalent to Tailwind's mt-1 */
-}
-
-.wallet-adapter-button-trigger img {
-  margin-top: -0.25rem !important; /* equivalent to Tailwind's mt-1 */
 }

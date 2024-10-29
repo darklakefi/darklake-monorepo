@@ -66,7 +66,7 @@ export function ClusterUiSelect() {
     <div className="dropdown dropdown-end">
       <label
         tabIndex={0}
-        className="btn rounded-btn bg-[#a1a1aa] hover:bg-[#71717a] text-black border-none"
+        className="btn rounded-btn bg-light-gray hover:bg-sonic-silver text-black border-none"
       >
         <span className="mt-1 font-medium">{cluster.name}</span>
       </label>
@@ -79,7 +79,7 @@ export function ClusterUiSelect() {
             <button
               className={`btn btn-sm ${
                 item.active
-                  ? 'bg-[#a1a1aa] hover:bg-[#71717a] text-white'
+                  ? 'bg-light-gray hover:bg-sonic-silver text-white'
                   : 'btn-ghost'
               }`}
               onClick={() => setCluster(item)}

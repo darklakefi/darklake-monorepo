@@ -306,7 +306,7 @@ export function LiquidityManager() {
           </div>
 
           <Button
-            className="w-full bg-[#a1a1aa] hover:bg-[#71717a] text-primary-content"
+            className="w-full bg-light-gray hover:bg-sonic-silver text-primary-content"
             onClick={handleAddRemoveLiquidity}
             disabled={
               !inputLpTokens ||
@@ -348,7 +348,7 @@ function PairSelector({ pair, setPair }: PairSelectorProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between bg-base-300 border-base-300 hover:bg-[#71717a]"
+          className="w-full justify-between bg-base-300 border-base-300 hover:bg-sonic-silver"
         >
           <div className="flex items-center">
             <Image
@@ -390,7 +390,7 @@ function PairSelector({ pair, setPair }: PairSelectorProps) {
                     setPair({ tokenX, tokenY });
                     setOpen(false);
                   }}
-                  className="hover:bg-[#a1a1aa]"
+                  className="hover:bg-light-gray"
                 >
                   <div className="flex items-center">
                     <Image

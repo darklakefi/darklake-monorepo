@@ -453,7 +453,7 @@ export function TokenSwapper() {
           <Button
             className={`w-full ${
               isValidPool
-                ? 'bg-[#a1a1aa] hover:bg-[#71717a]'
+                ? 'bg-light-gray hover:bg-sonic-silver'
                 : 'bg-gray-500 cursor-not-allowed'
             } text-primary-content`}
             disabled={
@@ -499,7 +499,7 @@ function TokenSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between bg-base-300 border-base-300 hover:bg-[#71717a]"
+          className="w-full justify-between bg-base-300 border-base-300 hover:bg-sonic-silver"
         >
           <div className="flex items-center">
             <Image
@@ -538,7 +538,7 @@ function TokenSelect({
                       onSelect(token);
                       setOpen(false);
                     }}
-                    className={`hover:bg-[#a1a1aa] ${
+                    className={`hover:bg-light-gray ${
                       token.symbol === disabledToken.symbol
                         ? 'opacity-50 cursor-not-allowed'
                         : ''
