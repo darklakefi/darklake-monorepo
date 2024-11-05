@@ -54,7 +54,7 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@nx/eslint": "19.0.0",
+    "@nx/eslint": "20.0.8",
     "@nx/eslint-plugin": "19.0.0",
     "@nx/jest": "20.0.6",
     "@nx/js": "19.0.0",
