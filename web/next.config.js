@@ -69,4 +69,5 @@ module.exports = withSentryConfig(composePlugins(...plugins)(nextConfig), {
   authToken: process.env.SENTRY_AUTH_TOKEN,
   silent: false,
   tunnelRoute: '/monitoring-tunnel',
+  widenClientFileUpload: true,
 });
