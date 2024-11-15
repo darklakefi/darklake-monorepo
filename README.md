@@ -25,6 +25,9 @@ Devnet deployment tx: https://solana.fm/tx/UizYmmM6vazxs9si7XWBxP864SRrdJpXYE9H7
 - Anchor CLI 0.30.0 or higher
 - Solana CLI 1.18.9 or higher
 
+**Optional testing**
+- Circom 2 or higher
+
 ## Project Structure
 
 ### Anchor Program

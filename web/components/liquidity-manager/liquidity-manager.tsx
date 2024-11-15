@@ -28,6 +28,7 @@ import { Token } from '@/types/token';
 import tokenList from '@/constants/tokens.json';
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import {
+  createAssociatedTokenAccountInstruction,
   createSyncNativeInstruction,
   getAssociatedTokenAddress,
   NATIVE_MINT,
@@ -90,8 +91,7 @@ export function LiquidityManager() {
     const isXNative = pair.tokenX.address === 'NATIVE';
     const isYNative = pair.tokenY.address === 'NATIVE';
 
-    const tokenLpProgram =
-      isXNative || isYNative ? TOKEN_PROGRAM_ID : TOKEN_2022_PROGRAM_ID;
+    const tokenLpProgram = TOKEN_PROGRAM_ID;
 
     try {
       const [poolPubkey] = PublicKey.findProgramAddressSync(
@@ -139,8 +139,6 @@ export function LiquidityManager() {
         tokenYProgram,
       );
 
-      const tx = new Transaction();
-
       // Adding liquidity
       const amountX = new BN(
         parseFloat(inputLpTokens) * Math.pow(10, pair.tokenX.decimals),
@@ -148,6 +146,50 @@ export function LiquidityManager() {
       const amountY = new BN(
         parseFloat(inputLpTokens) * Math.pow(10, pair.tokenY.decimals),
       );
+
+      const tx = new Transaction();
+
+      let userTokenAccountXAccountInfo;
+      try {
+        userTokenAccountXAccountInfo =
+          await connection.getAccountInfo(userTokenAccountX);
+      } catch (error) {
+        userTokenAccountXAccountInfo = null;
+      }
+
+      if (!userTokenAccountXAccountInfo) {
+        // Create associated token account for token X
+        const createAta = createAssociatedTokenAccountInstruction(
+          wallet.publicKey,
+          userTokenAccountX,
+          wallet.publicKey,
+          tokenX,
+          tokenXProgram,
+        );
+
+        tx.add(createAta);
+      }
+
+      let userTokenAccountYAccountInfo;
+      try {
+        userTokenAccountYAccountInfo =
+          await connection.getAccountInfo(userTokenAccountY);
+      } catch (error) {
+        userTokenAccountYAccountInfo = null;
+      }
+
+      if (!userTokenAccountYAccountInfo) {
+        // Create associated token account for token Y
+        const createAta = createAssociatedTokenAccountInstruction(
+          wallet.publicKey,
+          userTokenAccountY,
+          wallet.publicKey,
+          tokenY,
+          tokenYProgram,
+        );
+
+        tx.add(createAta);
+      }
 
       if (isAdding) {
         if (isXNative) {
@@ -158,8 +200,7 @@ export function LiquidityManager() {
             lamports: amountX.toNumber(),
           });
 
-          const syncNativeIx =
-            await createSyncNativeInstruction(userTokenAccountX);
+          const syncNativeIx = createSyncNativeInstruction(userTokenAccountX);
 
           tx.add(wrapSolIx, syncNativeIx);
         } else if (isYNative) {
@@ -170,8 +211,7 @@ export function LiquidityManager() {
             lamports: amountY.toNumber(),
           });
 
-          const syncNativeIx =
-            await createSyncNativeInstruction(userTokenAccountY);
+          const syncNativeIx = createSyncNativeInstruction(userTokenAccountY);
 
           tx.add(wrapSolIx, syncNativeIx);
         }
@@ -238,18 +278,25 @@ export function LiquidityManager() {
       tx.feePayer = wallet.publicKey;
 
       const signedTx = await wallet.signTransaction(tx);
-      const txId = await connection.sendRawTransaction(signedTx.serialize());
+      try {
+        const txId = await connection.sendRawTransaction(signedTx.serialize());
 
-      // Capture event for successful liquidity add/remove
-      posthog.capture(`liquidity_${isAdding ? 'add' : 'remove'}_success`, {
-        tokenX: pair.tokenX.symbol,
-        tokenY: pair.tokenY.symbol,
-        amount: inputLpTokens,
-        txId,
-      });
+        // Capture event for successful liquidity add/remove
+        posthog.capture(`liquidity_${isAdding ? 'add' : 'remove'}_success`, {
+          tokenX: pair.tokenX.symbol,
+          tokenY: pair.tokenY.symbol,
+          amount: inputLpTokens,
+          txId,
+        });
 
-      await connection.confirmTransaction(txId);
-      transactionToast(txId);
+        await connection.confirmTransaction(txId);
+        transactionToast(txId);
+      } catch (error) {
+        const simulation = await connection.simulateTransaction(signedTx);
+        console.log(simulation);
+
+        console.error('Error sending transaction:', error);
+      }
 
       console.log(
         `${
