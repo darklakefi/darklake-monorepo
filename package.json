@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "anchor": "nx run anchor:anchor",
+    "anchor-migrate": "nx run anchor:anchor migrate",
     "anchor-build": "nx run anchor:anchor build",
     "anchor-localnet": "nx run anchor:anchor localnet",
     "anchor-test": "nx run anchor:anchor test",
