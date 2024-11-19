@@ -97,7 +97,14 @@ export function useSwapEstimate(
       }
     };
 
-    estimateSwap();
+    // debounce 2 second delay
+    const debouncedEstimateSwap = setTimeout(() => {
+      estimateSwap();
+    }, 2000);
+
+    return () => {
+      clearTimeout(debouncedEstimateSwap);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceToken, destToken, sourceAmount, connection, provider]);
 

@@ -88,7 +88,13 @@ export function useTokenBalance(
       }
     }
 
-    fetchBalance();
+    const debouncedFetchBalance = setTimeout(() => {
+      fetchBalance();
+    }, 2000);
+
+    return () => {
+      clearTimeout(debouncedFetchBalance);
+    };
   }, [walletAddress, tokenAddress, cluster.endpoint]);
 
   return { balance, loading, error };
