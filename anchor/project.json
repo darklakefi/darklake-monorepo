@@ -13,7 +13,7 @@
         "main": "anchor/src/index.ts",
         "tsConfig": "anchor/tsconfig.lib.json",
         "assets": [],
-        "project": "anchor/package.json",
+        "project": "./package.json",
         "compiler": "swc",
         "format": ["cjs", "esm"]
       }
@@ -34,6 +34,14 @@
       "options": {
         "cwd": "anchor",
         "commands": ["anchor"],
+        "parallel": false
+      }
+    },
+    "anchor-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "anchor",
+        "commands": ["anchor migrate --provider.cluster $NETWORK"],
         "parallel": false
       }
     },
