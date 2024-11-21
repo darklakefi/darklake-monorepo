@@ -15,7 +15,7 @@ darklake = "GKkoBt4y1oXfUDkRjZG2wj6PQxw39dxZw6MNMM6tYaBy"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

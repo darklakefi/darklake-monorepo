@@ -37,6 +37,14 @@
         "parallel": false
       }
     },
+    "anchor-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "anchor",
+        "commands": ["anchor migrate --provider.cluster $NETWORK"],
+        "parallel": false
+      }
+    },
     "localnet": {
       "executor": "nx:run-commands",
       "options": {

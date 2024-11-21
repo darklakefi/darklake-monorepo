@@ -51,6 +51,56 @@ The `web` directory contains a React app that interacts with the Solana program 
 - Start the web app: `npm run dev`
 - Build the web app: `npm run build`
 
+### Setup/Deployment
+
+#### Localnet
+
+On a localnet validator token metadata id program does not exist, so we include a dump (anchor/localnet/dumps/metadata.so) from mainnet, which has to be redeployed. Also to avoid getting new dummy PYUSD program id each time we use a committed keypair (anchor/localnet/pyusd.json).
+
+To re-create a new MPL_TOKEN_METADATA_ID dump use:
+
+`solana program dump --url mainnet-beta metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s metadata.so`
+
+Start a validator with metadata id program:
+
+`solana-test-validator --bpf-program metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s metadata.so`
+
+**Deploy darklake**
+
+Deploy darklake program, keypair is optional and program-name only mandatory if the former is provided:
+
+`anchor deploy --program-name darklake --program-keypair {keypair} --provider.cluster localnet`
+
+**Rebuild (if using a new keypair)**
+
+If deploying without keypair make sure that the deployed program id matches declared_id! in - (anchor/programs/darklake/src/lib.rs). And run:
+
+`npm run anchor-build`
+
+So that the IDL would also be updated to the new program id.
+
+Run to initialize a PYUSD/WSOL pool with initial balances of 1 PYUSD and 0.001 WSOL:
+
+`npm run anchor-migrate-localnet`
+
+The localnet script will give you 1 PYUSD (dummy token) / 0.001 WSOL. Currently front-end localnet PYUSD faucet is not supported - "Get PYUSD test tokens" will not work.
+
+Dummy PYUSD program id: 6kPRYPhyPv7pdN4entFM9ouLj31aMDHtkoL55yQUSFW9
+
+Update the web/constants/tokens.json PYUSD to the above address when running locally.
+
+#### Devnet
+
+Same steps as localnet "Deploy darklake" and "Rebuild" with commands:
+
+`anchor deploy --program-name darklake --program-keypair {keypair} --provider.cluster devnet`
+
+`npm run anchor-build`
+
+Difference from localnet is that the devnet is using a pre-existing PYUSD, so before running the migration, make sure you have atleast 1 PYUSD and 0.001SOL in your wallet. [PYUSD devnet faucet](https://faucet.paxos.com/)
+
+`npm run anchor-migrate-devnet`
+
 ## Contributing
 
 We welcome contributions to Darklake! Please read our contributing guidelines before submitting pull requests.
