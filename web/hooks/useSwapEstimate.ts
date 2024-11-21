@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { PublicKey } from '@solana/web3.js';
-import { useConnection } from '@solana/wallet-adapter-react';
 import { Token } from '@/types/token';
 import { useAnchorProvider } from '../components/solana/solana-provider';
-import { useCluster } from '../components/cluster/cluster-data-access';
-import { getDarklakeProgram, getDarklakeProgramId } from '@darklakefi/anchor';
+import { getDarklakeProgram } from '@darklakefi/anchor';
 import { NATIVE_MINT } from '@solana/spl-token';
 import { generateProof } from '../lib/prepare-proof';
 
@@ -14,11 +12,7 @@ export function useSwapEstimate(
   sourceAmount: string,
 ) {
   const [estimatedDestAmount, setEstimatedDestAmount] = useState<string>('');
-  const { connection } = useConnection();
   const provider = useAnchorProvider();
-  const { cluster } = useCluster();
-  // @ts-expect-error Weird typing issues.
-  const programId = getDarklakeProgramId(cluster);
 
   useEffect(() => {
     const estimateSwap = async () => {
@@ -49,7 +43,7 @@ export function useSwapEstimate(
         // Find pool PDA using sorted token public keys
         const [poolPubkey] = PublicKey.findProgramAddressSync(
           [Buffer.from('pool'), tokenX.toBuffer(), tokenY.toBuffer()],
-          programId,
+          program.programId,
         );
 
         // Fetch pool account data
@@ -106,7 +100,7 @@ export function useSwapEstimate(
       clearTimeout(debouncedEstimateSwap);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceToken, destToken, sourceAmount, connection, provider]);
+  }, [sourceToken, destToken, sourceAmount, !!provider]);
 
   return estimatedDestAmount;
 }
