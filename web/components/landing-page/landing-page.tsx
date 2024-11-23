@@ -175,7 +175,7 @@ export default function LandingPage() {
         </div>
 
         {/* Scroll to learn more */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center text-black hidden md:block">
+        <div className="bottom-8 text-center text-black hidden md:block">
           <p className="mb-2">Scroll to learn more</p>
           <i className="fas fa-chevron-down text-2xl animate-bounce"></i>
         </div>
@@ -183,17 +183,30 @@ export default function LandingPage() {
 
       {/* Panel 2 */}
       <div className="flex second-panel-style w-full items-center justify-center min-h-[75vh] p-4 md:p-8">
-        <div className="relative w-full max-w-7xl">
-          <Image
-            src={`/images/explainer/${currentImage}.svg`}
-            alt={`Explainer ${currentImage}`}
-            width={1920}
-            height={1080}
-            style={{
-              objectFit: 'cover',
-            }}
-            className="mx-auto"
-          />
+        <div className="z-10 relative w-full items-center max-w-7xl">
+          {Array.from({ length: totalImages }, (_, index) => (
+            <div
+              key={index}
+              style={{ display: currentImage === index + 1 ? 'block' : 'none' }}
+            >
+              <Image
+                src={`/images/explainer/${index + 1}.svg`}
+                alt={`Explainer ${index + 1}`}
+                width={1920}
+                height={1080}
+                loading="lazy"
+                style={{ objectFit: 'cover' }}
+                className="mx-auto"
+              />
+            </div>
+          ))}
+          {
+            <div className="flex -z-10 absolute top-0 left-0 right-0 bottom-0  justify-center items-center">
+              <div className="loading loading-spinner loading-lg">
+                Loading...
+              </div>
+            </div>
+          }
           <button
             onClick={prevImage}
             className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-r"
