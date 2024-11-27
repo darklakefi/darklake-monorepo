@@ -54,7 +54,7 @@ jobs:
         run: solana config get
 
       - name: Cloning snarkjs and groth16-solana
-        run: git submodules update
+        run: git submodule update
 
       - run: npm run anchor build
         shell: bash
