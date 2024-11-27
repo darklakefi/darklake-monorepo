@@ -1,6 +1,6 @@
 #[cfg(test)]
-mod tests {
-    use crate::constants::VERIFYINGKEY;
+mod groth16 {
+    use darklake::constants::VERIFYINGKEY;
     use groth16_solana::groth16::Groth16Verifier;
     use serde_json::Value;
     use std::fs::File;
@@ -8,7 +8,7 @@ mod tests {
     use std::convert::TryInto;
 
     fn read_proof_from_json() -> ([u8; 64], [u8; 128], [u8; 64], [[u8; 32]; 3]) {
-        let file_path = "./src/tests/zk_proof_output.json";
+        let file_path = "./src/zk_proof_output.json";
         
         // Check if the file exists
         if !std::path::Path::new(file_path).exists() {

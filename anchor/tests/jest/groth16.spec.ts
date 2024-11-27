@@ -9,11 +9,11 @@ import {
   negateAndSerializeG1,
   g2Uncompressed,
   to32ByteBuffer,
-} from '../src/utils';
+} from '../../src/utils';
 
 const { unstringifyBigInts } = utils;
 
-describe.skip('ZKConstantSumAMM Verifier', () => {
+describe('ZKConstantSumAMM Verifier', () => {
   let curve: Curve;
 
   beforeAll(async () => {
@@ -27,12 +27,18 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
   });
 
   it('should generate a valid proof', async () => {
+    // wasm
     const wasmPath = path.join(
       __dirname,
-      '../../circuits/swap_js',
+      '../../../circuits/swap_js',
       'swap.wasm',
     );
-    const zkeyPath = path.join(__dirname, '../../circuits', 'swap_0001.zkey');
+    // zkey
+    const zkeyPath = path.join(
+      __dirname,
+      '../../../circuits',
+      'swap_0001.zkey',
+    );
 
     // Generate proof
     const input = {
@@ -43,17 +49,15 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
       isSwapXtoY: 1, // Swapping X to Y
     };
 
-    console.log('Input:', JSON.stringify(input, null, 2));
+    // this skips a step in immediately goes to proving
+    const {
+      // used in temporary file creation
+      // proof,
+      publicSignals,
+    } = await snarkjs.groth16.fullProve(input, wasmPath, zkeyPath);
 
-    const { proof, publicSignals } = await snarkjs.groth16.fullProve(
-      input,
-      wasmPath,
-      zkeyPath,
-    );
-
-    console.log('Original proof:', JSON.stringify(proof, null, 2));
-    console.log('Public signals:', JSON.stringify(publicSignals, null, 2));
-
+    // Create a temporary file to store the proof and public inputs (used in rust groth16 test)
+    /*
     const proofProc = unstringifyBigInts(proof);
     const publicSignalsUnstrigified = unstringifyBigInts(publicSignals);
 
@@ -61,16 +65,12 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
     //pi_a = reverseEndianness(pi_a)
     pi_a = await negateAndSerializeG1(curve, pi_a);
     const pi_a_0_u8_array = Array.from(pi_a);
-    console.log(pi_a_0_u8_array);
 
     const pi_b = g2Uncompressed(curve, proofProc.pi_b);
     const pi_b_0_u8_array = Array.from(pi_b);
-    console.log(pi_b_0_u8_array.slice(0, 64));
-    console.log(pi_b_0_u8_array.slice(64, 128));
 
     const pi_c = g1Uncompressed(curve, proofProc.pi_c);
     const pi_c_0_u8_array = Array.from(pi_c);
-    console.log(pi_c_0_u8_array);
 
     // Format public inputs for verification
     const public_signal_0_u8_array = publicSignalsUnstrigified.map((signal) => {
@@ -78,6 +78,18 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
       return Array.from(signalBuffer);
     });
 
+    const tempDir = os.tmpdir();
+    const tempFilePath = path.join(tempDir, 'zk_proof_output.json');
+
+    const outputData = {
+      pi_a: pi_a_0_u8_array,
+      pi_b: pi_b_0_u8_array,
+      pi_c: pi_c_0_u8_array,
+      publicInputs: public_signal_0_u8_array,
+    };
+
+    fs.writeFileSync(tempFilePath, JSON.stringify(outputData, null, 2));
+    */
     /*
     // Verify the original proof
     const vKey = JSON.parse(fs.readFileSync(path.join(__dirname, "../../verification_key.json"), "utf8"));
@@ -99,44 +111,31 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
     console.log("Regenerated proof verified successfully");
     */
 
-    // Create a temporary file to store the proof and public inputs
-    const tempDir = os.tmpdir();
-    const tempFilePath = path.join(tempDir, 'zk_proof_output.json');
-
-    const outputData = {
-      pi_a: pi_a_0_u8_array,
-      pi_b: pi_b_0_u8_array,
-      pi_c: pi_c_0_u8_array,
-      publicInputs: public_signal_0_u8_array,
-    };
-
-    fs.writeFileSync(tempFilePath, JSON.stringify(outputData, null, 2));
-
-    console.log(`Proof and public inputs written to: ${tempFilePath}`);
-
-    console.log('Public signals:', publicSignals);
-    expect(publicSignals).toEqual(['1200000', '1800000', '100000']);
+    expect(publicSignals).toEqual(['1200000', '1741666', '158334']);
   });
 
   it('should generate and verify a valid proof using snarkjs library', async () => {
     const input = {
-      privateAmount: 100000,
+      privateInputAmount: 100000,
       privateMinReceived: 99000,
       publicBalanceX: 1100000,
       publicBalanceY: 1900000,
       isSwapXtoY: 1,
-      totalLiquidity: 3000000,
     };
 
     const wasmPath = path.join(
       __dirname,
-      '../../circuits/swap_js',
+      '../../../circuits/swap_js',
       'swap.wasm',
     );
-    const zkeyPath = path.join(__dirname, '../../circuits', 'swap_0001.zkey');
+    const zkeyPath = path.join(
+      __dirname,
+      '../../../circuits',
+      'swap_0001.zkey',
+    );
     const vKeyPath = path.join(
       __dirname,
-      '../../circuits',
+      '../../../circuits',
       'verification_key.json',
     );
 
@@ -155,31 +154,34 @@ describe.skip('ZKConstantSumAMM Verifier', () => {
 
   it('should generate and verify a valid proof using snarkjs CLI', async () => {
     const input = {
-      privateAmount: 100000,
+      privateInputAmount: 100000,
       privateMinReceived: 99000,
       publicBalanceX: 1100000,
       publicBalanceY: 1900000,
       isSwapXtoY: 1,
-      totalLiquidity: 3000000,
     };
 
-    const snarkjsCli = path.join(__dirname, '../../snarkjs/build/cli.cjs');
-    const zkeyPath = path.join(__dirname, '../../circuits', 'swap_0001.zkey');
+    const snarkjsCli = path.join(__dirname, '../../../snarkjs/build/cli.cjs');
+    const zkeyPath = path.join(
+      __dirname,
+      '../../../circuits',
+      'swap_0001.zkey',
+    );
     const vKeyPath = path.join(
       __dirname,
-      '../../circuits',
+      '../../../circuits',
       'verification_key.json',
     );
     const wasmPath = path.join(
       __dirname,
-      '../../circuits/swap_js',
+      '../../../circuits/swap_js',
       'swap.wasm',
     );
 
-    const inputPath = path.join(__dirname, '../../input.json');
-    const witnessPath = path.join(__dirname, '../../witness.wtns');
-    const proofPath = path.join(__dirname, '../../proof.json');
-    const publicPath = path.join(__dirname, '../../public.json');
+    const inputPath = path.join(__dirname, '../../../input.json');
+    const witnessPath = path.join(__dirname, '../../../witness.wtns');
+    const proofPath = path.join(__dirname, '../../../proof.json');
+    const publicPath = path.join(__dirname, '../../../public.json');
 
     // Write input to file
     fs.writeFileSync(inputPath, JSON.stringify(input));

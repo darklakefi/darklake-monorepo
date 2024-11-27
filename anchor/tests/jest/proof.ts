@@ -7,7 +7,7 @@ import {
   negateAndSerializeG1,
   g2Uncompressed,
   to32ByteBuffer,
-} from '../src/utils';
+} from '../../src/utils';
 
 export async function generateProof(
   privateInputs: { privateInputAmount: string; privateMinReceived: string },
@@ -22,10 +22,12 @@ export async function generateProof(
   proofC: Uint8Array;
   publicSignals: Uint8Array[];
 }> {
-  console.log('Generating proof for inputs:', { privateInputs, publicInputs });
-
-  const wasmPath = path.join(__dirname, '../../circuits/swap_js', 'swap.wasm');
-  const zkeyPath = path.join(__dirname, '../../circuits', 'swap_0001.zkey');
+  const wasmPath = path.join(
+    __dirname,
+    '../../../circuits/swap_js',
+    'swap.wasm',
+  );
+  const zkeyPath = path.join(__dirname, '../../../circuits', 'swap_0001.zkey');
 
   const input = {
     privateInputAmount: privateInputs.privateInputAmount,
@@ -40,9 +42,6 @@ export async function generateProof(
     wasmPath,
     zkeyPath,
   );
-
-  console.log('Original proof:', JSON.stringify(proof, null, 2));
-  console.log('Public signals:', JSON.stringify(publicSignals, null, 2));
 
   const curve = await buildBn128();
   const proofProc = unstringifyBigInts(proof);

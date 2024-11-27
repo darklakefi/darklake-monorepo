@@ -37,6 +37,14 @@
         "parallel": false
       }
     },
+    "cargo": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "anchor",
+        "commands": ["cargo"],
+        "parallel": false
+      }
+    },
     "anchor-migrate": {
       "executor": "nx:run-commands",
       "options": {

@@ -1,6 +1,6 @@
 import * as anchor from '@coral-xyz/anchor';
 import { Program } from '@coral-xyz/anchor';
-import { Darklake } from '../target/types/darklake';
+import { Darklake } from '../../target/types/darklake';
 import {
   createMint,
   mintTo,
@@ -76,13 +76,6 @@ describe('darklake', () => {
     [poolPubkey] = anchor.web3.PublicKey.findProgramAddressSync(
       [Buffer.from('pool'), tokenX.toBuffer(), tokenY.toBuffer()],
       program.programId,
-    );
-
-    console.log(
-      `Payer: ${payer.publicKey.toBase58()}
-Pool PDA: ${poolPubkey.toBase58()}
-Token X: ${tokenX.toBase58()}
-Token Y: ${tokenY.toBase58()}`,
     );
   };
 

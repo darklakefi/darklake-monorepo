@@ -21,9 +21,9 @@ describe('ZK Constant Sum AMM Swap', () => {
 
   beforeAll(async () => {
     circuit = await wasm_tester(
-      path.join(__dirname, '../../circuits', 'swap.circom'),
+      path.join(__dirname, '../../../circuits', 'swap.circom'),
       {
-        include: [path.join(__dirname, '../../')],
+        include: [path.join(__dirname, '../../../')],
       },
     );
   });
@@ -37,12 +37,6 @@ describe('ZK Constant Sum AMM Swap', () => {
       isSwapXtoY: 1,
     };
 
-    console.log('Initial state:', input);
-    console.log(
-      'Initial constant product:',
-      input.publicBalanceX * input.publicBalanceY,
-    );
-
     const witness = await circuit.calculateWitness(input);
     await circuit.checkConstraints(witness);
 
@@ -51,15 +45,6 @@ describe('ZK Constant Sum AMM Swap', () => {
     const newBalanceX = circuit.symbols['main.newBalanceX'];
     const newBalanceY = circuit.symbols['main.newBalanceY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
-
-    console.log('Final state:');
-    console.log('New Balance X:', witness[newBalanceX.varIdx].toString());
-    console.log('New Balance Y:', witness[newBalanceY.varIdx].toString());
-    console.log('Amount Received:', witness[amountReceived.varIdx].toString());
-    console.log(
-      'Final constant product:',
-      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx]),
-    );
 
     expect(isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 1100n)).toBe(
       true,
@@ -89,15 +74,6 @@ describe('ZK Constant Sum AMM Swap', () => {
     const newBalanceX = circuit.symbols['main.newBalanceX'];
     const newBalanceY = circuit.symbols['main.newBalanceY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
-
-    console.log('Final state:');
-    console.log('New Balance X:', witness[newBalanceX.varIdx].toString());
-    console.log('New Balance Y:', witness[newBalanceY.varIdx].toString());
-    console.log('Amount Received:', witness[amountReceived.varIdx].toString());
-    console.log(
-      'Final constant product:',
-      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx]),
-    );
 
     expect(
       isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 1200000n),
@@ -129,15 +105,6 @@ describe('ZK Constant Sum AMM Swap', () => {
     const newBalanceY = circuit.symbols['main.newBalanceY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
 
-    console.log('Final state:');
-    console.log('New Balance X:', witness[newBalanceX.varIdx].toString());
-    console.log('New Balance Y:', witness[newBalanceY.varIdx].toString());
-    console.log('Amount Received:', witness[amountReceived.varIdx].toString());
-    console.log(
-      'Final constant product:',
-      BigInt(witness[newBalanceX.varIdx]) * BigInt(witness[newBalanceY.varIdx]),
-    );
-
     expect(isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 909n)).toBe(
       true,
     );
@@ -156,9 +123,9 @@ describe('ReciprocalDivision', () => {
 
   beforeAll(async () => {
     divisionCircuit = await wasm_tester(
-      path.join(__dirname, '../../circuits', 'division_test.circom'),
+      path.join(__dirname, '../../../circuits', 'division_test.circom'),
       {
-        include: [path.join(__dirname, '../../')],
+        include: [path.join(__dirname, '../../../')],
       },
     );
   });
@@ -186,10 +153,6 @@ describe('ReciprocalDivision', () => {
       const quotientSymbol = divisionCircuit.symbols['main.quotient'];
       const quotient = witness[quotientSymbol.varIdx];
 
-      console.log(
-        `Dividend: ${dividend}, Divisor: ${divisor}, Quotient: ${quotient}, Expected: ${expected}`,
-      );
-
       // Allow for small rounding errors
       const tolerance = 1n;
       expect(quotient).toBeGreaterThanOrEqual(expected - tolerance);
@@ -213,10 +176,6 @@ describe('ReciprocalDivision', () => {
 
       const quotientSymbol = divisionCircuit.symbols['main.quotient'];
       const quotient = witness[quotientSymbol.varIdx];
-
-      console.log(
-        `Edge case - Dividend: ${dividend}, Divisor: ${divisor}, Quotient: ${quotient}, Expected: ${expected}`,
-      );
 
       expect(quotient).toBe(expected);
     }

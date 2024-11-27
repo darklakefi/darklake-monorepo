@@ -51,6 +51,27 @@ The `web` directory contains a React app that interacts with the Solana program 
 - Start the web app: `npm run dev`
 - Build the web app: `npm run build`
 
+### Tests
+
+Currently, only the blockchain (Anchor) part has tests, which are both Rust and TypeScript. Rust focuses more on Solana's inner workings, while TypeScript focuses on external interactions (though there is some overlap).
+
+Typescript tests are stored in: `anchor/tests/jest/*`
+
+Rust tests are stored in: `anchor/tests/src/*`
+
+
+To run typescript tests:
+
+`npm run anchor-jest-test`
+
+To run rust tests:
+
+`npm run anchor-rust-test`
+
+To run both:
+
+`npm run anchor-test`
+
 ### Setup/Deployment
 
 #### Localnet
