@@ -1,35 +1,41 @@
 import * as anchor from '@coral-xyz/anchor';
-import { Program } from '@coral-xyz/anchor';
 import { Darklake } from '../../target/types/darklake';
 import {
   createMint,
-  mintTo,
   getAccount,
-  getOrCreateAssociatedTokenAccount,
   TOKEN_PROGRAM_ID,
   TOKEN_2022_PROGRAM_ID,
 } from '@solana/spl-token';
-import { generateProof } from './proof';
-
-const convertToSigner = (wallet: anchor.Wallet): anchor.web3.Signer => ({
-  publicKey: wallet.publicKey,
-  secretKey: wallet.payer.secretKey,
-});
+import {
+  addLiquidity,
+  convertToSigner,
+  fundTokenAccounts,
+  getOrCreateAssociatedTokenAccountsMulti,
+  removeLiquidity,
+  swap,
+  TokenMintAndProgramId,
+} from './helpers';
 
 describe('darklake', () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
   const payer = provider.wallet as anchor.Wallet;
 
-  const program = anchor.workspace.Darklake as Program<Darklake>;
+  const program = anchor.workspace.Darklake as anchor.Program<Darklake>;
 
   let poolPubkey: anchor.web3.PublicKey;
   let tokenX: anchor.web3.PublicKey;
   let tokenY: anchor.web3.PublicKey;
+  let tokenLp: anchor.web3.PublicKey;
   const tokenMint0Decimals = 6;
   const tokenMint1Decimals = 9; // Updated to 9 decimals
   let tokenXProgramId: anchor.web3.PublicKey;
   let tokenYProgramId: anchor.web3.PublicKey;
+  let tokenLpProgramId: anchor.web3.PublicKey;
+
+  let TOKEN_X: TokenMintAndProgramId;
+  let TOKEN_Y: TokenMintAndProgramId;
+  let TOKEN_LP: TokenMintAndProgramId;
 
   const setupMint = async () => {
     const airdropSignature = await provider.connection.requestAirdrop(
@@ -49,6 +55,7 @@ describe('darklake', () => {
       undefined,
       TOKEN_2022_PROGRAM_ID,
     );
+
     const tokenMint1 = await createMint(
       provider.connection,
       signer,
@@ -77,6 +84,32 @@ describe('darklake', () => {
       [Buffer.from('pool'), tokenX.toBuffer(), tokenY.toBuffer()],
       program.programId,
     );
+
+    [tokenLp] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from('lp'), tokenX.toBuffer(), tokenY.toBuffer()],
+      program.programId,
+    );
+    tokenLpProgramId = TOKEN_PROGRAM_ID;
+
+    // Freeze token definitions
+    TOKEN_X = {
+      mint: tokenX,
+      programId: tokenXProgramId,
+    };
+    Object.freeze(TOKEN_X);
+
+    TOKEN_Y = {
+      mint: tokenY,
+      programId: tokenYProgramId,
+    };
+
+    Object.freeze(TOKEN_Y);
+
+    TOKEN_LP = {
+      mint: tokenLp,
+      programId: tokenLpProgramId,
+    };
+    Object.freeze(TOKEN_LP);
   };
 
   const setupPool = async () => {
@@ -95,102 +128,56 @@ describe('darklake', () => {
     }
   };
 
-  it('Initialize Pool', async () => {
+  beforeEach(async () => {
     await setupMint();
     await setupPool();
+  });
 
+  it('Pool has initial reserves', async () => {
     const poolAccount = await program.account.pool.fetch(poolPubkey);
     expect(poolAccount.tokenMintX.equals(tokenX)).toBe(true);
     expect(poolAccount.tokenMintY.equals(tokenY)).toBe(true);
   });
 
-  it('Add Liquidity', async () => {
-    const userTokenAccountX = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenX,
-      payer.publicKey,
-      false,
-      undefined,
-      undefined,
-      tokenXProgramId,
-    );
-
-    const userTokenAccountY = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenY,
-      payer.publicKey,
-      false,
-      undefined,
-      undefined,
-      tokenYProgramId,
-    );
-
-    const poolTokenAccountX = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenX,
-      poolPubkey,
-      true,
-      undefined,
-      undefined,
-      tokenXProgramId,
-    );
-
-    const poolTokenAccountY = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenY,
-      poolPubkey,
-      true,
-      undefined,
-      undefined,
-      tokenYProgramId,
-    );
-
+  describe('Add Liquidity', () => {
     const amountX = 1_000_000; // 1 token with 6 decimals
     const amountY = 2_000_000_000; // 2 tokens with 9 decimals
-    await mintTo(
-      provider.connection,
-      convertToSigner(payer),
-      tokenX,
-      userTokenAccountX.address,
-      convertToSigner(payer),
-      amountX,
-      undefined,
-      undefined,
-      tokenXProgramId,
-    );
-    await mintTo(
-      provider.connection,
-      convertToSigner(payer),
-      tokenY,
-      userTokenAccountY.address,
-      convertToSigner(payer),
-      amountY,
-      undefined,
-      undefined,
-      tokenYProgramId,
-    );
 
-    try {
-      await program.methods
-        .addLiquidity(new anchor.BN(amountX), new anchor.BN(amountY))
-        .accountsPartial({
-          tokenMintX: tokenX,
-          tokenMintY: tokenY,
-          tokenMintXProgram: tokenXProgramId,
-          tokenMintYProgram: tokenYProgramId,
-          tokenMintLpProgram: TOKEN_PROGRAM_ID,
-          pool: poolPubkey,
-          userTokenAccountX: userTokenAccountX.address,
-          userTokenAccountY: userTokenAccountY.address,
-          poolTokenAccountX: poolTokenAccountX.address,
-          poolTokenAccountY: poolTokenAccountY.address,
-          user: payer.publicKey,
-        })
-        .rpc();
+    beforeEach(async () => {
+      await fundTokenAccounts(
+        provider.connection,
+        payer,
+        tokenXProgramId,
+        tokenYProgramId,
+        tokenX,
+        tokenY,
+        amountX,
+        amountY,
+      );
+    });
+
+    it('Both X and Y token default amounts', async () => {
+      await addLiquidity(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        tokenXProgramId,
+        tokenYProgramId,
+        tokenX,
+        tokenY,
+        amountX,
+        amountY,
+      );
+
+      const [userTokenAccountX, userTokenAccountY, userTokenAccountLp] =
+        await getOrCreateAssociatedTokenAccountsMulti(
+          provider.connection,
+          false,
+          payer,
+          payer.publicKey,
+          [TOKEN_X, TOKEN_Y, TOKEN_LP],
+        );
 
       const updatedPoolAccount = await program.account.pool.fetch(poolPubkey);
 
@@ -209,268 +196,225 @@ describe('darklake', () => {
         undefined,
         tokenYProgramId,
       );
+      const userAccountLpInfo = await getAccount(
+        provider.connection,
+        userTokenAccountLp.address,
+        undefined,
+        tokenLpProgramId,
+      );
+
+      // const userAccountLpInfo = await getAccount(
 
       expect(Number(userAccountXInfo.amount)).toBe(0);
       expect(Number(userAccountYInfo.amount)).toBe(0);
-    } catch (error) {
-      console.error('Error adding liquidity:', error);
-      throw error;
-    }
-  }, 10000000);
+      expect(Number(userAccountLpInfo.amount)).toBe(amountX * amountY);
+    }, 10000000);
+  });
 
-  it('Confidential Swap', async () => {
-    const poolAccount = await program.account.pool.fetch(poolPubkey);
-
-    const userTokenAccountX = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenX,
-      payer.publicKey,
-      true,
-      undefined,
-      undefined,
-      tokenXProgramId,
-    );
-
-    const userTokenAccountY = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenY,
-      payer.publicKey,
-      true,
-      undefined,
-      undefined,
-      tokenYProgramId,
-    );
-
-    const poolTokenAccountX = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenX,
-      poolPubkey,
-      true,
-      undefined,
-      undefined,
-      tokenXProgramId,
-    );
-
-    const poolTokenAccountY = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenY,
-      poolPubkey,
-      true,
-      undefined,
-      undefined,
-      tokenYProgramId,
-    );
-
-    const amountToMint = 1_000_000; // 1 token with 6 decimals for tokenX
-    await mintTo(
-      provider.connection,
-      convertToSigner(payer),
-      tokenX,
-      userTokenAccountX.address,
-      convertToSigner(payer),
-      amountToMint,
-      undefined,
-      undefined,
-      tokenXProgramId,
-    );
-
-    const publicInputs = {
-      publicBalanceX: poolAccount.reserveX.toString(),
-      publicBalanceY: poolAccount.reserveY.toString(),
-      isSwapXtoY: 1, // Swapping tokenX for tokenY
-    };
-
-    const privateInputs = {
-      privateInputAmount: '100000', // 0.1 token of tokenX
-      privateMinReceived: '180000000', // Adjust this based on your expected output
-    };
-
-    const { proofA, proofB, proofC, publicSignals } = await generateProof(
-      privateInputs,
-      publicInputs,
-    );
-
-    try {
-      const tx = await program.methods
-        .confidentialSwap(
-          Array.from(proofA),
-          Array.from(proofB),
-          Array.from(proofC),
-          publicSignals.map((signal) => Array.from(signal)),
-        )
-        .accountsPartial({
-          tokenMintX: tokenX,
-          tokenMintY: tokenY,
-          tokenMintXProgram: tokenXProgramId,
-          tokenMintYProgram: tokenYProgramId,
-          pool: poolPubkey,
-          userTokenAccountX: userTokenAccountX.address,
-          userTokenAccountY: userTokenAccountY.address,
-          poolTokenAccountX: poolTokenAccountX.address,
-          poolTokenAccountY: poolTokenAccountY.address,
-          user: payer.publicKey,
-        })
-        .transaction();
-
-      tx.instructions.unshift(
-        anchor.web3.ComputeBudgetProgram.setComputeUnitLimit({
-          units: 2_000_000,
-        }),
-      );
-
-      await provider.sendAndConfirm(tx);
-
-      const userAccountXAfterSwap = await getAccount(
+  describe('Swap', () => {
+    it('Confidential Swap', async () => {
+      const initialLiquidityX = 1_000_000;
+      const initialLiquidityY = 2_000_000_000;
+      // Add liquidity
+      await fundTokenAccounts(
         provider.connection,
-        userTokenAccountX.address,
-        undefined,
+        payer,
         tokenXProgramId,
-      );
-      const userAccountYAfterSwap = await getAccount(
-        provider.connection,
-        userTokenAccountY.address,
-        undefined,
         tokenYProgramId,
+        tokenX,
+        tokenY,
+        initialLiquidityX,
+        initialLiquidityY,
       );
 
-      expect(Number(userAccountXAfterSwap.amount)).toBeLessThan(amountToMint);
-      expect(Number(userAccountYAfterSwap.amount)).toBeGreaterThan(0);
-
-      const poolAccountXAfterSwap = await getAccount(
+      await addLiquidity(
         provider.connection,
-        poolTokenAccountX.address,
-        undefined,
+        program,
+        payer,
+        poolPubkey,
         tokenXProgramId,
-      );
-      const poolAccountYAfterSwap = await getAccount(
-        provider.connection,
-        poolTokenAccountY.address,
-        undefined,
         tokenYProgramId,
+        tokenX,
+        tokenY,
+        initialLiquidityX,
+        initialLiquidityY,
       );
 
-      expect(Number(poolAccountXAfterSwap.amount)).toBeGreaterThan(0);
-      expect(Number(poolAccountYAfterSwap.amount)).toBeGreaterThan(0);
-    } catch (error) {
-      console.error('Error performing confidential swap:', error);
-      throw error;
-    }
-  }, 10000000);
+      // Fund user with swap from amount X
 
-  it('Remove Liquidity', async () => {
-    const poolAccount = await program.account.pool.fetch(poolPubkey);
+      const fundAmountX = 1_000_000;
+      const fundAmountY = 0;
+      await fundTokenAccounts(
+        provider.connection,
+        payer,
+        tokenXProgramId,
+        tokenYProgramId,
+        tokenX,
+        tokenY,
+        fundAmountX,
+        fundAmountY,
+      );
 
-    const balanceX = poolAccount.reserveX.toNumber();
-    const balanceY = poolAccount.reserveY.toNumber();
+      // Swap
 
-    const [lpMintPubkey] = anchor.web3.PublicKey.findProgramAddressSync(
-      [Buffer.from('lp'), tokenX.toBuffer(), tokenY.toBuffer()],
-      program.programId,
-    );
+      const poolAccount = await program.account.pool.fetch(poolPubkey);
+      const publicInputs = {
+        publicBalanceX: poolAccount.reserveX.toString(),
+        publicBalanceY: poolAccount.reserveY.toString(),
+        isSwapXtoY: 1, // Swapping tokenX for tokenY
+      };
 
-    const userTokenAccountX = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenX,
-      payer.publicKey,
-      false,
-      undefined,
-      undefined,
-      tokenXProgramId,
-    );
+      const privateInputs = {
+        privateInputAmount: '100000', // 0.1 token of tokenX
+        privateMinReceived: '180000000', // Adjust this based on your expected output
+      };
 
-    const userTokenAccountY = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenY,
-      payer.publicKey,
-      false,
-      undefined,
-      undefined,
-      tokenYProgramId,
-    );
+      await swap(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        tokenXProgramId,
+        tokenYProgramId,
+        tokenX,
+        tokenY,
+        publicInputs,
+        privateInputs,
+      );
 
-    const userTokenAccountLp = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      lpMintPubkey,
-      payer.publicKey,
-      false,
-      undefined,
-      undefined,
-      TOKEN_PROGRAM_ID,
-    );
+      try {
+        const [userTokenAccountX, userTokenAccountY] =
+          await getOrCreateAssociatedTokenAccountsMulti(
+            provider.connection,
+            false,
+            payer,
+            payer.publicKey,
+            [TOKEN_X, TOKEN_Y],
+          );
 
-    const poolTokenAccountX = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenX,
-      poolPubkey,
-      true,
-      undefined,
-      undefined,
-      tokenXProgramId,
-    );
+        const userAccountXAfterSwap = await getAccount(
+          provider.connection,
+          userTokenAccountX.address,
+          undefined,
+          tokenXProgramId,
+        );
+        const userAccountYAfterSwap = await getAccount(
+          provider.connection,
+          userTokenAccountY.address,
+          undefined,
+          tokenYProgramId,
+        );
 
-    const poolTokenAccountY = await getOrCreateAssociatedTokenAccount(
-      provider.connection,
-      convertToSigner(payer),
-      tokenY,
-      poolPubkey,
-      true,
-      undefined,
-      undefined,
-      tokenYProgramId,
-    );
+        expect(Number(userAccountXAfterSwap.amount)).toBeLessThan(fundAmountX);
+        expect(Number(userAccountYAfterSwap.amount)).toBeGreaterThan(0);
 
-    // Get the current LP token balance
-    const lpTokenBalance = await provider.connection.getTokenAccountBalance(
-      userTokenAccountLp.address,
-    );
-    const halfLpTokens = new anchor.BN(lpTokenBalance.value.amount).div(
-      new anchor.BN(2),
-    );
+        const [poolTokenAccountX, poolTokenAccountY] =
+          await getOrCreateAssociatedTokenAccountsMulti(
+            provider.connection,
+            true,
+            payer,
+            poolPubkey,
+            [TOKEN_X, TOKEN_Y],
+          );
 
-    try {
-      await program.methods
-        .removeLiquidity(halfLpTokens)
-        .accountsPartial({
-          tokenMintX: tokenX,
-          tokenMintY: tokenY,
-          tokenMintXProgram: tokenXProgramId,
-          tokenMintYProgram: tokenYProgramId,
-          tokenMintLp: lpMintPubkey,
-          tokenMintLpProgram: TOKEN_PROGRAM_ID,
-          pool: poolPubkey,
-          userTokenAccountX: userTokenAccountX.address,
-          userTokenAccountY: userTokenAccountY.address,
-          userTokenAccountLp: userTokenAccountLp.address,
-          poolTokenAccountX: poolTokenAccountX.address,
-          poolTokenAccountY: poolTokenAccountY.address,
-          user: payer.publicKey,
-        })
-        .rpc({ commitment: 'confirmed' });
+        const poolAccountXAfterSwap = await getAccount(
+          provider.connection,
+          poolTokenAccountX.address,
+          undefined,
+          tokenXProgramId,
+        );
+        const poolAccountYAfterSwap = await getAccount(
+          provider.connection,
+          poolTokenAccountY.address,
+          undefined,
+          tokenYProgramId,
+        );
+
+        expect(Number(poolAccountXAfterSwap.amount)).toBeGreaterThan(0);
+        expect(Number(poolAccountYAfterSwap.amount)).toBeGreaterThan(0);
+      } catch (error) {
+        console.error('Error performing confidential swap:', error);
+        throw error;
+      }
+    }, 10000000);
+  });
+
+  describe('Remove liquidity', () => {
+    const amountX = 1_000_000;
+    const amountY = 2_000_000_000;
+
+    it('Add and remove half', async () => {
+      await fundTokenAccounts(
+        provider.connection,
+        payer,
+        tokenXProgramId,
+        tokenYProgramId,
+        tokenX,
+        tokenY,
+        amountX,
+        amountY,
+      );
+
+      await addLiquidity(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        tokenXProgramId,
+        tokenYProgramId,
+        tokenX,
+        tokenY,
+        amountX,
+        amountY,
+      );
+
+      const [userTokenAccountX, userTokenAccountY, userTokenAccountLp] =
+        await getOrCreateAssociatedTokenAccountsMulti(
+          provider.connection,
+          false,
+          payer,
+          payer.publicKey,
+          [TOKEN_X, TOKEN_Y, TOKEN_LP],
+        );
+
+      const lpTokenBalance = await provider.connection.getTokenAccountBalance(
+        userTokenAccountLp.address,
+      );
+      const halfLpTokens = new anchor.BN(lpTokenBalance.value.amount).div(
+        new anchor.BN(2),
+      );
+
+      await removeLiquidity(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        tokenXProgramId,
+        tokenYProgramId,
+        tokenLpProgramId,
+        tokenX,
+        tokenY,
+        tokenLp,
+        halfLpTokens,
+      );
 
       const updatedPoolAccount = await program.account.pool.fetch(poolPubkey);
+
+      // pool reserves
+      expect(updatedPoolAccount.reserveX.toNumber()).toEqual(amountX / 2);
+      expect(updatedPoolAccount.reserveY.toNumber()).toEqual(amountY / 2);
+
+      // user LP tokens left
       const updatedUserLpBalance =
         await provider.connection.getTokenAccountBalance(
           userTokenAccountLp.address,
         );
 
-      // Check that LP tokens were burned
       expect(new anchor.BN(updatedUserLpBalance.value.amount)).toEqual(
         new anchor.BN(lpTokenBalance.value.amount).sub(halfLpTokens),
       );
 
-      // Check that reserves were reduced by approximately half
-      expect(updatedPoolAccount.reserveX.toNumber()).toBeLessThan(balanceX);
-      expect(updatedPoolAccount.reserveY.toNumber()).toBeLessThan(balanceY);
-
-      // Check that user received tokens
+      // user X/Y tokens
       const updatedUserXBalance =
         await provider.connection.getTokenAccountBalance(
           userTokenAccountX.address,
@@ -479,11 +423,8 @@ describe('darklake', () => {
         await provider.connection.getTokenAccountBalance(
           userTokenAccountY.address,
         );
-      expect(Number(updatedUserXBalance.value.amount)).toBeGreaterThan(0);
-      expect(Number(updatedUserYBalance.value.amount)).toBeGreaterThan(0);
-    } catch (error) {
-      console.error('Error removing liquidity:', error);
-      throw error;
-    }
-  }, 10000000);
+      expect(Number(updatedUserXBalance.value.amount)).toEqual(amountX / 2);
+      expect(Number(updatedUserYBalance.value.amount)).toEqual(amountY / 2);
+    }, 10000000);
+  });
 });
