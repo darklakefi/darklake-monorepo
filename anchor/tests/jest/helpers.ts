@@ -70,10 +70,8 @@ export const getOrCreateAssociatedTokenAccountsMulti = async (
 export const fundTokenAccounts = async (
   connection: Connection,
   payer: anchor.Wallet,
-  tokenXProgramId: anchor.web3.PublicKey,
-  tokenYProgramId: anchor.web3.PublicKey,
-  tokenX: anchor.web3.PublicKey,
-  tokenY: anchor.web3.PublicKey,
+  tokenXMintAndProgramId: TokenMintAndProgramId,
+  tokenYMintAndProgramId: TokenMintAndProgramId,
   amountX: number,
   amountY: number,
 ) => {
@@ -83,29 +81,20 @@ export const fundTokenAccounts = async (
       false,
       payer,
       payer.publicKey,
-      [
-        {
-          mint: tokenX,
-          programId: tokenXProgramId,
-        },
-        {
-          mint: tokenY,
-          programId: tokenYProgramId,
-        },
-      ],
+      [tokenXMintAndProgramId, tokenYMintAndProgramId],
     );
 
   if (amountX > 0) {
     await mintTo(
       connection,
       convertToSigner(payer),
-      tokenX,
+      tokenXMintAndProgramId.mint,
       userTokenAccountX.address,
       convertToSigner(payer),
       amountX,
       undefined,
       undefined,
-      tokenXProgramId,
+      tokenXMintAndProgramId.programId,
     );
   }
 
@@ -113,13 +102,13 @@ export const fundTokenAccounts = async (
     await mintTo(
       connection,
       convertToSigner(payer),
-      tokenY,
+      tokenYMintAndProgramId.mint,
       userTokenAccountY.address,
       convertToSigner(payer),
       amountY,
       undefined,
       undefined,
-      tokenYProgramId,
+      tokenYMintAndProgramId.programId,
     );
   }
 };
@@ -129,10 +118,8 @@ export const addLiquidity = async (
   program: anchor.Program<Darklake>,
   payer: anchor.Wallet,
   poolPubkey: anchor.web3.PublicKey,
-  tokenXProgramId: anchor.web3.PublicKey,
-  tokenYProgramId: anchor.web3.PublicKey,
-  tokenX: anchor.web3.PublicKey,
-  tokenY: anchor.web3.PublicKey,
+  tokenXMintAndProgramId: TokenMintAndProgramId,
+  tokenYMintAndProgramId: TokenMintAndProgramId,
   amountX: number,
   amountY: number,
 ) => {
@@ -142,16 +129,7 @@ export const addLiquidity = async (
       false,
       payer,
       payer.publicKey,
-      [
-        {
-          mint: tokenX,
-          programId: tokenXProgramId,
-        },
-        {
-          mint: tokenY,
-          programId: tokenYProgramId,
-        },
-      ],
+      [tokenXMintAndProgramId, tokenYMintAndProgramId],
     );
 
   const [poolTokenAccountX, poolTokenAccountY] =
@@ -160,25 +138,16 @@ export const addLiquidity = async (
       true,
       payer,
       poolPubkey,
-      [
-        {
-          mint: tokenX,
-          programId: tokenXProgramId,
-        },
-        {
-          mint: tokenY,
-          programId: tokenYProgramId,
-        },
-      ],
+      [tokenXMintAndProgramId, tokenYMintAndProgramId],
     );
 
   await program.methods
     .addLiquidity(new anchor.BN(amountX), new anchor.BN(amountY))
     .accountsPartial({
-      tokenMintX: tokenX,
-      tokenMintY: tokenY,
-      tokenMintXProgram: tokenXProgramId,
-      tokenMintYProgram: tokenYProgramId,
+      tokenMintX: tokenXMintAndProgramId.mint,
+      tokenMintY: tokenYMintAndProgramId.mint,
+      tokenMintXProgram: tokenXMintAndProgramId.programId,
+      tokenMintYProgram: tokenYMintAndProgramId.programId,
       tokenMintLpProgram: TOKEN_PROGRAM_ID,
       pool: poolPubkey,
       userTokenAccountX: userTokenAccountX.address,
@@ -195,10 +164,8 @@ export const swap = async (
   program: anchor.Program<Darklake>,
   payer: anchor.Wallet,
   poolPubkey: anchor.web3.PublicKey,
-  tokenXProgramId: anchor.web3.PublicKey,
-  tokenYProgramId: anchor.web3.PublicKey,
-  tokenX: anchor.web3.PublicKey,
-  tokenY: anchor.web3.PublicKey,
+  tokenXMintAndProgramId: TokenMintAndProgramId,
+  tokenYMintAndProgramId: TokenMintAndProgramId,
   publicInputs,
   privateInputs,
 ) => {
@@ -208,16 +175,7 @@ export const swap = async (
       false,
       payer,
       payer.publicKey,
-      [
-        {
-          mint: tokenX,
-          programId: tokenXProgramId,
-        },
-        {
-          mint: tokenY,
-          programId: tokenYProgramId,
-        },
-      ],
+      [tokenXMintAndProgramId, tokenYMintAndProgramId],
     );
 
   const [poolTokenAccountX, poolTokenAccountY] =
@@ -226,16 +184,7 @@ export const swap = async (
       true,
       payer,
       poolPubkey,
-      [
-        {
-          mint: tokenX,
-          programId: tokenXProgramId,
-        },
-        {
-          mint: tokenY,
-          programId: tokenYProgramId,
-        },
-      ],
+      [tokenXMintAndProgramId, tokenYMintAndProgramId],
     );
 
   const { proofA, proofB, proofC, publicSignals } = await generateProof(
@@ -251,10 +200,10 @@ export const swap = async (
       publicSignals.map((signal) => Array.from(signal)),
     )
     .accountsPartial({
-      tokenMintX: tokenX,
-      tokenMintY: tokenY,
-      tokenMintXProgram: tokenXProgramId,
-      tokenMintYProgram: tokenYProgramId,
+      tokenMintX: tokenXMintAndProgramId.mint,
+      tokenMintY: tokenYMintAndProgramId.mint,
+      tokenMintXProgram: tokenXMintAndProgramId.programId,
+      tokenMintYProgram: tokenYMintAndProgramId.programId,
       pool: poolPubkey,
       userTokenAccountX: userTokenAccountX.address,
       userTokenAccountY: userTokenAccountY.address,
@@ -288,12 +237,9 @@ export const removeLiquidity = async (
   program: anchor.Program<Darklake>,
   payer: anchor.Wallet,
   poolPubkey: anchor.web3.PublicKey,
-  tokenXProgramId: anchor.web3.PublicKey,
-  tokenYProgramId: anchor.web3.PublicKey,
-  tokenLpProgramId: anchor.web3.PublicKey,
-  tokenX: anchor.web3.PublicKey,
-  tokenY: anchor.web3.PublicKey,
-  tokenLp: anchor.web3.PublicKey,
+  tokenXMintAndProgramId: TokenMintAndProgramId,
+  tokenYMintAndProgramId: TokenMintAndProgramId,
+  tokenLpMintAndProgramId: TokenMintAndProgramId,
   tokenAmountLp: number,
 ) => {
   const [userTokenAccountX, userTokenAccountY, userTokenAccountLp] =
@@ -302,20 +248,7 @@ export const removeLiquidity = async (
       false,
       payer,
       payer.publicKey,
-      [
-        {
-          mint: tokenX,
-          programId: tokenXProgramId,
-        },
-        {
-          mint: tokenY,
-          programId: tokenYProgramId,
-        },
-        {
-          mint: tokenLp,
-          programId: tokenLpProgramId,
-        },
-      ],
+      [tokenXMintAndProgramId, tokenYMintAndProgramId, tokenLpMintAndProgramId],
     );
 
   const [poolTokenAccountX, poolTokenAccountY] =
@@ -324,26 +257,17 @@ export const removeLiquidity = async (
       true,
       payer,
       poolPubkey,
-      [
-        {
-          mint: tokenX,
-          programId: tokenXProgramId,
-        },
-        {
-          mint: tokenY,
-          programId: tokenYProgramId,
-        },
-      ],
+      [tokenXMintAndProgramId, tokenYMintAndProgramId],
     );
 
   await program.methods
     .removeLiquidity(tokenAmountLp)
     .accountsPartial({
-      tokenMintX: tokenX,
-      tokenMintY: tokenY,
-      tokenMintXProgram: tokenXProgramId,
-      tokenMintYProgram: tokenYProgramId,
-      tokenMintLp: tokenLp,
+      tokenMintX: tokenXMintAndProgramId.mint,
+      tokenMintY: tokenYMintAndProgramId.mint,
+      tokenMintXProgram: tokenXMintAndProgramId.programId,
+      tokenMintYProgram: tokenYMintAndProgramId.programId,
+      tokenMintLp: tokenLpMintAndProgramId.mint,
       tokenMintLpProgram: TOKEN_PROGRAM_ID,
       pool: poolPubkey,
       userTokenAccountX: userTokenAccountX.address,
