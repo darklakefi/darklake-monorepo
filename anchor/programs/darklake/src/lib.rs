@@ -30,7 +30,6 @@ pub mod state;
 pub mod errors;
 pub mod events;
 pub mod constants;
-pub mod tests;
 
 use instructions::*;
 
