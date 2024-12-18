@@ -34,6 +34,7 @@ import {
   getAssociatedTokenAddress,
   TOKEN_PROGRAM_ID,
   TOKEN_2022_PROGRAM_ID,
+  createAssociatedTokenAccountIdempotentInstruction,
 } from '@solana/spl-token';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
@@ -165,7 +166,7 @@ export function TokenSwapper() {
           publicKey,
         );
         transaction.add(
-          createAssociatedTokenAccountInstruction(
+          createAssociatedTokenAccountIdempotentInstruction(
             publicKey, // payer
             wrappedSolAccount,
             publicKey, // owner
