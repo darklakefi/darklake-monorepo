@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, ChevronUp, ArrowUpDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -48,6 +48,10 @@ import { useTransactionToast, useErrorToast } from '@/hooks/useToast';
 
 const tokens: Token[] = tokenList;
 
+enum FORM_ERRORS {
+  DECIMALS_EXCEED = 'DECIMALS_EXCEED',
+}
+
 export function TokenSwapper() {
   const [sourceToken, setSourceToken] = useState<Token>(
     tokens.find((t) => t.symbol === 'PYUSD') || tokens[0],
@@ -57,10 +61,13 @@ export function TokenSwapper() {
   );
   const [sourceAmount, setSourceAmount] = useState<string>('');
   const [destAmount, setDestAmount] = useState<string>('');
+  const [swapError, setSwapError] = useState<string>('');
   const [slippage, setSlippage] = useState<number[]>([0.5]);
   const [showSlippage, setShowSlippage] = useState<boolean>(false);
   const [isSwapping, setIsSwapping] = useState<boolean>(false);
   const [minReceived, setMinReceived] = useState<number>(0);
+  const errorDebounceTimer = useRef<NodeJS.Timeout | undefined>();
+
   const transactionToast = useTransactionToast();
   const errorToast = useErrorToast();
 
@@ -89,16 +96,39 @@ export function TokenSwapper() {
     setDestAmount(sourceAmount);
   };
 
-  const handleSourceAmountChange = (value: string) => {
-    setSourceAmount(value);
-    if (estimatedDestAmount) {
-      setDestAmount(estimatedDestAmount);
-      const numValue = parseFloat(estimatedDestAmount);
-      setMinReceived(numValue * (1 - slippage[0] / 100));
-    } else {
-      setDestAmount('');
-      setMinReceived(0);
+  const syncSourceTokenDecimals = (value: string) => {
+    // verify on token change that the value does not exceed token decimals
+    if (value.includes('.')) {
+      const decimals = value.split('.')[1].length;
+      if (decimals > sourceToken.decimals) {
+        const integerPart = value.split('.')[0];
+        const fractionalPart = value
+          .split('.')[1]
+          .slice(0, sourceToken.decimals);
+        const truncatedValue = `${integerPart}.${fractionalPart}`;
+        setSourceAmount(truncatedValue);
+      }
     }
+  };
+
+  const handleSourceAmountChange = (value: string) => {
+    setSwapError('');
+
+    // validate decimals not exceeding token decimals
+    if (
+      value.includes('.') &&
+      value.split('.')[1]?.length > sourceToken.decimals
+    ) {
+      setSwapError(FORM_ERRORS.DECIMALS_EXCEED);
+
+      clearTimeout(errorDebounceTimer.current);
+      errorDebounceTimer.current = setTimeout(() => {
+        setSwapError('');
+      }, 3000);
+      return;
+    }
+
+    setSourceAmount(value);
   };
 
   useEffect(() => {
@@ -367,6 +397,17 @@ export function TokenSwapper() {
         <div className="space-y-4">
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-1">
+              <span
+                className={`text-sm ${
+                  swapError === FORM_ERRORS.DECIMALS_EXCEED
+                    ? 'text-red-500 animate-pulse'
+                    : 'text-gray-400'
+                }`}
+              >
+                Max decimals: {sourceToken.decimals}
+              </span>
+            </div>
+            <div className="flex justify-between items-center mb-1">
               <span className="text-sm text-gray-400">Balance:</span>
               <span className="text-sm">
                 {sourceTokenBalance?.toFixed(4) || '0'} {sourceToken.symbol}
@@ -377,7 +418,10 @@ export function TokenSwapper() {
                 <TokenSelect
                   tokens={tokens}
                   selectedToken={sourceToken}
-                  onSelect={setSourceToken}
+                  onSelect={(token) => {
+                    syncSourceTokenDecimals(sourceAmount);
+                    setSourceToken(token);
+                  }}
                   disabledToken={destToken}
                 />
               </div>
@@ -407,7 +451,10 @@ export function TokenSwapper() {
               <TokenSelect
                 tokens={tokens}
                 selectedToken={destToken}
-                onSelect={setDestToken}
+                onSelect={(token) => {
+                  setDestAmount('');
+                  setDestToken(token);
+                }}
                 disabledToken={sourceToken}
               />
             </div>
