@@ -96,6 +96,21 @@ export function TokenSwapper() {
     setDestAmount(sourceAmount);
   };
 
+  const syncSourceTokenDecimals = (value: string) => {
+    // verify on token change that the value does not exceed token decimals
+    if (value.includes('.')) {
+      const decimals = value.split('.')[1].length;
+      if (decimals > sourceToken.decimals) {
+        const integerPart = value.split('.')[0];
+        const fractionalPart = value
+          .split('.')[1]
+          .slice(0, sourceToken.decimals);
+        const truncatedValue = `${integerPart}.${fractionalPart}`;
+        setSourceAmount(truncatedValue);
+      }
+    }
+  };
+
   const handleSourceAmountChange = (value: string) => {
     setSwapError('');
 
@@ -403,7 +418,10 @@ export function TokenSwapper() {
                 <TokenSelect
                   tokens={tokens}
                   selectedToken={sourceToken}
-                  onSelect={setSourceToken}
+                  onSelect={(token) => {
+                    syncSourceTokenDecimals(sourceAmount);
+                    setSourceToken(token);
+                  }}
                   disabledToken={destToken}
                 />
               </div>
@@ -433,7 +451,10 @@ export function TokenSwapper() {
               <TokenSelect
                 tokens={tokens}
                 selectedToken={destToken}
-                onSelect={setDestToken}
+                onSelect={(token) => {
+                  setDestAmount('');
+                  setDestToken(token);
+                }}
                 disabledToken={sourceToken}
               />
             </div>
