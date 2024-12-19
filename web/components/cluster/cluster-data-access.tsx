@@ -46,9 +46,13 @@ const clusterAtom = atomWithStorage<Cluster>(
   'solana-cluster',
   defaultClusters[0],
 );
+
 const clustersAtom = atomWithStorage<Cluster[]>(
   'solana-clusters',
-  defaultClusters,
+  // in production only allow devnet
+  process.env.NODE_ENV === 'production'
+    ? [defaultClusters[0]]
+    : defaultClusters,
 );
 
 const activeClustersAtom = atom<Cluster[]>((get) => {
