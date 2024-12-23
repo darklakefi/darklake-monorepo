@@ -61,6 +61,16 @@ pub mod darklake {
         ctx.accounts.confidential_swap(proof_a, proof_b, proof_c, public_inputs)
     }
 
+    pub fn confidential_swap_exp(
+        ctx: Context<ConfidentialSwapExp>,
+        proof_a: [u8; 64],
+        proof_b: [u8; 128],
+        proof_c: [u8; 64],
+        public_inputs: [[u8; 32]; 4]
+    ) -> Result<()> {
+        ctx.accounts.confidential_swap_exp(proof_a, proof_b, proof_c, public_inputs)
+    }
+
     pub fn upgrade_pool(ctx: Context<UpgradePool>) -> Result<()> {
         ctx.accounts.upgrade_pool()
     }
