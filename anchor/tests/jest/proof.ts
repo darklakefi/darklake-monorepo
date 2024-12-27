@@ -10,11 +10,12 @@ import {
 } from '../../src/utils';
 
 export async function generateProof(
-  privateInputs: { privateInputAmount: string; privateMinReceived: string },
+  privateInputs: { privateMinReceived: string },
   publicInputs: {
-    publicBalanceX: string;
-    publicBalanceY: string;
+    inputAmount: string;
     isSwapXtoY: number;
+    currentReserveX: string;
+    currentReserveY: string;
   },
 ): Promise<{
   proofA: Uint8Array;
@@ -24,17 +25,17 @@ export async function generateProof(
 }> {
   const wasmPath = path.join(
     __dirname,
-    '../../../circuits/swap_js',
+    '../../../circuitsV2/swap_js',
     'swap.wasm',
   );
-  const zkeyPath = path.join(__dirname, '../../../circuits', 'swap_0001.zkey');
+  const zkeyPath = path.join(__dirname, '../../../circuitsV2', 'swap_final.zkey');
 
   const input = {
-    privateInputAmount: privateInputs.privateInputAmount,
     privateMinReceived: privateInputs.privateMinReceived,
-    publicBalanceX: publicInputs.publicBalanceX,
-    publicBalanceY: publicInputs.publicBalanceY,
+    inputAmount: publicInputs.inputAmount,
     isSwapXtoY: publicInputs.isSwapXtoY.toString(),
+    currentReserveX: publicInputs.currentReserveX,
+    currentReserveY: publicInputs.currentReserveY,
   };
 
   const { proof, publicSignals } = await snarkjs.groth16.fullProve(
@@ -42,6 +43,7 @@ export async function generateProof(
     wasmPath,
     zkeyPath,
   );
+
 
   const curve = await buildBn128();
   const proofProc = unstringifyBigInts(proof);

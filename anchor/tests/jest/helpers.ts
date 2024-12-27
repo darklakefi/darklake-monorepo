@@ -8,7 +8,6 @@ import {
 import { Darklake } from '../../target/types/darklake';
 import { Connection, sendAndConfirmTransaction } from '@solana/web3.js';
 import { generateProof } from './proof';
-import { generateProofExp } from './proofExp';
 // uncomment to run simulations
 // import { simulateTransaction } from '@coral-xyz/anchor/dist/cjs/utils/rpc';
 
@@ -158,70 +157,6 @@ export const addLiquidity = async (
       user: payer.publicKey,
     })
     .rpc();
-};
-
-export const swapExp = async (
-  connection: Connection,
-  program: anchor.Program<Darklake>,
-  payer: anchor.Wallet,
-  poolPubkey: anchor.web3.PublicKey,
-  tokenXMintAndProgramId: TokenMintAndProgramId,
-  tokenYMintAndProgramId: TokenMintAndProgramId,
-  publicInputs,
-  privateInputs,
-) => {
-  const [userTokenAccountX, userTokenAccountY] =
-    await getOrCreateAssociatedTokenAccountsMulti(
-      connection,
-      false,
-      payer,
-      payer.publicKey,
-      [tokenXMintAndProgramId, tokenYMintAndProgramId],
-    );
-
-  const [poolTokenAccountX, poolTokenAccountY] =
-    await getOrCreateAssociatedTokenAccountsMulti(
-      connection,
-      true,
-      payer,
-      poolPubkey,
-      [tokenXMintAndProgramId, tokenYMintAndProgramId],
-    );
-
-  const { proofA, proofB, proofC, publicSignals } = await generateProofExp(
-    privateInputs,
-    publicInputs,
-  );
-
-  const tx = await program.methods
-    .confidentialSwapExp(
-      Array.from(proofA),
-      Array.from(proofB),
-      Array.from(proofC),
-      publicSignals.map((signal) => Array.from(signal)),
-    )
-    .accountsPartial({
-      tokenMintX: tokenXMintAndProgramId.mint,
-      tokenMintY: tokenYMintAndProgramId.mint,
-      tokenMintXProgram: tokenXMintAndProgramId.programId,
-      tokenMintYProgram: tokenYMintAndProgramId.programId,
-      pool: poolPubkey,
-      userTokenAccountX: userTokenAccountX.address,
-      userTokenAccountY: userTokenAccountY.address,
-      poolTokenAccountX: poolTokenAccountX.address,
-      poolTokenAccountY: poolTokenAccountY.address,
-      user: payer.publicKey,
-    })
-    .transaction();
-
-  const modifyComputeUnits =
-    anchor.web3.ComputeBudgetProgram.setComputeUnitLimit({
-      units: 250_000,
-    });
-
-  tx.add(modifyComputeUnits);
-
-  await sendAndConfirmTransaction(connection, tx, [payer.payer]);
 };
 
 export const swap = async (

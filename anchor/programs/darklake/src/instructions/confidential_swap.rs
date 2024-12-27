@@ -1,11 +1,14 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface, transfer_checked, TransferChecked};
 use anchor_spl::associated_token::AssociatedToken;
+use anchor_spl::token_interface::{
+    transfer_checked, Mint, TokenAccount, TokenInterface, TransferChecked,
+};
 use groth16_solana::{self, groth16::Groth16Verifier};
+use spl_math::checked_ceil_div::CheckedCeilDiv;
 
-use crate::state::Pool;
-use crate::errors::ErrorCode;
 use crate::constants::VERIFYINGKEY;
+use crate::errors::ErrorCode;
+use crate::state::Pool;
 
 #[derive(Accounts)]
 pub struct ConfidentialSwap<'info> {
@@ -49,151 +52,201 @@ pub struct ConfidentialSwap<'info> {
     pub system_program: Program<'info, System>,
 }
 
+// Helpers for swapping from solana token-swap
+
+#[derive(Debug)]
+pub struct SwapWithoutFeesResult {
+    /// Amount of source token swapped
+    pub source_amount_swapped: u128,
+    /// Amount of destination token swapped
+    pub destination_amount_swapped: u128,
+}
+
+pub fn map_zero_to_none(x: u128) -> Option<u128> {
+    if x == 0 {
+        None
+    } else {
+        Some(x)
+    }
+}
+
+/// This is guaranteed to work for all values such that:
+///  - 1 <= swap_source_amount * swap_destination_amount <= u128::MAX
+///  - 1 <= source_amount <= u64::MAX
+pub fn swap(
+    source_amount: u128,
+    swap_source_amount: u128,
+    swap_destination_amount: u128,
+) -> Option<SwapWithoutFeesResult> {
+    let invariant = swap_source_amount.checked_mul(swap_destination_amount)?;
+
+    let new_swap_source_amount = swap_source_amount.checked_add(source_amount)?;
+    let (new_swap_destination_amount, new_swap_source_amount) =
+        invariant.checked_ceil_div(new_swap_source_amount)?;
+
+    let source_amount_swapped = new_swap_source_amount.checked_sub(swap_source_amount)?;
+    let destination_amount_swapped =
+        map_zero_to_none(swap_destination_amount.checked_sub(new_swap_destination_amount)?)?;
+
+    Some(SwapWithoutFeesResult {
+        source_amount_swapped,
+        destination_amount_swapped,
+    })
+}
+
+/// ---Public signals---
+///
+/// inputAmount
+/// isSwapXtoY
+/// currentReserveX
+/// currentReserveY
+/// newBalanceX
+/// newBalanceY
+/// amountReceived
 impl<'info> ConfidentialSwap<'info> {
     pub fn confidential_swap(
         &mut self,
         proof_a: [u8; 64],
         proof_b: [u8; 128],
         proof_c: [u8; 64],
-        public_signals: [[u8; 32]; 3],
+        public_signals: [[u8; 32]; 7],
     ) -> Result<()> {
         // Check at the beginning of the function
         if self.token_mint_x.key() >= self.token_mint_y.key() {
             return Err(ErrorCode::InvalidTokenOrder.into());
         }
 
-        msg!("Confidential swap started");
+        let pool = &mut self.pool;
+        msg!(
+            "Pool reserves X: {} | Y: {}",
+            pool.reserve_x,
+            pool.reserve_y
+        );
+
+        let reserve_x = u64::from_be_bytes(public_signals[2][24..].try_into().unwrap());
+        let reserve_y = u64::from_be_bytes(public_signals[3][24..].try_into().unwrap());
+
+        msg!("Proof pool reserves X: {} | Y: {}", reserve_x, reserve_y);
+
+        if pool.reserve_x != reserve_x || pool.reserve_y != reserve_y {
+            return Err(ErrorCode::PublicSignalAndPoolReserveMismatch.into());
+        }
 
         // Create a new Groth16Verifier instance
-        let mut verifier_result = Groth16Verifier::new(
-            &proof_a,
-            &proof_b,
-            &proof_c,
-            &public_signals,
-            &VERIFYINGKEY,
-        ).map_err(|_| ErrorCode::InvalidGroth16Verifier)?;
+        let mut verifier_result =
+            Groth16Verifier::new(&proof_a, &proof_b, &proof_c, &public_signals, &VERIFYINGKEY)
+                .map_err(|_| ErrorCode::InvalidGroth16Verifier)?;
 
         // Verify the proof
-        let verified = verifier_result.verify().map_err(|_| ErrorCode::InvalidProof)?;
+        let verified = verifier_result
+            .verify()
+            .map_err(|_| ErrorCode::InvalidProof)?;
 
-        if verified {
-            // Extract values from public inputs
-            let new_balance_x = u64::from_be_bytes(public_signals[0][24..].try_into().unwrap());
-            let new_balance_y = u64::from_be_bytes(public_signals[1][24..].try_into().unwrap());
-            let amount_received = u64::from_be_bytes(public_signals[2][24..].try_into().unwrap());
+        if !verified {
+            return Err(ErrorCode::InvalidProof.into());
+        }
 
-            let is_swap_x_to_y = self.pool.reserve_y > new_balance_y;
-            
-            msg!("New balance x: {}", new_balance_x);
-            msg!("New balance y: {}", new_balance_y);
-            msg!("Amount received: {}", amount_received);
-            msg!("Is swap X to Y: {}", is_swap_x_to_y);
-            
-            // Determine swap direction and calculate amount_sent
-            let (from_user_account, to_pool_account, from_pool_account, to_user_account, from_mint, to_mint, amount_sent, from_token_program, to_token_program) = if is_swap_x_to_y {
-                (
-                    &self.user_token_account_x,
-                    &self.pool_token_account_x,
-                    &self.pool_token_account_y,
-                    &self.user_token_account_y,
-                    &self.token_mint_x,
-                    &self.token_mint_y,
-                    new_balance_x - self.pool.reserve_x,
-                    &self.token_mint_x_program,
-                    &self.token_mint_y_program,
-                )
-            } else {
-                (
-                    &self.user_token_account_y,
-                    &self.pool_token_account_y,
-                    &self.pool_token_account_x,
-                    &self.user_token_account_x,
-                    &self.token_mint_y,
-                    &self.token_mint_x,
-                    new_balance_y - self.pool.reserve_y,
-                    &self.token_mint_y_program,
-                    &self.token_mint_x_program,
-                )
-            };
+        let input_amount = u64::from_be_bytes(public_signals[0][1..].try_into().unwrap());
+        let is_swap_x_to_y: bool =
+            u64::from_be_bytes(public_signals[1][1..].try_into().unwrap()) > 0;
+        
+        // Currently not re-checked since we check output amount
+        // let new_balance_x = u64::from_be_bytes(public_signals[4][24..].try_into().unwrap());
+        // let new_balance_y = u64::from_be_bytes(public_signals[5][24..].try_into().unwrap());
+        let amount_received = u64::from_be_bytes(public_signals[6][24..].try_into().unwrap());
 
-            // Ensure amount_sent is positive
-            if amount_sent <= 0 {
-                return Err(ErrorCode::InvalidSwapAmount.into());
-            }
+        // Calculate the output amount using the constant product formula
+        let output_amount :SwapWithoutFeesResult = if is_swap_x_to_y {
+            // Swap X to Y
+            swap(input_amount as u128, pool.reserve_x as u128, pool.reserve_y as u128)
+                .ok_or(ErrorCode::MathOverflow)?
+        } else {
+            // Swap Y to X
+            swap(input_amount as u128, pool.reserve_y as u128, pool.reserve_x as u128)
+                .ok_or(ErrorCode::MathOverflow)?
+        };
 
-            // Update pool reserves
-            self.pool.reserve_x = new_balance_x;
-            self.pool.reserve_y = new_balance_y;
+        // Sanity check which should be true if the circuit is correct
+        if (output_amount.destination_amount_swapped as u64) < amount_received {
+            return Err(ErrorCode::PoolAmountOutputTooLow.into());
+        }
 
-            let pool_token_mint_key_x = self.pool.token_mint_x.key();
-            let pool_token_mint_key_y = self.pool.token_mint_y.key();
+        // Update pool reserves
+        let new_balance_x = if is_swap_x_to_y {
+            pool.reserve_x.checked_add(output_amount.source_amount_swapped as u64).unwrap()
+        } else {
+            pool.reserve_x.checked_sub(output_amount.destination_amount_swapped as u64).unwrap()
+        };
 
-            let pool_seeds = &[
-                &b"pool"[..], 
-                pool_token_mint_key_x.as_ref(), 
-                pool_token_mint_key_y.as_ref(),
-                &[self.pool.bump],
-            ];
+        let new_balance_y = if is_swap_x_to_y {
+            pool.reserve_y.checked_sub(output_amount.destination_amount_swapped as u64).unwrap()
+        } else {
+            pool.reserve_y.checked_add(output_amount.source_amount_swapped as u64).unwrap()
+        };
 
-            let signer_seeds = &[&pool_seeds[..]];
+        pool.reserve_x = new_balance_x;
+        pool.reserve_y = new_balance_y;
 
-            msg!("Performing token transfers");
-            
-            // Add these debug messages before the transfers
-            msg!("Amount sent: {}", amount_sent);
-            msg!("From user account balance: {}", from_user_account.amount);
-            msg!("To pool account balance: {}", to_pool_account.amount);
-            msg!("From pool account balance: {}", from_pool_account.amount);
-            msg!("To user account balance: {}", to_user_account.amount);
 
-            msg!("user_token_account_x: {}", self.user_token_account_x.key());
-            msg!("user_token_account_y: {}", self.user_token_account_y.key());
-            msg!("pool_token_account_x: {}", self.pool_token_account_x.key());
-            msg!("pool_token_account_y: {}", self.pool_token_account_y.key());
-
-            msg!("user_token_account_x balance: {}", self.user_token_account_x.amount);
-            msg!("user_token_account_y balance: {}", self.user_token_account_y.amount);
-            msg!("pool_token_account_x balance: {}", self.pool_token_account_x.amount);
-            msg!("pool_token_account_y balance: {}", self.pool_token_account_y.amount);
-
-            msg!("1st transfer - from: {:?}, to: {:?}", from_user_account.key(), to_pool_account.key());
-
-            // Transfer from user to pool
+        // Transfer tokens
+        if is_swap_x_to_y {
             transfer_checked(
                 CpiContext::new(
-                    from_token_program.to_account_info(),
+                    self.token_mint_x_program.to_account_info(),
                     TransferChecked {
-                        from: from_user_account.to_account_info(),
-                        mint: from_mint.to_account_info(),
-                        to: to_pool_account.to_account_info(),
+                        from: self.user_token_account_x.to_account_info(),
+                        mint: self.token_mint_x.to_account_info(),
+                        to: self.pool_token_account_x.to_account_info(),
                         authority: self.user.to_account_info(),
                     },
                 ),
-                amount_sent,
-                from_mint.decimals,
+                output_amount.source_amount_swapped as u64,
+                self.token_mint_x.decimals,
             )?;
 
-            msg!("2nd transfer - from: {:?}, to: {:?}", from_pool_account.key(), to_user_account.key());
-
-            // Transfer from pool to user
             transfer_checked(
-                CpiContext::new_with_signer(
-                    to_token_program.to_account_info(),
+                CpiContext::new(
+                    self.token_mint_y_program.to_account_info(),
                     TransferChecked {
-                        from: from_pool_account.to_account_info(),
-                        mint: to_mint.to_account_info(),
-                        to: to_user_account.to_account_info(),
-                        authority: self.pool.to_account_info(),
+                        from: self.pool_token_account_y.to_account_info(),
+                        mint: self.token_mint_y.to_account_info(),
+                        to: self.user_token_account_y.to_account_info(),
+                        authority: pool.to_account_info(),
                     },
-                    signer_seeds,
                 ),
-                amount_received,
-                to_mint.decimals,
+                output_amount.destination_amount_swapped as u64,
+                self.token_mint_y.decimals,
+            )?;
+        } else {
+            transfer_checked(
+                CpiContext::new(
+                    self.token_mint_y_program.to_account_info(),
+                    TransferChecked {
+                        from: self.user_token_account_y.to_account_info(),
+                        mint: self.token_mint_y.to_account_info(),
+                        to: self.pool_token_account_y.to_account_info(),
+                        authority: self.user.to_account_info(),
+                    },
+                ),
+                output_amount.source_amount_swapped as u64,
+                self.token_mint_y.decimals,
             )?;
 
-            Ok(())
-        } else {
-            Err(ErrorCode::InvalidProof.into())
+            transfer_checked(
+                CpiContext::new(
+                    self.token_mint_x_program.to_account_info(),
+                    TransferChecked {
+                        from: self.pool_token_account_x.to_account_info(),
+                        mint: self.token_mint_x.to_account_info(),
+                        to: self.user_token_account_x.to_account_info(),
+                        authority: pool.to_account_info(),
+                    },
+                ),
+                output_amount.destination_amount_swapped as u64,
+                self.token_mint_x.decimals,
+            )?;
         }
+
+        Ok(())
     }
 }

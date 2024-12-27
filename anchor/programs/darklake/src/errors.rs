@@ -10,6 +10,8 @@ pub enum ErrorCode {
     SlippageExceeded,
     #[msg("Math overflow")]
     MathOverflow,
+    #[msg("Math underflow")]
+    MathUnderflow,
     #[msg("Unable to create Groth16Verifier")]
     InvalidGroth16Verifier,
     #[msg("Invalid token order")]
@@ -20,6 +22,12 @@ pub enum ErrorCode {
     InvalidLpMint,
     #[msg("Invalid metadata account")]
     InvalidMetadataAccount,
+    #[msg("Pool reserve and public signals mismatch")]
+    PublicSignalAndPoolReserveMismatch,
+    #[msg("Proof amount received exceeds pool output")]
+    PoolAmountOutputTooLow,
+    #[msg("Unable to parse public signals")]
+    InvalidPublicSignals,
     #[msg("LP mint already initialized")]
     LpMintAlreadyInitialized,
 }
