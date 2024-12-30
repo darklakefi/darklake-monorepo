@@ -4,7 +4,6 @@ use anchor_spl::token_interface::{
     transfer_checked, Mint, TokenAccount, TokenInterface, TransferChecked,
 };
 use groth16_solana::{self, groth16::Groth16Verifier};
-use spl_math::checked_ceil_div::CheckedCeilDiv;
 
 use crate::constants::VERIFYINGKEY;
 use crate::errors::ErrorCode;
@@ -80,13 +79,20 @@ pub fn swap(
     swap_source_amount: u128,
     swap_destination_amount: u128,
 ) -> Option<SwapWithoutFeesResult> {
+    msg!("source_amount: {}", source_amount);
     let invariant = swap_source_amount.checked_mul(swap_destination_amount)?;
 
     let new_swap_source_amount = swap_source_amount.checked_add(source_amount)?;
-    let (new_swap_destination_amount, new_swap_source_amount) =
-        invariant.checked_ceil_div(new_swap_source_amount)?;
+    
+    // round up with checked math
+    let qoutient = invariant.checked_div(new_swap_source_amount)?;
+    let remainder = invariant.checked_rem(new_swap_source_amount)?;
 
+    let new_swap_destination_amount = qoutient.checked_add(if remainder > 0 { 1 } else { 0 })?;
+    
     let source_amount_swapped = new_swap_source_amount.checked_sub(swap_source_amount)?;
+    msg!("source_amount_swapped: {}, new_swap_source_amount: {}, swap_source_amount: {}", source_amount_swapped, new_swap_source_amount, swap_source_amount);
+
     let destination_amount_swapped =
         map_zero_to_none(swap_destination_amount.checked_sub(new_swap_destination_amount)?)?;
 
@@ -160,12 +166,6 @@ impl<'info> ConfidentialSwap<'info> {
         // let new_balance_y = u64::from_be_bytes(public_signals[5][24..].try_into().unwrap());
         let amount_received = u64::from_be_bytes(public_signals[2][24..].try_into().unwrap());
 
-        msg!(
-            "Proof input X: {} | output Y {}",
-            input_amount,
-            amount_received
-        );
-
         // Calculate the output amount using the constant product formula
         let output_amount: SwapWithoutFeesResult = if is_swap_x_to_y {
             // Swap X to Y
@@ -186,14 +186,25 @@ impl<'info> ConfidentialSwap<'info> {
         };
 
         msg!(
+            "Proof input: {} | pool input {}",
+            input_amount,
+            (output_amount.source_amount_swapped as u64)
+        );
+
+
+        msg!(
             "Proof output: {} | pool output: {}",
             amount_received,
             (output_amount.destination_amount_swapped as u64)
         );
 
-        // Sanity check which should be true if the circuit is correct
+        // Both sanity checks which should never happen if circuit and pool correctly implemented
+        if (output_amount.source_amount_swapped as u64) != input_amount {
+            return Err(ErrorCode::PoolInputAmountMismatch.into());
+        }
+
         if (output_amount.destination_amount_swapped as u64) < amount_received {
-            return Err(ErrorCode::PoolAmountOutputTooLow.into());
+            return Err(ErrorCode::PoolOutputAmountTooLow.into());
         }
 
         // Update pool reserves
@@ -223,8 +234,22 @@ impl<'info> ConfidentialSwap<'info> {
             pool.reserve_y
         );
 
+        let pool_mint_x_key = self.pool.token_mint_x.key();
+        let pool_mint_y_key = self.pool.token_mint_y.key();
+
+        let pool_seeds = &[
+            &b"pool"[..], 
+            pool_mint_x_key.as_ref(), 
+            pool_mint_y_key.as_ref(),
+            &[self.pool.bump],
+        ];
+
+        let signer_seeds = &[&pool_seeds[..]];
+
+
         // Transfer tokens
         if is_swap_x_to_y {
+            msg!("Transferring user X to pool");
             transfer_checked(
                 CpiContext::new(
                     self.token_mint_x_program.to_account_info(),
@@ -239,20 +264,23 @@ impl<'info> ConfidentialSwap<'info> {
                 self.token_mint_x.decimals,
             )?;
 
+            msg!("Transferring pool Y to user");
             transfer_checked(
-                CpiContext::new(
+                CpiContext::new_with_signer(
                     self.token_mint_y_program.to_account_info(),
                     TransferChecked {
                         from: self.pool_token_account_y.to_account_info(),
                         mint: self.token_mint_y.to_account_info(),
                         to: self.user_token_account_y.to_account_info(),
-                        authority: pool.to_account_info(),
+                        authority: self.pool.to_account_info(),
                     },
+                    signer_seeds
                 ),
                 output_amount.destination_amount_swapped as u64,
                 self.token_mint_y.decimals,
             )?;
         } else {
+            msg!("Transferring user Y to pool");
             transfer_checked(
                 CpiContext::new(
                     self.token_mint_y_program.to_account_info(),
@@ -267,15 +295,17 @@ impl<'info> ConfidentialSwap<'info> {
                 self.token_mint_y.decimals,
             )?;
 
+            msg!("Transferring pool X to user");
             transfer_checked(
-                CpiContext::new(
+                CpiContext::new_with_signer(
                     self.token_mint_x_program.to_account_info(),
                     TransferChecked {
                         from: self.pool_token_account_x.to_account_info(),
                         mint: self.token_mint_x.to_account_info(),
                         to: self.user_token_account_x.to_account_info(),
-                        authority: pool.to_account_info(),
+                        authority: self.pool.to_account_info(),
                     },
+                    signer_seeds
                 ),
                 output_amount.destination_amount_swapped as u64,
                 self.token_mint_x.decimals,

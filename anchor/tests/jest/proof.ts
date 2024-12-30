@@ -44,8 +44,6 @@ export async function generateProof(
     zkeyPath,
   );
 
-  console.info("Sent publicSignals:", publicSignals)
-
   const curve = await buildBn128();
   const proofProc = unstringifyBigInts(proof);
   const publicSignalsUnstrigified = unstringifyBigInts(publicSignals);

@@ -1628,16 +1628,21 @@
     },
     {
       "code": 6011,
-      "name": "PoolAmountOutputTooLow",
-      "msg": "Proof amount received exceeds pool output"
+      "name": "PoolInputAmountMismatch",
+      "msg": "Proof input not equal to pool input"
     },
     {
       "code": 6012,
+      "name": "PoolOutputAmountTooLow",
+      "msg": "Proof amount received exceeds pool output"
+    },
+    {
+      "code": 6013,
       "name": "InvalidPublicSignals",
       "msg": "Unable to parse public signals"
     },
     {
-      "code": 6013,
+      "code": 6014,
       "name": "LpMintAlreadyInitialized",
       "msg": "LP mint already initialized"
     }

@@ -139,7 +139,7 @@ describe('darklake', () => {
     expect(poolAccount.tokenMintY.equals(tokenY)).toBe(true);
   });
 
-  describe.skip('Add Liquidity', () => {
+  describe('Add Liquidity', () => {
     const amountX = 1_000_000; // 1 token with 6 decimals
     const amountY = 2_000_000_000; // 2 tokens with 9 decimals
 
@@ -208,7 +208,7 @@ describe('darklake', () => {
   });
 
   describe('Swap', () => {
-    it('Confidential Swap Exp', async () => {
+    it('Confidential Swap X -> Y', async () => {
       const initialLiquidityX = 1_000_000;
       const initialLiquidityY = 2_000_000_000;
       // Add liquidity
@@ -249,14 +249,14 @@ describe('darklake', () => {
 
       const poolAccount = await program.account.pool.fetch(poolPubkey);
       const publicInputs = {
-        inputAmount: '100000', // 0.1 token of tokenX
+        inputAmount: '100000', // 0.1 token of tokenX 1e5
         reserveX: poolAccount.reserveX.toString(),
         reserveY: poolAccount.reserveY.toString(),
         isSwapXtoY: 1, // Swapping tokenX for tokenY
       };
 
       const privateInputs = {
-        privateMinReceived: '100000', // Adjust this based on your expected output
+        privateMinReceived: '100000', // Adjust this based on your expected output 
       };
 
       await swap(
@@ -270,10 +270,187 @@ describe('darklake', () => {
         privateInputs,
       );
 
+      try {
+        const [userTokenAccountX, userTokenAccountY] =
+          await getOrCreateAssociatedTokenAccountsMulti(
+            provider.connection,
+            false,
+            payer,
+            payer.publicKey,
+            [TOKEN_X, TOKEN_Y],
+          );
+
+        const userAccountXAfterSwap = await getAccount(
+          provider.connection,
+          userTokenAccountX.address,
+          undefined,
+          tokenXProgramId,
+        );
+        const userAccountYAfterSwap = await getAccount(
+          provider.connection,
+          userTokenAccountY.address,
+          undefined,
+          tokenYProgramId,
+        );
+
+        const expectedAmountReceived = 181818181;
+
+        expect(Number(userAccountXAfterSwap.amount)).toEqual(fundAmountX - 1e5);
+        expect(Number(userAccountYAfterSwap.amount)).toEqual(expectedAmountReceived);
+
+        const [poolTokenAccountX, poolTokenAccountY] =
+          await getOrCreateAssociatedTokenAccountsMulti(
+            provider.connection,
+            true,
+            payer,
+            poolPubkey,
+            [TOKEN_X, TOKEN_Y],
+          );
+
+        const poolAccountXAfterSwap = await getAccount(
+          provider.connection,
+          poolTokenAccountX.address,
+          undefined,
+          tokenXProgramId,
+        );
+        const poolAccountYAfterSwap = await getAccount(
+          provider.connection,
+          poolTokenAccountY.address,
+          undefined,
+          tokenYProgramId,
+        );
+
+        expect(Number(poolAccountXAfterSwap.amount)).toEqual(initialLiquidityX + 1e5);
+        expect(Number(poolAccountYAfterSwap.amount)).toEqual(initialLiquidityY - expectedAmountReceived);
+      } catch (error) {
+        console.error('Error performing confidential swap:', error);
+        throw error;
+      }
+    }, 10000000);
+
+
+    it('Confidential Swap Y -> X', async () => {
+      const initialLiquidityX = 1_000_000;
+      const initialLiquidityY = 2_000_000_000;
+      // Add liquidity
+      await fundTokenAccounts(
+        provider.connection,
+        payer,
+        TOKEN_X,
+        TOKEN_Y,
+        initialLiquidityX,
+        initialLiquidityY,
+      );
+
+      await addLiquidity(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        TOKEN_X,
+        TOKEN_Y,
+        initialLiquidityX,
+        initialLiquidityY,
+      );
+
+      // Fund user with swap from amount X
+
+      const fundAmountX = 0;
+      const fundAmountY = 1_000_000_000;
+      await fundTokenAccounts(
+        provider.connection,
+        payer,
+        TOKEN_X,
+        TOKEN_Y,
+        fundAmountX,
+        fundAmountY,
+      );
+
+      // Swap
+
+      const poolAccount = await program.account.pool.fetch(poolPubkey);
+      const publicInputs = {
+        inputAmount: '100000000', // 0.1 token of tokenY 1e8
+        reserveX: poolAccount.reserveX.toString(),
+        reserveY: poolAccount.reserveY.toString(),
+        isSwapXtoY: 0, // Swapping tokenY for tokenX
+      };
+
+      const privateInputs = {
+        privateMinReceived: '0', // Adjust this based on your expected output
+      };
+
+      await swap(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        TOKEN_X,
+        TOKEN_Y,
+        publicInputs,
+        privateInputs,
+      );
+
+      try {
+        const [userTokenAccountX, userTokenAccountY] =
+          await getOrCreateAssociatedTokenAccountsMulti(
+            provider.connection,
+            false,
+            payer,
+            payer.publicKey,
+            [TOKEN_X, TOKEN_Y],
+          );
+
+        const userAccountXAfterSwap = await getAccount(
+          provider.connection,
+          userTokenAccountX.address,
+          undefined,
+          tokenXProgramId,
+        );
+        const userAccountYAfterSwap = await getAccount(
+          provider.connection,
+          userTokenAccountY.address,
+          undefined,
+          tokenYProgramId,
+        );
+
+        const expectedAmountReceived = 47619;
+
+        expect(Number(userAccountXAfterSwap.amount)).toEqual(expectedAmountReceived);;
+        expect(Number(userAccountYAfterSwap.amount)).toEqual(fundAmountY - 1e8)
+
+        const [poolTokenAccountX, poolTokenAccountY] =
+          await getOrCreateAssociatedTokenAccountsMulti(
+            provider.connection,
+            true,
+            payer,
+            poolPubkey,
+            [TOKEN_X, TOKEN_Y],
+          );
+
+        const poolAccountXAfterSwap = await getAccount(
+          provider.connection,
+          poolTokenAccountX.address,
+          undefined,
+          tokenXProgramId,
+        );
+        const poolAccountYAfterSwap = await getAccount(
+          provider.connection,
+          poolTokenAccountY.address,
+          undefined,
+          tokenYProgramId,
+        );
+
+        expect(Number(poolAccountXAfterSwap.amount)).toEqual(initialLiquidityX - expectedAmountReceived);
+        expect(Number(poolAccountYAfterSwap.amount)).toEqual(initialLiquidityY + 1e8);
+      } catch (error) {
+        console.error('Error performing confidential swap:', error);
+        throw error;
+      }
     }, 10000000);
   });
 
-  describe.skip('Remove liquidity', () => {
+  describe('Remove liquidity', () => {
     const amountX = 1_000_000;
     const amountY = 2_000_000_000;
 

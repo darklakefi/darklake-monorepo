@@ -24,8 +24,10 @@ pub enum ErrorCode {
     InvalidMetadataAccount,
     #[msg("Pool reserve and public signals mismatch")]
     PublicSignalAndPoolReserveMismatch,
+    #[msg("Proof input not equal to pool input")]
+    PoolInputAmountMismatch,
     #[msg("Proof amount received exceeds pool output")]
-    PoolAmountOutputTooLow,
+    PoolOutputAmountTooLow,
     #[msg("Unable to parse public signals")]
     InvalidPublicSignals,
     #[msg("LP mint already initialized")]

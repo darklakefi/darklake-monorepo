@@ -1634,16 +1634,21 @@ export type Darklake = {
     },
     {
       "code": 6011,
-      "name": "poolAmountOutputTooLow",
-      "msg": "Proof amount received exceeds pool output"
+      "name": "poolInputAmountMismatch",
+      "msg": "Proof input not equal to pool input"
     },
     {
       "code": 6012,
+      "name": "poolOutputAmountTooLow",
+      "msg": "Proof amount received exceeds pool output"
+    },
+    {
+      "code": 6013,
       "name": "invalidPublicSignals",
       "msg": "Unable to parse public signals"
     },
     {
-      "code": 6013,
+      "code": 6014,
       "name": "lpMintAlreadyInitialized",
       "msg": "LP mint already initialized"
     }
