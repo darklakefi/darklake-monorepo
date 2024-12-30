@@ -46,7 +46,8 @@ template ZKConstantProductAMM() {
     signal newInputReserve <== inputReserve + inputAmount;
 
     // Calculate new output balance (y = k / x)
-    component division = ReciprocalDivision(252);
+    // The rounding is up, so that the pool wouldn't lose funds
+    component division = ReciprocalDivision(252, 1);
     division.dividend <== constantProduct;
     division.divisor <== newInputReserve;
     signal newOutputReserve <== division.quotient;

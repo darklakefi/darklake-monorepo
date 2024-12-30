@@ -3,6 +3,7 @@ import * as path from 'path';
 
 // Add this function at the top of your test file, outside of any describe blocks
 // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+// currently not used due to no flexibility in amount received allowed
 function isWithinTolerance(
   actual: bigint,
   expected: bigint,
@@ -46,15 +47,9 @@ describe('ZK Constant Sum AMM Swap', () => {
     const newReserveY = circuit.symbols['main.newReserveY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
 
-    expect(isWithinTolerance(BigInt(witness[newReserveX.varIdx]), 1100n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[newReserveY.varIdx]), 909n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 91n)).toBe(
-      true,
-    );
+    expect(BigInt(witness[newReserveX.varIdx])).toEqual(1100n);
+    expect(BigInt(witness[newReserveY.varIdx])).toEqual(910n);
+    expect(BigInt(witness[amountReceived.varIdx])).toEqual(90n);
   });
 
   it('should perform a valid swap with larger values', async () => {
@@ -75,15 +70,9 @@ describe('ZK Constant Sum AMM Swap', () => {
     const newReserveY = circuit.symbols['main.newReserveY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
 
-    expect(
-      isWithinTolerance(BigInt(witness[newReserveX.varIdx]), 1200000n),
-    ).toBe(true);
-    expect(
-      isWithinTolerance(BigInt(witness[newReserveY.varIdx]), 1741667n),
-    ).toBe(true);
-    expect(
-      isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 158333n),
-    ).toBe(true);
+    expect(BigInt(witness[newReserveX.varIdx])).toEqual(1200000n);
+    expect(BigInt(witness[newReserveY.varIdx])).toEqual(1741667n);
+    expect(BigInt(witness[amountReceived.varIdx])).toEqual(158333n);
   });
 
   // Add a new test for swapping Y to X
@@ -105,15 +94,9 @@ describe('ZK Constant Sum AMM Swap', () => {
     const newReserveY = circuit.symbols['main.newReserveY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
 
-    expect(isWithinTolerance(BigInt(witness[newReserveX.varIdx]), 909n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[newReserveY.varIdx]), 1100n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 91n)).toBe(
-      true,
-    );
+    expect(BigInt(witness[newReserveX.varIdx])).toEqual(910n);
+    expect(BigInt(witness[newReserveY.varIdx])).toEqual(1100n);
+    expect(BigInt(witness[amountReceived.varIdx])).toEqual(90n);
   });
 
   it('should round output down if fraction exists', async () => {
@@ -134,15 +117,9 @@ describe('ZK Constant Sum AMM Swap', () => {
     const newReserveY = circuit.symbols['main.newReserveY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
 
-    expect(isWithinTolerance(BigInt(witness[newReserveX.varIdx]), 909n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[newReserveY.varIdx]), 1100n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 91n)).toBe(
-      true,
-    );
+    expect(BigInt(witness[newReserveX.varIdx])).toEqual(910n);
+    expect(BigInt(witness[newReserveY.varIdx])).toEqual(1100n);
+    expect(BigInt(witness[amountReceived.varIdx])).toEqual(90n);
   });
 });
 
@@ -161,10 +138,11 @@ describe('ReciprocalDivision', () => {
 
   const testCases = [
     { dividend: 1000n, divisor: 10n, expected: 100n },
-    { dividend: 1000n, divisor: 3n, expected: 333n },
+    { dividend: 1000n, divisor: 3n, expected: 334n },
     { dividend: 1000000n, divisor: 1000n, expected: 1000n },
-    { dividend: 1234567n, divisor: 1000n, expected: 1234n },
-    { dividend: 1000000000n, divisor: 3n, expected: 333333333n },
+    { dividend: 1000000000000001n, divisor: 1000000000000n, expected: 1001n },
+    { dividend: 1234567n, divisor: 1000n, expected: 1235n },
+    { dividend: 1000000000n, divisor: 3n, expected: 333333334n },
     { dividend: 2000000000000000n, divisor: 1100000n, expected: 1818181819n },
   ];
 
@@ -183,8 +161,8 @@ describe('ReciprocalDivision', () => {
       const quotientSymbol = divisionCircuit.symbols['main.quotient'];
       const quotient = witness[quotientSymbol.varIdx];
 
-      // Allow for small rounding errors
-      const tolerance = 1n;
+      // Don't allow any deviation
+      const tolerance = 0n;
       expect(quotient).toBeGreaterThanOrEqual(expected - tolerance);
       expect(quotient).toBeLessThanOrEqual(expected + tolerance);
     });

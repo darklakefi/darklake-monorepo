@@ -2,4 +2,5 @@ pragma circom 2.0.0;
 
 include "division.circom";
 
-component main = ReciprocalDivision(252);
+// rounding up
+component main = ReciprocalDivision(252, 1);
