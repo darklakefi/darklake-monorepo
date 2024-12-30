@@ -5,6 +5,7 @@ import {
   getAccount,
   TOKEN_PROGRAM_ID,
   TOKEN_2022_PROGRAM_ID,
+  getOrCreateAssociatedTokenAccount,
 } from '@solana/spl-token';
 import {
   addLiquidity,
@@ -15,6 +16,7 @@ import {
   swap,
   TokenMintAndProgramId,
 } from './helpers';
+import { PublicKey } from '@solana/web3.js';
 
 describe('darklake', () => {
   const provider = anchor.AnchorProvider.env();
@@ -29,6 +31,7 @@ describe('darklake', () => {
   let tokenLp: anchor.web3.PublicKey;
   const tokenMint0Decimals = 6;
   const tokenMint1Decimals = 9; // Updated to 9 decimals
+  const MIN_LIQUIDITY = 1000; // liquidity burned on initial liquidity deposit
   let tokenXProgramId: anchor.web3.PublicKey;
   let tokenYProgramId: anchor.web3.PublicKey;
   let tokenLpProgramId: anchor.web3.PublicKey;
@@ -198,12 +201,99 @@ describe('darklake', () => {
         undefined,
         tokenLpProgramId,
       );
-
-      // const userAccountLpInfo = await getAccount(
+      const zeroAccountLpInfo = await getOrCreateAssociatedTokenAccount(
+        provider.connection,
+        payer.payer,
+        tokenLp,
+        new PublicKey("11111111111111111111111111111111"),
+        false,
+        undefined,
+        undefined,
+        tokenLpProgramId,
+      );
 
       expect(Number(userAccountXInfo.amount)).toBe(0);
       expect(Number(userAccountYInfo.amount)).toBe(0);
-      expect(Number(userAccountLpInfo.amount)).toBe(amountX * amountY);
+      expect(Number(userAccountLpInfo.amount)).toBe(Math.floor(Math.sqrt(amountX * amountY)) - MIN_LIQUIDITY);
+      // burned
+      expect(Number(zeroAccountLpInfo.amount)).toBe(MIN_LIQUIDITY);
+    }, 10000000);
+
+
+    it('Add liquidity twice', async () => {
+      await addLiquidity(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        TOKEN_X,
+        TOKEN_Y,
+        amountX / 2,
+        amountY / 2,
+      );
+
+      await addLiquidity(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        TOKEN_X,
+        TOKEN_Y,
+        amountX / 2,
+        amountY / 2,
+      );
+
+      const [userTokenAccountX, userTokenAccountY, userTokenAccountLp] =
+        await getOrCreateAssociatedTokenAccountsMulti(
+          provider.connection,
+          false,
+          payer,
+          payer.publicKey,
+          [TOKEN_X, TOKEN_Y, TOKEN_LP],
+        );
+
+      const updatedPoolAccount = await program.account.pool.fetch(poolPubkey);
+
+      expect(updatedPoolAccount.reserveX.toNumber()).toBe(amountX);
+      expect(updatedPoolAccount.reserveY.toNumber()).toBe(amountY);
+
+      const userAccountXInfo = await getAccount(
+        provider.connection,
+        userTokenAccountX.address,
+        undefined,
+        tokenXProgramId,
+      );
+      const userAccountYInfo = await getAccount(
+        provider.connection,
+        userTokenAccountY.address,
+        undefined,
+        tokenYProgramId,
+      );
+      const userAccountLpInfo = await getAccount(
+        provider.connection,
+        userTokenAccountLp.address,
+        undefined,
+        tokenLpProgramId,
+      );
+      const zeroAccountLpInfo = await getOrCreateAssociatedTokenAccount(
+        provider.connection,
+        payer.payer,
+        tokenLp,
+        new PublicKey("11111111111111111111111111111111"),
+        false,
+        undefined,
+        undefined,
+        tokenLpProgramId,
+      );
+
+      expect(Number(userAccountXInfo.amount)).toBe(0);
+      expect(Number(userAccountYInfo.amount)).toBe(0);
+      expect(Number(userAccountLpInfo.amount)).toBe(
+        Math.floor(Math.sqrt(amountX / 2 * amountY / 2)) - MIN_LIQUIDITY // first deposit
+        + Math.floor(Math.sqrt(amountX / 2 * amountY / 2)) // second deposit
+      );
+      // burned
+      expect(Number(zeroAccountLpInfo.amount)).toBe(MIN_LIQUIDITY);
     }, 10000000);
   });
 

@@ -79,7 +79,6 @@ pub fn swap(
     swap_source_amount: u128,
     swap_destination_amount: u128,
 ) -> Option<SwapWithoutFeesResult> {
-    msg!("source_amount: {}", source_amount);
     let invariant = swap_source_amount.checked_mul(swap_destination_amount)?;
 
     let new_swap_source_amount = swap_source_amount.checked_add(source_amount)?;
@@ -91,7 +90,6 @@ pub fn swap(
     let new_swap_destination_amount = qoutient.checked_add(if remainder > 0 { 1 } else { 0 })?;
     
     let source_amount_swapped = new_swap_source_amount.checked_sub(swap_source_amount)?;
-    msg!("source_amount_swapped: {}, new_swap_source_amount: {}, swap_source_amount: {}", source_amount_swapped, new_swap_source_amount, swap_source_amount);
 
     let destination_amount_swapped =
         map_zero_to_none(swap_destination_amount.checked_sub(new_swap_destination_amount)?)?;

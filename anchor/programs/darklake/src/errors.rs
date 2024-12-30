@@ -32,4 +32,6 @@ pub enum ErrorCode {
     InvalidPublicSignals,
     #[msg("LP mint already initialized")]
     LpMintAlreadyInitialized,
+    #[msg("Liquidity too low")]
+    LiquidityTooLow,
 }

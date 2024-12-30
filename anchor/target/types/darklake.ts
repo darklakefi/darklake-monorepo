@@ -378,6 +378,63 @@ export type Darklake = {
           }
         },
         {
+          "name": "zeroTokenAccountLp",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "systemProgram"
+              },
+              {
+                "kind": "account",
+                "path": "tokenMintLpProgram"
+              },
+              {
+                "kind": "account",
+                "path": "tokenMintLp"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
           "name": "user",
           "writable": true,
           "signer": true
@@ -1651,6 +1708,11 @@ export type Darklake = {
       "code": 6014,
       "name": "lpMintAlreadyInitialized",
       "msg": "LP mint already initialized"
+    },
+    {
+      "code": 6015,
+      "name": "liquidityTooLow",
+      "msg": "Liquidity too low"
     }
   ],
   "types": [
