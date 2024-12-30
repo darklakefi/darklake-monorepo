@@ -18,51 +18,44 @@ template ZKConstantProductAMM() {
     signal input isSwapXtoY; // 1 if swapping X to Y, 0 if swapping Y to X
 
     // verified in the pool when swapping
-    signal input currentReserveX;
-    signal input currentReserveY;
+    signal input reserveX;
+    signal input reserveY;
 
     // Outputs
-    signal output newBalanceX;
-    signal output newBalanceY;
+    signal output newReserveX;
+    signal output newReserveY;
     signal output amountReceived;
 
     // Calculate constant product
-    signal constantProduct <== currentReserveX * currentReserveY;
+    signal constantProduct <== reserveX * reserveY;
 
     // Determine swap direction and calculate amounts
     component muxInput = Mux1();
-    muxInput.c[0] <== currentReserveY;
-    muxInput.c[1] <== currentReserveX;
+    muxInput.c[0] <== reserveY;
+    muxInput.c[1] <== reserveX;
     muxInput.s <== isSwapXtoY;
-    signal inputBalance <== muxInput.out;
+    signal inputReserve <== muxInput.out;
 
     component muxOutput = Mux1();
-    muxOutput.c[0] <== currentReserveX;
-    muxOutput.c[1] <== currentReserveY;
+    muxOutput.c[0] <== reserveX;
+    muxOutput.c[1] <== reserveY;
     muxOutput.s <== isSwapXtoY;
-    signal outputBalance <== muxOutput.out;
+    signal outputReserve <== muxOutput.out; // not used
 
     // Calculate new input balance
-    signal newInputBalance <== inputBalance + inputAmount;
+    signal newInputReserve <== inputReserve + inputAmount;
 
     // Calculate new output balance (y = k / x)
     component division = ReciprocalDivision(252);
     division.dividend <== constantProduct;
-    division.divisor <== newInputBalance;
-    signal newOutputBalance <== division.quotient;
-
-    // Assign new balances
-    signal intermediate1 <== (1 - isSwapXtoY) * newOutputBalance;
-    // TODO: needs further investigation how to handle newBalanceX and newBalanceY
-    newBalanceX <== isSwapXtoY * newInputBalance + intermediate1;
-    signal intermediate2 <== (1 - isSwapXtoY) * newInputBalance;
-    newBalanceY <== isSwapXtoY * newOutputBalance + intermediate2;
+    division.divisor <== newInputReserve;
+    signal newOutputReserve <== division.quotient;
 
     // Calculate amount received
-    signal intermediate3 <== isSwapXtoY * (currentReserveY - newOutputBalance);
-    signal intermediate4 <== (1 - isSwapXtoY) * (currentReserveX - newOutputBalance);
+    signal intermediate1 <== isSwapXtoY * (reserveY - newOutputReserve);
+    signal intermediate2 <== (1 - isSwapXtoY) * (reserveX - newOutputReserve);
 
-    amountReceived <== intermediate3 + intermediate4;
+    amountReceived <== intermediate1 + intermediate2;
 
     // Verify minimum received amount
     component checkMinReceived = GreaterEqThan(252);
@@ -77,19 +70,28 @@ template ZKConstantProductAMM() {
     component privateMinReceivedCheck = Num2Bits(252);
     privateMinReceivedCheck.in <== privateMinReceived;
 
+    // Assign new balances
+    signal intermediate3 <== (1 - isSwapXtoY) * newOutputReserve;
+
+    // TODO: needs further investigation how to handle newReserveX and newReserveY
+    newReserveX <== isSwapXtoY * newInputReserve + intermediate3;
+
+    signal intermediate4 <== (1 - isSwapXtoY) * newInputReserve;
+    newReserveY <== isSwapXtoY * newOutputReserve + intermediate4;
+
     // Sanity checks
     component positiveBalance1 = GreaterEqThan(252);
-    positiveBalance1.in[0] <== newBalanceX;
+    positiveBalance1.in[0] <== newReserveX;
     positiveBalance1.in[1] <== 0;
     positiveBalance1.out === 1;
 
     component positiveBalance2 = GreaterEqThan(252);
-    positiveBalance2.in[0] <== newBalanceY;
+    positiveBalance2.in[0] <== newReserveY;
     positiveBalance2.in[1] <== 0;
     positiveBalance2.out === 1;
 
     // Verify constant product
-    // newBalanceX * newBalanceY === constantProduct;
+    // newReserveX * newReserveY === constantProduct;
 }
 
-component main {public [inputAmount,currentReserveX,currentReserveY,isSwapXtoY]} = ZKConstantProductAMM();
+component main {public [inputAmount,reserveX,reserveY,isSwapXtoY]} = ZKConstantProductAMM();

@@ -229,7 +229,15 @@ export const swap = async (
   // const resSim = await simulateTransaction(connection, tx, [payer.payer]);
   // console.info('resSim:', resSim);
 
-  await sendAndConfirmTransaction(connection, tx, [payer.payer]);
+  let sentTx;
+  try {
+    sentTx = await sendAndConfirmTransaction(connection, tx, [payer.payer]);
+  } catch (error) {
+    const logs = await error.getLogs();
+    console.error("Full swap logs:", logs)
+    throw new Error(`Error sending transaction: ${error}`);
+  }
+  return sentTx
 };
 
 export const removeLiquidity = async (

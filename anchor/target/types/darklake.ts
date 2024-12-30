@@ -735,346 +735,7 @@ export type Darklake = {
                   32
                 ]
               },
-              3
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "confidentialSwapExp",
-      "discriminator": [
-        207,
-        94,
-        34,
-        253,
-        76,
-        191,
-        13,
-        179
-      ],
-      "accounts": [
-        {
-          "name": "tokenMintX",
-          "writable": true
-        },
-        {
-          "name": "tokenMintY",
-          "writable": true
-        },
-        {
-          "name": "tokenMintXProgram"
-        },
-        {
-          "name": "tokenMintYProgram"
-        },
-        {
-          "name": "pool",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  111,
-                  111,
-                  108
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "pool.token_mint_x",
-                "account": "pool"
-              },
-              {
-                "kind": "account",
-                "path": "pool.token_mint_y",
-                "account": "pool"
-              }
-            ]
-          }
-        },
-        {
-          "name": "userTokenAccountX",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "user"
-              },
-              {
-                "kind": "account",
-                "path": "tokenMintXProgram"
-              },
-              {
-                "kind": "account",
-                "path": "tokenMintX"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140,
-                151,
-                37,
-                143,
-                78,
-                36,
-                137,
-                241,
-                187,
-                61,
-                16,
-                41,
-                20,
-                142,
-                13,
-                131,
-                11,
-                90,
-                19,
-                153,
-                218,
-                255,
-                16,
-                132,
-                4,
-                142,
-                123,
-                216,
-                219,
-                233,
-                248,
-                89
-              ]
-            }
-          }
-        },
-        {
-          "name": "userTokenAccountY",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "user"
-              },
-              {
-                "kind": "account",
-                "path": "tokenMintYProgram"
-              },
-              {
-                "kind": "account",
-                "path": "tokenMintY"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140,
-                151,
-                37,
-                143,
-                78,
-                36,
-                137,
-                241,
-                187,
-                61,
-                16,
-                41,
-                20,
-                142,
-                13,
-                131,
-                11,
-                90,
-                19,
-                153,
-                218,
-                255,
-                16,
-                132,
-                4,
-                142,
-                123,
-                216,
-                219,
-                233,
-                248,
-                89
-              ]
-            }
-          }
-        },
-        {
-          "name": "poolTokenAccountX",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "pool"
-              },
-              {
-                "kind": "account",
-                "path": "tokenMintXProgram"
-              },
-              {
-                "kind": "account",
-                "path": "tokenMintX"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140,
-                151,
-                37,
-                143,
-                78,
-                36,
-                137,
-                241,
-                187,
-                61,
-                16,
-                41,
-                20,
-                142,
-                13,
-                131,
-                11,
-                90,
-                19,
-                153,
-                218,
-                255,
-                16,
-                132,
-                4,
-                142,
-                123,
-                216,
-                219,
-                233,
-                248,
-                89
-              ]
-            }
-          }
-        },
-        {
-          "name": "poolTokenAccountY",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "pool"
-              },
-              {
-                "kind": "account",
-                "path": "tokenMintYProgram"
-              },
-              {
-                "kind": "account",
-                "path": "tokenMintY"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140,
-                151,
-                37,
-                143,
-                78,
-                36,
-                137,
-                241,
-                187,
-                61,
-                16,
-                41,
-                20,
-                142,
-                13,
-                131,
-                11,
-                90,
-                19,
-                153,
-                218,
-                255,
-                16,
-                132,
-                4,
-                142,
-                123,
-                216,
-                219,
-                233,
-                248,
-                89
-              ]
-            }
-          }
-        },
-        {
-          "name": "user",
-          "signer": true
-        },
-        {
-          "name": "associatedTokenProgram",
-          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
-        },
-        {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": [
-        {
-          "name": "proofA",
-          "type": {
-            "array": [
-              "u8",
-              64
-            ]
-          }
-        },
-        {
-          "name": "proofB",
-          "type": {
-            "array": [
-              "u8",
-              128
-            ]
-          }
-        },
-        {
-          "name": "proofC",
-          "type": {
-            "array": [
-              "u8",
-              64
-            ]
-          }
-        },
-        {
-          "name": "publicInputs",
-          "type": {
-            "array": [
-              {
-                "array": [
-                  "u8",
-                  32
-                ]
-              },
-              4
+              7
             ]
           }
         }
@@ -1938,31 +1599,51 @@ export type Darklake = {
     },
     {
       "code": 6004,
+      "name": "mathUnderflow",
+      "msg": "Math underflow"
+    },
+    {
+      "code": 6005,
       "name": "invalidGroth16Verifier",
       "msg": "Unable to create Groth16Verifier"
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "invalidTokenOrder",
       "msg": "Invalid token order"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "invalidSwapAmount",
       "msg": "Invalid swap amount"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "invalidLpMint",
       "msg": "Invalid LP mint"
     },
     {
-      "code": 6008,
+      "code": 6009,
       "name": "invalidMetadataAccount",
       "msg": "Invalid metadata account"
     },
     {
-      "code": 6009,
+      "code": 6010,
+      "name": "publicSignalAndPoolReserveMismatch",
+      "msg": "Pool reserve and public signals mismatch"
+    },
+    {
+      "code": 6011,
+      "name": "poolAmountOutputTooLow",
+      "msg": "Proof amount received exceeds pool output"
+    },
+    {
+      "code": 6012,
+      "name": "invalidPublicSignals",
+      "msg": "Unable to parse public signals"
+    },
+    {
+      "code": 6013,
       "name": "lpMintAlreadyInitialized",
       "msg": "LP mint already initialized"
     }

@@ -73,6 +73,8 @@ pub fn map_zero_to_none(x: u128) -> Option<u128> {
 /// This is guaranteed to work for all values such that:
 ///  - 1 <= swap_source_amount * swap_destination_amount <= u128::MAX
 ///  - 1 <= source_amount <= u64::MAX
+/// dev: invariant is increased due to ceil_div
+/// dev: because of ceil_div the destination_amount_swapped is rounded down
 pub fn swap(
     source_amount: u128,
     swap_source_amount: u128,
@@ -96,13 +98,14 @@ pub fn swap(
 
 /// ---Public signals---
 ///
-/// inputAmount
-/// isSwapXtoY
-/// currentReserveX
-/// currentReserveY
-/// newBalanceX
-/// newBalanceY
-/// amountReceived
+/// newReserveX:    0
+/// newReserveY:    1
+/// amountReceived: 2
+/// inputAmount:    3
+/// isSwapXtoY:     4
+/// reserveX:       5
+/// reserveY:       6
+///
 impl<'info> ConfidentialSwap<'info> {
     pub fn confidential_swap(
         &mut self,
@@ -117,14 +120,14 @@ impl<'info> ConfidentialSwap<'info> {
         }
 
         let pool = &mut self.pool;
+
+        let reserve_x = u64::from_be_bytes(public_signals[5][24..].try_into().unwrap());
+        let reserve_y = u64::from_be_bytes(public_signals[6][24..].try_into().unwrap());
         msg!(
             "Pool reserves X: {} | Y: {}",
             pool.reserve_x,
             pool.reserve_y
         );
-
-        let reserve_x = u64::from_be_bytes(public_signals[2][24..].try_into().unwrap());
-        let reserve_y = u64::from_be_bytes(public_signals[3][24..].try_into().unwrap());
 
         msg!("Proof pool reserves X: {} | Y: {}", reserve_x, reserve_y);
 
@@ -146,25 +149,47 @@ impl<'info> ConfidentialSwap<'info> {
             return Err(ErrorCode::InvalidProof.into());
         }
 
-        let input_amount = u64::from_be_bytes(public_signals[0][1..].try_into().unwrap());
-        let is_swap_x_to_y: bool =
-            u64::from_be_bytes(public_signals[1][1..].try_into().unwrap()) > 0;
-        
+        let input_amount = u64::from_be_bytes(public_signals[3][24..].try_into().unwrap());
+
+        // Enough to check that it's not zero
+        let is_swap_x_to_y: bool = public_signals[4] != [0u8; 32];
+        msg!("Is X -> Y swap? - {}", is_swap_x_to_y);
+
         // Currently not re-checked since we check output amount
         // let new_balance_x = u64::from_be_bytes(public_signals[4][24..].try_into().unwrap());
         // let new_balance_y = u64::from_be_bytes(public_signals[5][24..].try_into().unwrap());
-        let amount_received = u64::from_be_bytes(public_signals[6][24..].try_into().unwrap());
+        let amount_received = u64::from_be_bytes(public_signals[2][24..].try_into().unwrap());
+
+        msg!(
+            "Proof input X: {} | output Y {}",
+            input_amount,
+            amount_received
+        );
 
         // Calculate the output amount using the constant product formula
-        let output_amount :SwapWithoutFeesResult = if is_swap_x_to_y {
+        let output_amount: SwapWithoutFeesResult = if is_swap_x_to_y {
             // Swap X to Y
-            swap(input_amount as u128, pool.reserve_x as u128, pool.reserve_y as u128)
-                .ok_or(ErrorCode::MathOverflow)?
+            swap(
+                input_amount as u128,
+                pool.reserve_x as u128,
+                pool.reserve_y as u128,
+            )
+            .ok_or(ErrorCode::MathOverflow)?
         } else {
             // Swap Y to X
-            swap(input_amount as u128, pool.reserve_y as u128, pool.reserve_x as u128)
-                .ok_or(ErrorCode::MathOverflow)?
+            swap(
+                input_amount as u128,
+                pool.reserve_y as u128,
+                pool.reserve_x as u128,
+            )
+            .ok_or(ErrorCode::MathOverflow)?
         };
+
+        msg!(
+            "Proof output: {} | pool output: {}",
+            amount_received,
+            (output_amount.destination_amount_swapped as u64)
+        );
 
         // Sanity check which should be true if the circuit is correct
         if (output_amount.destination_amount_swapped as u64) < amount_received {
@@ -172,21 +197,31 @@ impl<'info> ConfidentialSwap<'info> {
         }
 
         // Update pool reserves
-        let new_balance_x = if is_swap_x_to_y {
-            pool.reserve_x.checked_add(output_amount.source_amount_swapped as u64).unwrap()
+        pool.reserve_x = if is_swap_x_to_y {
+            pool.reserve_x
+                .checked_add(output_amount.source_amount_swapped as u64)
+                .unwrap()
         } else {
-            pool.reserve_x.checked_sub(output_amount.destination_amount_swapped as u64).unwrap()
+            pool.reserve_x
+                .checked_sub(output_amount.destination_amount_swapped as u64)
+                .unwrap()
         };
 
-        let new_balance_y = if is_swap_x_to_y {
-            pool.reserve_y.checked_sub(output_amount.destination_amount_swapped as u64).unwrap()
+        pool.reserve_y = if is_swap_x_to_y {
+            pool.reserve_y
+                .checked_sub(output_amount.destination_amount_swapped as u64)
+                .unwrap()
         } else {
-            pool.reserve_y.checked_add(output_amount.source_amount_swapped as u64).unwrap()
+            pool.reserve_y
+                .checked_add(output_amount.source_amount_swapped as u64)
+                .unwrap()
         };
 
-        pool.reserve_x = new_balance_x;
-        pool.reserve_y = new_balance_y;
-
+        msg!(
+            "Pool reserves after swap X: {} | Y: {}",
+            pool.reserve_x,
+            pool.reserve_y
+        );
 
         // Transfer tokens
         if is_swap_x_to_y {

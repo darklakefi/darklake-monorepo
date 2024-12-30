@@ -208,7 +208,7 @@ describe('darklake', () => {
   });
 
   describe('Swap', () => {
-    it.only('Confidential Swap Exp', async () => {
+    it('Confidential Swap Exp', async () => {
       const initialLiquidityX = 1_000_000;
       const initialLiquidityY = 2_000_000_000;
       // Add liquidity
@@ -250,8 +250,8 @@ describe('darklake', () => {
       const poolAccount = await program.account.pool.fetch(poolPubkey);
       const publicInputs = {
         inputAmount: '100000', // 0.1 token of tokenX
-        currentReserveX: poolAccount.reserveX.toString(),
-        currentReserveY: poolAccount.reserveY.toString(),
+        reserveX: poolAccount.reserveX.toString(),
+        reserveY: poolAccount.reserveY.toString(),
         isSwapXtoY: 1, // Swapping tokenX for tokenY
       };
 
