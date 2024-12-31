@@ -37,15 +37,15 @@ describe('ZKConstantSumAMM Verifier', () => {
     const zkeyPath = path.join(
       __dirname,
       '../../../circuits',
-      'swap_0001.zkey',
+      'swap_final.zkey',
     );
 
     // Generate proof
     const input = {
-      privateInputAmount: 100000, // Example value
       privateMinReceived: 99000, // Example value
-      publicBalanceX: 1100000, // Changed from 1000000 to match public signal
-      publicBalanceY: 1900000, // Changed from 2000000 to match public signal
+      inputAmount: 100000, // Example value
+      reserveX: 1100000, // Changed from 1000000 to match public signal
+      reserveY: 1900000, // Changed from 2000000 to match public signal
       isSwapXtoY: 1, // Swapping X to Y
     };
 
@@ -111,15 +111,15 @@ describe('ZKConstantSumAMM Verifier', () => {
     console.log("Regenerated proof verified successfully");
     */
 
-    expect(publicSignals).toEqual(['1200000', '1741666', '158334']);
+    expect(publicSignals).toEqual(['1200000', '1741667', '158333', '100000', '1', '1100000', '1900000']);
   });
 
   it('should generate and verify a valid proof using snarkjs library', async () => {
     const input = {
-      privateInputAmount: 100000,
       privateMinReceived: 99000,
-      publicBalanceX: 1100000,
-      publicBalanceY: 1900000,
+      inputAmount: 100000,
+      reserveX: 1100000,
+      reserveY: 1900000,
       isSwapXtoY: 1,
     };
 
@@ -131,7 +131,7 @@ describe('ZKConstantSumAMM Verifier', () => {
     const zkeyPath = path.join(
       __dirname,
       '../../../circuits',
-      'swap_0001.zkey',
+      'swap_final.zkey',
     );
     const vKeyPath = path.join(
       __dirname,
@@ -154,10 +154,10 @@ describe('ZKConstantSumAMM Verifier', () => {
 
   it('should generate and verify a valid proof using snarkjs CLI', async () => {
     const input = {
-      privateInputAmount: 100000,
       privateMinReceived: 99000,
-      publicBalanceX: 1100000,
-      publicBalanceY: 1900000,
+      inputAmount: 100000,
+      reserveX: 1100000,
+      reserveY: 1900000,
       isSwapXtoY: 1,
     };
 
@@ -165,7 +165,7 @@ describe('ZKConstantSumAMM Verifier', () => {
     const zkeyPath = path.join(
       __dirname,
       '../../../circuits',
-      'swap_0001.zkey',
+      'swap_final.zkey',
     );
     const vKeyPath = path.join(
       __dirname,
