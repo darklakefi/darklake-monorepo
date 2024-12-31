@@ -205,7 +205,7 @@ describe('darklake', () => {
         provider.connection,
         payer.payer,
         tokenLp,
-        new PublicKey("11111111111111111111111111111111"),
+        new PublicKey('11111111111111111111111111111111'),
         false,
         undefined,
         undefined,
@@ -214,11 +214,12 @@ describe('darklake', () => {
 
       expect(Number(userAccountXInfo.amount)).toBe(0);
       expect(Number(userAccountYInfo.amount)).toBe(0);
-      expect(Number(userAccountLpInfo.amount)).toBe(Math.floor(Math.sqrt(amountX * amountY)) - MIN_LIQUIDITY);
+      expect(Number(userAccountLpInfo.amount)).toBe(
+        Math.floor(Math.sqrt(amountX * amountY)) - MIN_LIQUIDITY,
+      );
       // burned
       expect(Number(zeroAccountLpInfo.amount)).toBe(MIN_LIQUIDITY);
-    }, 10000000);
-
+    });
 
     it('Add liquidity twice', async () => {
       await addLiquidity(
@@ -279,7 +280,7 @@ describe('darklake', () => {
         provider.connection,
         payer.payer,
         tokenLp,
-        new PublicKey("11111111111111111111111111111111"),
+        new PublicKey('11111111111111111111111111111111'),
         false,
         undefined,
         undefined,
@@ -289,12 +290,13 @@ describe('darklake', () => {
       expect(Number(userAccountXInfo.amount)).toBe(0);
       expect(Number(userAccountYInfo.amount)).toBe(0);
       expect(Number(userAccountLpInfo.amount)).toBe(
-        Math.floor(Math.sqrt(amountX / 2 * amountY / 2)) - MIN_LIQUIDITY // first deposit
-        + Math.floor(Math.sqrt(amountX / 2 * amountY / 2)) // second deposit
+        Math.floor(Math.sqrt(((amountX / 2) * amountY) / 2)) -
+          MIN_LIQUIDITY + // first deposit
+          Math.floor(Math.sqrt(((amountX / 2) * amountY) / 2)), // second deposit
       );
       // burned
       expect(Number(zeroAccountLpInfo.amount)).toBe(MIN_LIQUIDITY);
-    }, 10000000);
+    });
   });
 
   describe('Swap', () => {
@@ -346,7 +348,7 @@ describe('darklake', () => {
       };
 
       const privateInputs = {
-        privateMinReceived: '100000', // Adjust this based on your expected output 
+        privateMinReceived: '100000', // Adjust this based on your expected output
       };
 
       await swap(
@@ -386,7 +388,9 @@ describe('darklake', () => {
         const expectedAmountReceived = 181818181;
 
         expect(Number(userAccountXAfterSwap.amount)).toEqual(fundAmountX - 1e5);
-        expect(Number(userAccountYAfterSwap.amount)).toEqual(expectedAmountReceived);
+        expect(Number(userAccountYAfterSwap.amount)).toEqual(
+          expectedAmountReceived,
+        );
 
         const [poolTokenAccountX, poolTokenAccountY] =
           await getOrCreateAssociatedTokenAccountsMulti(
@@ -410,14 +414,17 @@ describe('darklake', () => {
           tokenYProgramId,
         );
 
-        expect(Number(poolAccountXAfterSwap.amount)).toEqual(initialLiquidityX + 1e5);
-        expect(Number(poolAccountYAfterSwap.amount)).toEqual(initialLiquidityY - expectedAmountReceived);
+        expect(Number(poolAccountXAfterSwap.amount)).toEqual(
+          initialLiquidityX + 1e5,
+        );
+        expect(Number(poolAccountYAfterSwap.amount)).toEqual(
+          initialLiquidityY - expectedAmountReceived,
+        );
       } catch (error) {
         console.error('Error performing confidential swap:', error);
         throw error;
       }
-    }, 10000000);
-
+    });
 
     it('Confidential Swap Y -> X', async () => {
       const initialLiquidityX = 1_000_000;
@@ -506,8 +513,10 @@ describe('darklake', () => {
 
         const expectedAmountReceived = 47619;
 
-        expect(Number(userAccountXAfterSwap.amount)).toEqual(expectedAmountReceived);;
-        expect(Number(userAccountYAfterSwap.amount)).toEqual(fundAmountY - 1e8)
+        expect(Number(userAccountXAfterSwap.amount)).toEqual(
+          expectedAmountReceived,
+        );
+        expect(Number(userAccountYAfterSwap.amount)).toEqual(fundAmountY - 1e8);
 
         const [poolTokenAccountX, poolTokenAccountY] =
           await getOrCreateAssociatedTokenAccountsMulti(
@@ -531,20 +540,24 @@ describe('darklake', () => {
           tokenYProgramId,
         );
 
-        expect(Number(poolAccountXAfterSwap.amount)).toEqual(initialLiquidityX - expectedAmountReceived);
-        expect(Number(poolAccountYAfterSwap.amount)).toEqual(initialLiquidityY + 1e8);
+        expect(Number(poolAccountXAfterSwap.amount)).toEqual(
+          initialLiquidityX - expectedAmountReceived,
+        );
+        expect(Number(poolAccountYAfterSwap.amount)).toEqual(
+          initialLiquidityY + 1e8,
+        );
       } catch (error) {
         console.error('Error performing confidential swap:', error);
         throw error;
       }
-    }, 10000000);
+    });
   });
 
   describe('Remove liquidity', () => {
     const amountX = 1_000_000;
     const amountY = 2_000_000_000;
 
-    it('Add and remove half', async () => {
+    it('Add and remove half liquidity', async () => {
       await fundTokenAccounts(
         provider.connection,
         payer,
@@ -577,8 +590,16 @@ describe('darklake', () => {
       const lpTokenBalance = await provider.connection.getTokenAccountBalance(
         userTokenAccountLp.address,
       );
-      const halfLpTokens = new anchor.BN(lpTokenBalance.value.amount).div(
-        new anchor.BN(2),
+      const halfUserLpTokens = Math.floor(
+        parseInt(lpTokenBalance.value.amount, 10) / 2,
+      );
+
+      const totalLiquidty = Math.floor(Math.sqrt(amountX * amountY));
+      // take into account initially burned liquidity
+      const userLpAfterMin = totalLiquidty - MIN_LIQUIDITY;
+
+      expect(halfUserLpTokens).toEqual(
+        Math.floor(userLpAfterMin / 2),
       );
 
       await removeLiquidity(
@@ -589,14 +610,25 @@ describe('darklake', () => {
         TOKEN_X,
         TOKEN_Y,
         TOKEN_LP,
-        halfLpTokens,
+        new anchor.BN(halfUserLpTokens),
+      );
+
+      const halfUserLpTokensAmountX = Math.floor(
+        (halfUserLpTokens * amountX) / totalLiquidty,
+      );
+      const halfUserLpTokensAmountY = Math.floor(
+        (halfUserLpTokens * amountY) / totalLiquidty,
       );
 
       const updatedPoolAccount = await program.account.pool.fetch(poolPubkey);
 
       // pool reserves
-      expect(updatedPoolAccount.reserveX.toNumber()).toEqual(amountX / 2);
-      expect(updatedPoolAccount.reserveY.toNumber()).toEqual(amountY / 2);
+      expect(updatedPoolAccount.reserveX.toNumber()).toEqual(
+        amountX - halfUserLpTokensAmountX,
+      );
+      expect(updatedPoolAccount.reserveY.toNumber()).toEqual(
+        amountY - halfUserLpTokensAmountY,
+      );
 
       // user LP tokens left
       const updatedUserLpBalance =
@@ -604,8 +636,8 @@ describe('darklake', () => {
           userTokenAccountLp.address,
         );
 
-      expect(new anchor.BN(updatedUserLpBalance.value.amount)).toEqual(
-        new anchor.BN(lpTokenBalance.value.amount).sub(halfLpTokens),
+      expect(parseInt(updatedUserLpBalance.value.amount, 10)).toEqual(
+        parseInt(lpTokenBalance.value.amount, 10) - halfUserLpTokens,
       );
 
       // user X/Y tokens
@@ -617,8 +649,12 @@ describe('darklake', () => {
         await provider.connection.getTokenAccountBalance(
           userTokenAccountY.address,
         );
-      expect(Number(updatedUserXBalance.value.amount)).toEqual(amountX / 2);
-      expect(Number(updatedUserYBalance.value.amount)).toEqual(amountY / 2);
-    }, 10000000);
+      expect(Number(updatedUserXBalance.value.amount)).toEqual(
+        halfUserLpTokensAmountX,
+      );
+      expect(Number(updatedUserYBalance.value.amount)).toEqual(
+        halfUserLpTokensAmountY,
+      );
+    });
   });
 });

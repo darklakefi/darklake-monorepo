@@ -1806,10 +1806,6 @@ export type Darklake = {
             "type": "u64"
           },
           {
-            "name": "liquidity",
-            "type": "u128"
-          },
-          {
             "name": "bump",
             "type": "u8"
           }

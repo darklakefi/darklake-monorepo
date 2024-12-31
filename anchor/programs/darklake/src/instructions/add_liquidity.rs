@@ -193,8 +193,6 @@ impl<'info> AddLiquidity<'info> {
             liquidity,
         )?;
 
-        self.pool.liquidity = self.pool.liquidity.checked_add(liquidity.into()).unwrap();
-
         emit!(LiquidityAdded {
             user: self.user.key(),
             amount_x,
