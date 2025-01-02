@@ -20,10 +20,10 @@ Devnet deployment tx: https://solana.fm/tx/UizYmmM6vazxs9si7XWBxP864SRrdJpXYE9H7
 
 ### Prerequisites
 
-- Node.js v18.18.0 or higher
-- Rust v1.77.2 or higher
-- Anchor CLI 0.30.1 or higher
-- Solana CLI 2.0.15 or higher
+- Node.js: v18.18.0 or higher
+- Rust: Up to v1.79.0 (higher versions tend to cause errors when building anchor)
+- Anchor CLI: 0.30.1 or higher
+- Solana CLI: 2.0.15 or higher
 
 **Optional testing**
 - Circom 2 or higher
