@@ -19,6 +19,9 @@ import {
 import { PublicKey } from '@solana/web3.js';
 
 describe('darklake', () => {
+  // project config support only after v30 jest
+  const TEST_TIMEOUT = 1000000;
+ 
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
   const payer = provider.wallet as anchor.Wallet;
@@ -219,7 +222,7 @@ describe('darklake', () => {
       );
       // burned
       expect(Number(zeroAccountLpInfo.amount)).toBe(MIN_LIQUIDITY);
-    });
+    }, TEST_TIMEOUT);
 
     it('Add liquidity twice', async () => {
       await addLiquidity(
@@ -296,7 +299,7 @@ describe('darklake', () => {
       );
       // burned
       expect(Number(zeroAccountLpInfo.amount)).toBe(MIN_LIQUIDITY);
-    });
+    }, TEST_TIMEOUT);
   });
 
   describe('Swap', () => {
@@ -424,7 +427,7 @@ describe('darklake', () => {
         console.error('Error performing confidential swap:', error);
         throw error;
       }
-    });
+    }, TEST_TIMEOUT);
 
     it('Confidential Swap Y -> X', async () => {
       const initialLiquidityX = 1_000_000;
@@ -550,7 +553,7 @@ describe('darklake', () => {
         console.error('Error performing confidential swap:', error);
         throw error;
       }
-    });
+    }, TEST_TIMEOUT);
   });
 
   describe('Remove liquidity', () => {
@@ -655,6 +658,6 @@ describe('darklake', () => {
       expect(Number(updatedUserYBalance.value.amount)).toEqual(
         halfUserLpTokensAmountY,
       );
-    });
+    }, TEST_TIMEOUT);
   });
 });

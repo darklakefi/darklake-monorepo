@@ -27,5 +27,6 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'html'],
   testEnvironment: '',
   coverageDirectory: '../coverage/anchor',
-  testTimeout: 10000000
+  // support only after v30 jest
+  // testTimeout: 10000000
 };
