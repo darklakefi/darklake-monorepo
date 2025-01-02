@@ -15,7 +15,7 @@ jobs:
 
       - name: Downgrade rust
         run: |
-          rustup default 1.79.0
+          rustup default 1.81.0
 
       - name: Install Node.js
         uses: actions/setup-node@v4
