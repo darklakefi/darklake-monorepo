@@ -357,15 +357,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "86fdf8605db99b54d3cd748a44c6d04df638eb5dafb219b135d0149bd0db01f6"
 
 [[package]]
-name = "arbitrary"
-version = "1.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dde20b3d026af13f561bdd0f15edf01fc734f0dafcedbaf42bba506a9517f223"
-dependencies = [
- "derive_arbitrary",
-]
-
-[[package]]
 name = "ark-bn254"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1329,17 +1320,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "derive_arbitrary"
-version = "1.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30542c1ad912e0e3d22a1935c290e12e8a29d704a420177a31faad4a601a0800"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.79",
-]
-
-[[package]]
 name = "dialoguer"
 version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1851,18 +1831,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "honggfuzz"
-version = "0.5.56"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c76b6234c13c9ea73946d1379d33186151148e0da231506b964b44f3d023505"
-dependencies = [
- "arbitrary",
- "lazy_static",
- "memmap2 0.9.5",
- "rustc_version",
-]
-
-[[package]]
 name = "http"
 version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2331,15 +2299,6 @@ name = "memmap2"
 version = "0.5.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "83faa42c0a078c393f6b29d5db232d8be22776a891f8f56e5284faee4a20b327"
-dependencies = [
- "libc",
-]
-
-[[package]]
-name = "memmap2"
-version = "0.9.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd3f7eed9d3848f8b98834af67102b720745c4ec028fcd0aa0239277e7de374f"
 dependencies = [
  "libc",
 ]
@@ -3720,7 +3679,7 @@ dependencies = [
  "im",
  "lazy_static",
  "log",
- "memmap2 0.5.10",
+ "memmap2",
  "rustc_version",
  "serde",
  "serde_bytes",
@@ -4127,7 +4086,7 @@ dependencies = [
  "lazy_static",
  "libsecp256k1",
  "log",
- "memmap2 0.5.10",
+ "memmap2",
  "num-derive 0.4.2",
  "num-traits",
  "num_enum 0.7.3",
@@ -4939,10 +4898,8 @@ name = "tests"
 version = "0.1.0"
 dependencies = [
  "anchor-client",
- "arbitrary",
  "darklake",
  "groth16-solana",
- "honggfuzz",
  "serde_json",
 ]
 
