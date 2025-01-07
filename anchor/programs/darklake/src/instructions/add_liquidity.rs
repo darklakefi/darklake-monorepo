@@ -52,16 +52,21 @@ pub struct AddLiquidity<'info> {
         payer = user
     )]
     pub user_token_account_lp: Box<InterfaceAccount<'info, TokenAccount>>,
-    #[account(mut,
+    // initialize pool doesn't create pool token accounts (X, Y)
+    #[account(
+        init_if_needed,
         associated_token::mint = token_mint_x,
         associated_token::authority = pool,
-        associated_token::token_program = token_mint_x_program.key(),
+        associated_token::token_program = token_mint_x_program,
+        payer = user
     )]
     pub pool_token_account_x: Box<InterfaceAccount<'info, TokenAccount>>,
-    #[account(mut,
+    #[account(
+        init_if_needed,
         associated_token::mint = token_mint_y,
         associated_token::authority = pool,
-        associated_token::token_program = token_mint_y_program.key(),
+        associated_token::token_program = token_mint_y_program,
+        payer = user
     )]
     pub pool_token_account_y: Box<InterfaceAccount<'info, TokenAccount>>,
     // burner account for LPs owned by system 
@@ -81,6 +86,8 @@ pub struct AddLiquidity<'info> {
 
 impl<'info> AddLiquidity<'info> {
     pub fn add_liquidity(&mut self, amount_x: u64, amount_y: u64) -> Result<()> {
+        msg!("Adding amounts of X: {}, Y: {}", amount_x, amount_y);
+
         // Add this check at the beginning of the function
         if self.token_mint_x.key() >= self.token_mint_y.key() {
             return Err(ErrorCode::InvalidTokenOrder.into());
@@ -90,6 +97,12 @@ impl<'info> AddLiquidity<'info> {
 
         let lp_token_supply = self.token_mint_lp.supply;
         msg!("LP Token Supply: {}", lp_token_supply);
+
+        let user_token_account_x_balance = self.user_token_account_x.amount;
+        msg!("User Token Account X Balance: {}", user_token_account_x_balance);
+
+        let user_token_account_y_balance = self.user_token_account_y.amount;
+        msg!("User Token Account Y Balance: {}", user_token_account_y_balance);
 
         // Calculate the liquidity to be added
         let liquidity = if pool.reserve_x == 0 && pool.reserve_y == 0 {

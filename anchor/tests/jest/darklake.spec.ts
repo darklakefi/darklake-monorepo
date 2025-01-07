@@ -125,7 +125,7 @@ describe('darklake', () => {
         .accountsPartial({
           tokenMintX: tokenX,
           tokenMintY: tokenY,
-          payer: payer.publicKey,
+          user: payer.publicKey,
         })
         .rpc();
     } catch (error) {

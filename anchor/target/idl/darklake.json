@@ -959,7 +959,7 @@
           }
         },
         {
-          "name": "payer",
+          "name": "user",
           "writable": true,
           "signer": true
         },

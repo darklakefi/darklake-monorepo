@@ -10,16 +10,18 @@ struct InstructionsSequence;
 /// For example, to call `InitializeFn`, `UpdateFn` and then `WithdrawFn` during
 /// each fuzzing iteration:
 /// ```
-/// use fuzz_instructions::{InitializeFn, UpdateFn, WithdrawFn};
-/// impl FuzzDataBuilder<FuzzInstruction> for InstructionsSequence {
-///     pre_sequence!(InitializeFn,UpdateFn);
-///     middle_sequence!(WithdrawFn);
-///}
-/// ```
-/// For more details, see: https://ackee.xyz/trident/docs/latest/features/instructions-sequences/#instructions-sequences
-impl FuzzDataBuilder<FuzzInstruction> for InstructionsSequence {}
-/// `fn fuzz_iteration` runs during every fuzzing iteration.
-/// Modification is not required.
+use fuzz_instructions::{InitializePool,AddLiquidity,RemoveLiquidity};
+impl FuzzDataBuilder<FuzzInstruction> for InstructionsSequence {
+     pre_sequence!(InitializePool);
+     middle_sequence!(AddLiquidity);
+     post_sequence!(RemoveLiquidity);
+}
+// ```
+// For more details, see: https://ackee.xyz/trident/docs/latest/features/instructions-sequences/#instructions-sequences
+// impl FuzzDataBuilder<FuzzInstruction> for InstructionsSequence {}
+// `fn fuzz_iteration` runs during every fuzzing iteration.
+// Modification is not required.
+// ```
 fn fuzz_iteration<T: FuzzTestExecutor<U> + std::fmt::Display, U>(
     fuzz_data: FuzzData<T, U>,
     config: &Config,

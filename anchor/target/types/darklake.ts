@@ -965,7 +965,7 @@ export type Darklake = {
           }
         },
         {
-          "name": "payer",
+          "name": "user",
           "writable": true,
           "signer": true
         },
