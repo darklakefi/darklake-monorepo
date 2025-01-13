@@ -14,6 +14,29 @@ assert_matches = "1.4.0"
 mpl-token-metadata = "4.1.2"
 anchor-spl = "0.30.1"
 
+ark-circom = { git = "https://github.com/aptos-labs/circom-compat", rev = "e3d686641a3dd9d66087a74acdc20dc2a3c24f63", default-features = false, features = ["circom-2"]}
+ark-bn254 = "0.4.0"
+ark-ec = { version = "0.4.1", default-features = false, features = ["parallel"] }
+
+ark-groth16 = { version = "0.4.0", default-features = false, features = ["parallel"] }
+ark-std = { version = "0.4.0", default-features = false, features = ["parallel"] }
+
+# ark-std = { version = "0.4.0", default-features = false, features = ["getrandom", "parallel"] }
+ark-crypto-primitives = { version = "0.4.0" }
+# ark-serialize = { version = "0.4.2", default-features = false }
+# ark-relations = { version = "0.4.0", default-features = false }
+# ark-ff = { version = "0.4.1", default-features = false, features = ["parallel", "asm"] }
+ark-relations = { version = "0.4.0", default-features = false }
+
+
+byteorder = "1.4.3"
+num-traits = { version = "0.2.15", default-features = false }
+num-bigint = { version = "0.4.3", default-features = false, features = ["rand"] }
+
+# wasmer = "5.0.3"
+# backtrace = "0.3.71"
+# subtle = "2.5.0"
+
 [dependencies.trident-client]
 version = "0.8.1"
 
