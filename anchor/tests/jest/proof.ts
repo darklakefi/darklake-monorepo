@@ -10,11 +10,12 @@ import {
 } from '../../src/utils';
 
 export async function generateProof(
-  privateInputs: { privateInputAmount: string; privateMinReceived: string },
+  privateInputs: { privateMinReceived: string },
   publicInputs: {
-    publicBalanceX: string;
-    publicBalanceY: string;
+    inputAmount: string;
     isSwapXtoY: number;
+    reserveX: string;
+    reserveY: string;
   },
 ): Promise<{
   proofA: Uint8Array;
@@ -27,14 +28,14 @@ export async function generateProof(
     '../../../circuits/swap_js',
     'swap.wasm',
   );
-  const zkeyPath = path.join(__dirname, '../../../circuits', 'swap_0001.zkey');
+  const zkeyPath = path.join(__dirname, '../../../circuits', 'swap_final.zkey');
 
   const input = {
-    privateInputAmount: privateInputs.privateInputAmount,
     privateMinReceived: privateInputs.privateMinReceived,
-    publicBalanceX: publicInputs.publicBalanceX,
-    publicBalanceY: publicInputs.publicBalanceY,
+    inputAmount: publicInputs.inputAmount,
     isSwapXtoY: publicInputs.isSwapXtoY.toString(),
+    reserveX: publicInputs.reserveX,
+    reserveY: publicInputs.reserveY,
   };
 
   const { proof, publicSignals } = await snarkjs.groth16.fullProve(

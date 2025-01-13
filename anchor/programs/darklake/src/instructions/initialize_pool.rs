@@ -1,17 +1,23 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{Mint as SplMint, initialize_mint, InitializeMint, Token as SplToken};
-use anchor_spl::token_interface::Mint;
 use anchor_lang::system_program::{create_account, CreateAccount};
+use anchor_spl::token::{initialize_mint, InitializeMint, Mint as SplMint, Token as SplToken};
+use anchor_spl::token_interface::Mint;
 use mpl_token_metadata::instructions::CreateMetadataAccountV3CpiBuilder;
 use mpl_token_metadata::types::DataV2;
 use mpl_token_metadata::ID as TOKEN_METADATA_PROGRAM_ID;
 
-use crate::state::Pool;
 use crate::errors::ErrorCode;
+use crate::state::Pool;
 
 #[derive(Accounts)]
 pub struct InitializePool<'info> {
-    #[account(init, payer = payer, space = 8 + Pool::INIT_SPACE, seeds = [b"pool", token_mint_x.key().as_ref(), token_mint_y.key().as_ref()], bump)]
+    #[account(
+        init,
+        payer = user,
+        space = 8 + Pool::INIT_SPACE,
+        seeds = [b"pool", token_mint_x.key().as_ref(), token_mint_y.key().as_ref()],
+        bump)
+    ]
     pub pool: Account<'info, Pool>,
     pub token_mint_x: InterfaceAccount<'info, Mint>,
     pub token_mint_y: InterfaceAccount<'info, Mint>,
@@ -31,7 +37,7 @@ pub struct InitializePool<'info> {
     )]
     pub metadata_account: UncheckedAccount<'info>,
     #[account(mut)]
-    pub payer: Signer<'info>,
+    pub user: Signer<'info>,
     pub lp_token_program: Program<'info, SplToken>,
     /// CHECK: metaplex account
     #[account(address = mpl_token_metadata::ID)]
@@ -41,10 +47,7 @@ pub struct InitializePool<'info> {
 }
 
 impl<'info> InitializePool<'info> {
-    pub fn initialize_pool(
-        &mut self,
-        bump: u8,
-    ) -> Result<()> {
+    pub fn initialize_pool(&mut self, bump: u8) -> Result<()> {
         if self.token_mint_x.key() >= self.token_mint_y.key() {
             return Err(ErrorCode::InvalidTokenOrder.into());
         }
@@ -61,7 +64,7 @@ impl<'info> InitializePool<'info> {
         if lp_address != self.token_mint_lp.key() {
             return Err(ErrorCode::InvalidLpMint.into());
         }
-        
+
         let lp_account_info = self.token_mint_lp.to_account_info();
         if lp_account_info.data_len() != SplMint::LEN {
             self.initialize_lp_mint(&self.token_mint_x.key(), &self.token_mint_y.key(), lp_bump)?;
@@ -69,11 +72,15 @@ impl<'info> InitializePool<'info> {
             return Err(ErrorCode::LpMintAlreadyInitialized.into());
         }
 
-
         Ok(())
     }
-    
-    fn initialize_lp_mint(&self, token_mint_x: &Pubkey, token_mint_y: &Pubkey, lp_bump: u8) -> Result<()> {
+
+    fn initialize_lp_mint(
+        &self,
+        token_mint_x: &Pubkey,
+        token_mint_y: &Pubkey,
+        lp_bump: u8,
+    ) -> Result<()> {
         // Create the mint account
         let rent = Rent::get()?;
         let space = SplMint::LEN;
@@ -90,10 +97,10 @@ impl<'info> InitializePool<'info> {
             CpiContext::new_with_signer(
                 self.system_program.to_account_info(),
                 CreateAccount {
-                    from: self.payer.to_account_info(),
+                    from: self.user.to_account_info(),
                     to: self.token_mint_lp.to_account_info(),
                 },
-                &[&signer_seeds[..]]
+                &[&signer_seeds[..]],
             ),
             lamports,
             space as u64,
@@ -108,23 +115,23 @@ impl<'info> InitializePool<'info> {
                     mint: self.token_mint_lp.to_account_info(),
                     rent: self.rent.to_account_info(),
                 },
-                &[&signer_seeds[..]]
+                &[&signer_seeds[..]],
             ),
             9,
             &self.pool.key(),
             None,
         )?;
-        
+
         let data = DataV2 {
             // TODO: Update with name and symbol of the pool
             name: "Darklake LP Token".to_string(),
             symbol: "DLLP".to_string(),
             // TODO: Make this an API call to get the pool metadata
             uri: "https://darklake.fi".to_string(),
-            seller_fee_basis_points:0,
-            creators:None,
-            collection:None,
-            uses:None,
+            seller_fee_basis_points: 0,
+            creators: None,
+            collection: None,
+            uses: None,
         };
 
         let token_mint_lp_key = self.token_mint_lp.key();
@@ -134,7 +141,8 @@ impl<'info> InitializePool<'info> {
             TOKEN_METADATA_PROGRAM_ID.as_ref(),
             token_mint_lp_key.as_ref(),
         ];
-        let (metadata_address, _) = Pubkey::find_program_address(metadata_seeds, &TOKEN_METADATA_PROGRAM_ID);
+        let (metadata_address, _) =
+            Pubkey::find_program_address(metadata_seeds, &TOKEN_METADATA_PROGRAM_ID);
 
         if metadata_address != self.metadata_account.key() {
             return Err(ErrorCode::InvalidMetadataAccount.into());
@@ -151,7 +159,7 @@ impl<'info> InitializePool<'info> {
             .metadata(&self.metadata_account.to_account_info())
             .mint(&self.token_mint_lp.to_account_info())
             .mint_authority(&self.pool.to_account_info())
-            .payer(&self.payer.to_account_info())
+            .payer(&self.user.to_account_info())
             .update_authority(&self.pool.to_account_info(), true)
             .is_mutable(true)
             .data(data)

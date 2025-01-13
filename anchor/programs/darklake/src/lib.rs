@@ -56,7 +56,7 @@ pub mod darklake {
         proof_a: [u8; 64],
         proof_b: [u8; 128],
         proof_c: [u8; 64],
-        public_inputs: [[u8; 32]; 3]
+        public_inputs: [[u8; 32]; 7]
     ) -> Result<()> {
         ctx.accounts.confidential_swap(proof_a, proof_b, proof_c, public_inputs)
     }

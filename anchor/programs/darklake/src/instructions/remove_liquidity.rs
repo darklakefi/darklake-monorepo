@@ -68,19 +68,27 @@ impl<'info> RemoveLiquidity<'info> {
         msg!("Removing liquidity: {}", amount);
         msg!("Reserve X: {}", self.pool.reserve_x);
         msg!("Reserve Y: {}", self.pool.reserve_y);
-        msg!("Liquidity: {}", self.pool.liquidity);
+
+        let lp_token_supply = self.token_mint_lp.supply;
+        msg!("Liquidity: {}", lp_token_supply);
 
         let amount_x = (amount as u128)
             .checked_mul(self.pool.reserve_x as u128)
-            .and_then(|product| product.checked_div(self.pool.liquidity as u128))
+            .and_then(|product| product.checked_div(lp_token_supply as u128))
             .and_then(|result| u64::try_from(result).ok())
             .ok_or(ErrorCode::MathOverflow)?;
 
         let amount_y = (amount as u128)
             .checked_mul(self.pool.reserve_y as u128)
-            .and_then(|product| product.checked_div(self.pool.liquidity as u128))
+            .and_then(|product| product.checked_div(lp_token_supply as u128))
             .and_then(|result| u64::try_from(result).ok())
             .ok_or(ErrorCode::MathOverflow)?;
+
+        // TODO: review if this breaks anything if removed
+        // allow burning liquidity even if one of the tokens is 0
+        if amount_x == 0 && amount_y == 0 {
+            return Err(ErrorCode::LiquidityTooLow.into());
+        }
 
         msg!("Amount X: {}", amount_x);
         msg!("Amount Y: {}", amount_y);
@@ -138,8 +146,6 @@ impl<'info> RemoveLiquidity<'info> {
             self.token_mint_y.decimals,
         )?;
         self.pool.reserve_y = self.pool.reserve_y.checked_sub(amount_y).unwrap();
-
-        self.pool.liquidity = self.pool.liquidity.checked_sub(amount.into()).unwrap();
 
         emit!(LiquidityRemoved {
             user: self.user.key(),

@@ -3,6 +3,7 @@ import * as path from 'path';
 
 // Add this function at the top of your test file, outside of any describe blocks
 // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+// currently not used due to no flexibility in amount received allowed
 function isWithinTolerance(
   actual: bigint,
   expected: bigint,
@@ -30,11 +31,11 @@ describe('ZK Constant Sum AMM Swap', () => {
 
   it('should perform a valid swap from X to Y', async () => {
     const input = {
-      privateInputAmount: 100,
-      privateMinReceived: 1,
-      publicBalanceX: 1000,
-      publicBalanceY: 1000,
+      privateMinReceived: 0,
+      inputAmount: 100,
       isSwapXtoY: 1,
+      reserveX: 1000,
+      reserveY: 1000,
     };
 
     const witness = await circuit.calculateWitness(input);
@@ -42,27 +43,21 @@ describe('ZK Constant Sum AMM Swap', () => {
 
     await circuit.loadSymbols();
 
-    const newBalanceX = circuit.symbols['main.newBalanceX'];
-    const newBalanceY = circuit.symbols['main.newBalanceY'];
+    const newReserveX = circuit.symbols['main.newReserveX'];
+    const newReserveY = circuit.symbols['main.newReserveY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
 
-    expect(isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 1100n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[newBalanceY.varIdx]), 909n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 91n)).toBe(
-      true,
-    );
+    expect(BigInt(witness[newReserveX.varIdx])).toEqual(1100n);
+    expect(BigInt(witness[newReserveY.varIdx])).toEqual(910n);
+    expect(BigInt(witness[amountReceived.varIdx])).toEqual(90n);
   });
 
   it('should perform a valid swap with larger values', async () => {
     const input = {
-      privateInputAmount: 100000,
       privateMinReceived: 99000,
-      publicBalanceX: 1100000,
-      publicBalanceY: 1900000,
+      inputAmount: 100000,
+      reserveX: 1100000,
+      reserveY: 1900000,
       isSwapXtoY: 1,
     };
 
@@ -71,28 +66,22 @@ describe('ZK Constant Sum AMM Swap', () => {
 
     await circuit.loadSymbols();
 
-    const newBalanceX = circuit.symbols['main.newBalanceX'];
-    const newBalanceY = circuit.symbols['main.newBalanceY'];
+    const newReserveX = circuit.symbols['main.newReserveX'];
+    const newReserveY = circuit.symbols['main.newReserveY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
 
-    expect(
-      isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 1200000n),
-    ).toBe(true);
-    expect(
-      isWithinTolerance(BigInt(witness[newBalanceY.varIdx]), 1741667n),
-    ).toBe(true);
-    expect(
-      isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 158333n),
-    ).toBe(true);
+    expect(BigInt(witness[newReserveX.varIdx])).toEqual(1200000n);
+    expect(BigInt(witness[newReserveY.varIdx])).toEqual(1741667n);
+    expect(BigInt(witness[amountReceived.varIdx])).toEqual(158333n);
   });
 
   // Add a new test for swapping Y to X
   it('should perform a valid swap from Y to X', async () => {
     const input = {
-      privateInputAmount: 100,
       privateMinReceived: 90,
-      publicBalanceX: 1000,
-      publicBalanceY: 1000,
+      inputAmount: 100,
+      reserveX: 1000,
+      reserveY: 1000,
       isSwapXtoY: 0,
     };
 
@@ -101,19 +90,36 @@ describe('ZK Constant Sum AMM Swap', () => {
 
     await circuit.loadSymbols();
 
-    const newBalanceX = circuit.symbols['main.newBalanceX'];
-    const newBalanceY = circuit.symbols['main.newBalanceY'];
+    const newReserveX = circuit.symbols['main.newReserveX'];
+    const newReserveY = circuit.symbols['main.newReserveY'];
     const amountReceived = circuit.symbols['main.amountReceived'];
 
-    expect(isWithinTolerance(BigInt(witness[newBalanceX.varIdx]), 909n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[newBalanceY.varIdx]), 1100n)).toBe(
-      true,
-    );
-    expect(isWithinTolerance(BigInt(witness[amountReceived.varIdx]), 91n)).toBe(
-      true,
-    );
+    expect(BigInt(witness[newReserveX.varIdx])).toEqual(910n);
+    expect(BigInt(witness[newReserveY.varIdx])).toEqual(1100n);
+    expect(BigInt(witness[amountReceived.varIdx])).toEqual(90n);
+  });
+
+  it('should round output down if fraction exists', async () => {
+    const input = {
+      privateMinReceived: 90,
+      inputAmount: 100,
+      reserveX: 1000,
+      reserveY: 1000,
+      isSwapXtoY: 0,
+    };
+
+    const witness = await circuit.calculateWitness(input);
+    await circuit.checkConstraints(witness);
+
+    await circuit.loadSymbols();
+
+    const newReserveX = circuit.symbols['main.newReserveX'];
+    const newReserveY = circuit.symbols['main.newReserveY'];
+    const amountReceived = circuit.symbols['main.amountReceived'];
+
+    expect(BigInt(witness[newReserveX.varIdx])).toEqual(910n);
+    expect(BigInt(witness[newReserveY.varIdx])).toEqual(1100n);
+    expect(BigInt(witness[amountReceived.varIdx])).toEqual(90n);
   });
 });
 
@@ -132,10 +138,12 @@ describe('ReciprocalDivision', () => {
 
   const testCases = [
     { dividend: 1000n, divisor: 10n, expected: 100n },
-    { dividend: 1000n, divisor: 3n, expected: 333n },
+    { dividend: 1000n, divisor: 3n, expected: 334n },
     { dividend: 1000000n, divisor: 1000n, expected: 1000n },
-    { dividend: 1234567n, divisor: 1000n, expected: 1234n },
-    { dividend: 1000000000n, divisor: 3n, expected: 333333333n },
+    { dividend: 1000000000000001n, divisor: 1000000000000n, expected: 1001n },
+    { dividend: 1234567n, divisor: 1000n, expected: 1235n },
+    { dividend: 1000000000n, divisor: 3n, expected: 333333334n },
+    { dividend: 2000000000000000n, divisor: 1100000n, expected: 1818181819n },
   ];
 
   testCases.forEach(({ dividend, divisor, expected }) => {
@@ -153,8 +161,8 @@ describe('ReciprocalDivision', () => {
       const quotientSymbol = divisionCircuit.symbols['main.quotient'];
       const quotient = witness[quotientSymbol.varIdx];
 
-      // Allow for small rounding errors
-      const tolerance = 1n;
+      // Don't allow any deviation
+      const tolerance = 0n;
       expect(quotient).toBeGreaterThanOrEqual(expected - tolerance);
       expect(quotient).toBeLessThanOrEqual(expected + tolerance);
     });

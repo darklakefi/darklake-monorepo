@@ -19,7 +19,11 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
+# NX runner
 test = "../node_modules/.bin/nx run anchor:jest"
+# Run without NX cache
+# test = "../node_modules/.bin/jest"
+
 
 [test]
 startup_wait = 5000
@@ -42,4 +46,4 @@ address = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
 address = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
 
 [[test.validator.clone]]
-address = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"  
+address = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
