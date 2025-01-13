@@ -387,18 +387,16 @@ impl IxOps for AddLiquidity {
         let pool_token_account_y =
             anchor_spl::token::TokenAccount::try_deserialize(&mut post_ix[11].data());
 
-        if let Err(pool_token_account_x) = pool_token_account_x {
-            // failed parsing
+        // failed parsing
+        if pool_token_account_x.is_err() {
             return Err(FuzzingError::Custom(1));
         }
 
-        if let Err(pool_token_account_y) = pool_token_account_y {
-            // failed parsing
+        if pool_token_account_y.is_err() {
             return Err(FuzzingError::Custom(2));
         }
 
-        if let Err(lp_token_mint) = lp_token_mint {
-            // failed parsing
+        if lp_token_mint.is_err() {
             return Err(FuzzingError::Custom(3));
         }
 
@@ -667,35 +665,35 @@ impl IxOps for InitializePool {
         post_ix: &[SnapshotAccount],
         _ix_data: Self::IxData,
     ) -> Result<(), FuzzingError> {
+        
         // pool info
-
         let post_pool = darklake::state::Pool::try_deserialize(&mut post_ix[0].data());
 
-        if let Err(post_pool) = post_pool {
-            // failed parsing
+        // failed parsing
+        if post_pool.is_err() {
             return Err(FuzzingError::Custom(1));
         }
 
-        if let Ok(post_pool) = post_pool {
-            // did set token mint x
-            if post_pool.token_mint_x == Pubkey::default() {
-                return Err(FuzzingError::Custom(2));
-            }
+        let post_pool = post_pool.unwrap();
 
-            // did set token mint y
-            if post_pool.token_mint_y == Pubkey::default() {
-                return Err(FuzzingError::Custom(3));
-            }
+        // did set token mint x
+        if post_pool.token_mint_x == Pubkey::default() {
+            return Err(FuzzingError::Custom(2));
+        }
 
-            // reserve x should be 0 after initialization
-            if post_pool.reserve_x != 0 {
-                return Err(FuzzingError::Custom(4));
-            }
+        // did set token mint y
+        if post_pool.token_mint_y == Pubkey::default() {
+            return Err(FuzzingError::Custom(3));
+        }
 
-            // reserve y should be 0 after initialization
-            if post_pool.reserve_y != 0 {
-                return Err(FuzzingError::Custom(5));
-            }
+        // reserve x should be 0 after initialization
+        if post_pool.reserve_x != 0 {
+            return Err(FuzzingError::Custom(4));
+        }
+
+        // reserve y should be 0 after initialization
+        if post_pool.reserve_y != 0 {
+            return Err(FuzzingError::Custom(5));
         }
 
         Ok(())
@@ -909,26 +907,20 @@ impl IxOps for RemoveLiquidity {
         let pool_token_account_y =
             anchor_spl::token::TokenAccount::try_deserialize(&mut post_ix[11].data());
 
-        let pool_token_account_y =
-            anchor_spl::token::TokenAccount::try_deserialize(&mut post_ix[11].data());
-
-        if let Err(pool_token_account_x) = pool_token_account_x {
-            // failed parsing
+        // failed parsing
+        if pool_token_account_x.is_err() {
             return Err(FuzzingError::Custom(1));
         }
 
-        if let Err(pool_token_account_y) = pool_token_account_y {
-            // failed parsing
+        if pool_token_account_y.is_err() {
             return Err(FuzzingError::Custom(2));
         }
 
-        if let Err(lp_token_mint) = lp_token_mint {
-            // failed parsing
+        if lp_token_mint.is_err() {
             return Err(FuzzingError::Custom(3));
         }
 
-        if let Err(user_token_account_lp) = user_token_account_lp {
-            // failed parsing
+        if user_token_account_lp.is_err() {
             return Err(FuzzingError::Custom(4));
         }
 
@@ -1000,6 +992,7 @@ impl IxOps for RemoveLiquidity {
 //         Ok((signers, acc_meta))
 //     }
 // }
+
 /// Check supported AccountsStorages at
 /// https://ackee.xyz/trident/docs/latest/features/account-storages/
 #[derive(Default)]
