@@ -3,6 +3,10 @@ mod fuzz_instructions;
 use darklake::entry as entry_darklake;
 use darklake::ID as PROGRAM_ID;
 use fuzz_instructions::FuzzInstruction;
+mod utils;
+use utils::set_token_decimals;
+use rand::Rng;
+
 const PROGRAM_NAME: &str = "darklake";
 struct InstructionsSequence;
 /// Define instruction sequences for invocation.
@@ -10,11 +14,11 @@ struct InstructionsSequence;
 /// For example, to call `InitializeFn`, `UpdateFn` and then `WithdrawFn` during
 /// each fuzzing iteration:
 /// ```
-use fuzz_instructions::{InitializePool,AddLiquidity,RemoveLiquidity};
+use fuzz_instructions::{AddLiquidity, InitializePool, RemoveLiquidity};
 impl FuzzDataBuilder<FuzzInstruction> for InstructionsSequence {
-     pre_sequence!(InitializePool);
-     middle_sequence!(AddLiquidity);
-     post_sequence!(RemoveLiquidity);
+    pre_sequence!(InitializePool);
+    middle_sequence!(AddLiquidity);
+    post_sequence!(RemoveLiquidity);
 }
 // ```
 // For more details, see: https://ackee.xyz/trident/docs/latest/features/instructions-sequences/#instructions-sequences
@@ -32,6 +36,13 @@ fn fuzz_iteration<T: FuzzTestExecutor<U> + std::fmt::Display, U>(
         processor!(convert_entry!(entry_darklake)),
     );
     let mut client = ProgramTestClientBlocking::new(&[fuzzing_program_darklake], config).unwrap();
+
+    // outside flow decimal generation to persist across all instructions
+    let mut rng = rand::thread_rng();
+    let token_decimals_x: u8 = rng.gen_range(0..18);
+    let token_decimals_y: u8 = rng.gen_range(0..18);
+
+    set_token_decimals(token_decimals_x, token_decimals_y);
     let _ = fuzz_data.run_with_runtime(&mut client, config);
 }
 fn main() {

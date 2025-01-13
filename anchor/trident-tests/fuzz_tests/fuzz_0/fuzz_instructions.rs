@@ -1,4 +1,5 @@
 use trident_client::fuzzing::*;
+use crate::utils::{get_token_x_decimals, get_token_y_decimals};
 
 /// FuzzInstruction contains all available Instructions.
 /// Below, the instruction arguments (accounts and data) are defined.
@@ -101,6 +102,7 @@ pub struct InitializePoolAccounts {
 /// For more details, see: https://ackee.xyz/trident/docs/latest/features/fuzz-instructions/#custom-data-types
 #[derive(Arbitrary, Debug)]
 pub struct InitializePoolData {}
+
 #[derive(Arbitrary, Debug)]
 pub struct RemoveLiquidity {
     pub accounts: RemoveLiquidityAccounts,
@@ -159,6 +161,9 @@ pub struct UpgradePoolAccounts {
 #[derive(Arbitrary, Debug)]
 pub struct UpgradePoolData {}
 
+
+
+
 // ADD LIQUIDITY
 
 ///IxOps implementation for `AddLiquidity` with all required functions.
@@ -212,12 +217,12 @@ impl IxOps for AddLiquidity {
         let mut token_mint_x =
             fuzz_accounts
                 .token_mint_x
-                .get_or_create_account(10, client, 6, &user.pubkey(), None);
+                .get_or_create_account(10, client, get_token_x_decimals(), &user.pubkey(), None);
 
         let mut token_mint_y =
             fuzz_accounts
                 .token_mint_y
-                .get_or_create_account(11, client, 6, &user.pubkey(), None);
+                .get_or_create_account(11, client, get_token_y_decimals(), &user.pubkey(), None);
 
         if token_mint_x.key() > token_mint_y.key() {
             std::mem::swap(&mut token_mint_x, &mut token_mint_y);
@@ -601,12 +606,12 @@ impl IxOps for InitializePool {
         let mut token_mint_x =
             fuzz_accounts
                 .token_mint_x
-                .get_or_create_account(10, client, 6, &user.pubkey(), None);
+                .get_or_create_account(10, client, get_token_x_decimals(), &user.pubkey(), None);
 
         let mut token_mint_y =
             fuzz_accounts
                 .token_mint_y
-                .get_or_create_account(11, client, 6, &user.pubkey(), None);
+                .get_or_create_account(11, client, get_token_y_decimals(), &user.pubkey(), None);
 
         if token_mint_x.key() > token_mint_y.key() {
             std::mem::swap(&mut token_mint_x, &mut token_mint_y);
@@ -729,12 +734,12 @@ impl IxOps for RemoveLiquidity {
         let mut token_mint_x =
         _fuzz_accounts
                 .token_mint_x
-                .get_or_create_account(10, _client, 6, &user.pubkey(), None);
+                .get_or_create_account(10, _client, get_token_x_decimals(), &user.pubkey(), None);
 
         let mut token_mint_y =
         _fuzz_accounts
                 .token_mint_y
-                .get_or_create_account(11, _client, 6, &user.pubkey(), None);
+                .get_or_create_account(11, _client, get_token_y_decimals(), &user.pubkey(), None);
 
         if token_mint_x.key() > token_mint_y.key() {
             std::mem::swap(&mut token_mint_x, &mut token_mint_y);
