@@ -8,6 +8,7 @@ import {
 import { Darklake } from '../../target/types/darklake';
 import { Connection, sendAndConfirmTransaction } from '@solana/web3.js';
 import { generateProof } from './proof';
+import { ibrlGenerateProof, IbrlInputs } from './ibrl_proof';
 // uncomment to run simulations
 // import { simulateTransaction } from '@coral-xyz/anchor/dist/cjs/utils/rpc';
 
@@ -239,8 +240,7 @@ export const ibrlSwap = async (
   poolPubkey: anchor.web3.PublicKey,
   tokenXMintAndProgramId: TokenMintAndProgramId,
   tokenYMintAndProgramId: TokenMintAndProgramId,
-  publicInputs,
-  privateInputs,
+  inputs: IbrlInputs,
 ) => {
   const [userTokenAccountX, userTokenAccountY] =
     await getOrCreateAssociatedTokenAccountsMulti(
@@ -260,10 +260,8 @@ export const ibrlSwap = async (
       [tokenXMintAndProgramId, tokenYMintAndProgramId],
     );
 
-  const { proofA, proofB, proofC, publicSignals } = await generateProof(
-    privateInputs,
-    publicInputs,
-  );
+  const { proofA, proofB, proofC, publicSignals } =
+    await ibrlGenerateProof(inputs);
 
   const tx = await program.methods
     .ibrlSwap(
@@ -302,7 +300,12 @@ export const ibrlSwap = async (
   // const resSim = await simulateTransaction(connection, tx, [payer.payer]);
   // console.info('resSim:', resSim);
 
-  await sendAndConfirmTransaction(connection, tx, [payer.payer]);
+  try {
+    await sendAndConfirmTransaction(connection, tx, [payer.payer]);
+  } catch (error) {
+    console.log('Error performing IBRL swap:', error.logs);
+    throw error;
+  }
 };
 export const removeLiquidity = async (
   connection: Connection,

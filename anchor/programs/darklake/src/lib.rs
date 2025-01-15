@@ -25,6 +25,7 @@ use anchor_lang::prelude::*;
 ///   - `proof_c`: The third part of the zero-knowledge proof (64 bytes).
 ///   - `public_inputs`: The public inputs for the zero-knowledge proof (2 32-byte arrays).
 
+pub mod debug;
 pub mod instructions;
 pub mod state;
 pub mod errors;

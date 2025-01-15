@@ -3,9 +3,10 @@ use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 use anchor_spl::associated_token::AssociatedToken;
 use groth16_solana::groth16::Groth16Verifier;
 
+use crate::debug;
 use crate::state::Pool;
 use crate::errors::ErrorCode;
-use crate::constants::VERIFYINGKEY;
+use crate::constants::IBRL_VERIFYINGKEY;
 use crate::zk::*;
 
 #[derive(Accounts)]
@@ -71,12 +72,14 @@ impl<'info> IbrlSwap<'info> {
             &proof_b,
             &proof_c,
             &output_signals,
-            &VERIFYINGKEY,
+            &IBRL_VERIFYINGKEY,
         ).map_err(|_| ErrorCode::InvalidGroth16Verifier)?;
 
         // Verify the proof
         let verified = verifier_result.verify().map_err(|_| ErrorCode::InvalidProof)?;
         require!(verified, ErrorCode::InvalidProof);
+
+        debug!("Proof verified, trying transform");
         
         // Extract the circuit outputs correctly
         let initial_point = u128::from_be_bytes(output_signals[0][16..].try_into().unwrap());
@@ -95,6 +98,10 @@ impl<'info> IbrlSwap<'info> {
             commitment1: 0, // Not needed for verification
             commitment2,    // Contains the output ratio that should be preserved
         };
+        
+        debug!("Initial point: {}", initial_point);
+        debug!("Final point: {}", final_point);
+        debug!("Commitment2: {}", commitment2);
 
         let result = verify_transform(&real_state, &proof_output).map_err(|_| ErrorCode::InvalidProof)?;
         require!(result, ErrorCode::InvalidProof);

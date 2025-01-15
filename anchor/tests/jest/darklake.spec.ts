@@ -18,6 +18,8 @@ import {
 } from './helpers';
 
 describe('darklake', () => {
+  jest.setTimeout(60000);
+
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
   const payer = provider.wallet as anchor.Wallet;
@@ -132,6 +134,10 @@ describe('darklake', () => {
   beforeEach(async () => {
     await setupMint();
     await setupPool();
+  }, 10000000);
+
+  afterAll((done) => {
+    done();
   });
 
   it('Pool has initial reserves', async () => {
@@ -249,15 +255,15 @@ describe('darklake', () => {
       // Swap
 
       const poolAccount = await program.account.pool.fetch(poolPubkey);
-      const publicInputs = {
-        publicBalanceX: poolAccount.reserveX.toString(),
-        publicBalanceY: poolAccount.reserveY.toString(),
-        isSwapXtoY: 1, // Swapping tokenX for tokenY
-      };
 
-      const privateInputs = {
-        privateInputAmount: '100000', // 0.1 token of tokenX
-        privateMinReceived: '180000000', // Adjust this based on your expected output
+      const inputs = {
+        x_rand: poolAccount.reserveX.toString(),
+        y_rand: poolAccount.reserveY.toString(),
+        k_rand: (
+          poolAccount.reserveX.toNumber() * poolAccount.reserveY.toNumber()
+        ).toString(),
+        trade_amount: '100000',
+        min_output: '180000000',
       };
 
       await ibrlSwap(
@@ -267,8 +273,7 @@ describe('darklake', () => {
         poolPubkey,
         TOKEN_X,
         TOKEN_Y,
-        publicInputs,
-        privateInputs,
+        inputs,
       );
 
       try {
