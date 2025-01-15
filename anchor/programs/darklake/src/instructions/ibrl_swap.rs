@@ -51,7 +51,7 @@ pub struct IbrlSwap<'info> {
 }
 
 impl<'info> IbrlSwap<'info> {
-    pub fn swap(
+    pub fn ibrl_swap(
         &self,
         proof_a: [u8; 64],
         proof_b: [u8; 128],

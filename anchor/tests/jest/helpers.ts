@@ -232,6 +232,78 @@ export const swap = async (
   await sendAndConfirmTransaction(connection, tx, [payer.payer]);
 };
 
+export const ibrlSwap = async (
+  connection: Connection,
+  program: anchor.Program<Darklake>,
+  payer: anchor.Wallet,
+  poolPubkey: anchor.web3.PublicKey,
+  tokenXMintAndProgramId: TokenMintAndProgramId,
+  tokenYMintAndProgramId: TokenMintAndProgramId,
+  publicInputs,
+  privateInputs,
+) => {
+  const [userTokenAccountX, userTokenAccountY] =
+    await getOrCreateAssociatedTokenAccountsMulti(
+      connection,
+      false,
+      payer,
+      payer.publicKey,
+      [tokenXMintAndProgramId, tokenYMintAndProgramId],
+    );
+
+  const [poolTokenAccountX, poolTokenAccountY] =
+    await getOrCreateAssociatedTokenAccountsMulti(
+      connection,
+      true,
+      payer,
+      poolPubkey,
+      [tokenXMintAndProgramId, tokenYMintAndProgramId],
+    );
+
+  const { proofA, proofB, proofC, publicSignals } = await generateProof(
+    privateInputs,
+    publicInputs,
+  );
+
+  const tx = await program.methods
+    .ibrlSwap(
+      Array.from(proofA),
+      Array.from(proofB),
+      Array.from(proofC),
+      publicSignals.map((signal) => Array.from(signal)),
+    )
+    .accountsPartial({
+      tokenMintX: tokenXMintAndProgramId.mint,
+      tokenMintY: tokenYMintAndProgramId.mint,
+      tokenMintXProgram: tokenXMintAndProgramId.programId,
+      tokenMintYProgram: tokenYMintAndProgramId.programId,
+      pool: poolPubkey,
+      userTokenAccountX: userTokenAccountX.address,
+      userTokenAccountY: userTokenAccountY.address,
+      poolTokenAccountX: poolTokenAccountX.address,
+      poolTokenAccountY: poolTokenAccountY.address,
+      user: payer.publicKey,
+    })
+    .transaction();
+
+  const modifyComputeUnits =
+    anchor.web3.ComputeBudgetProgram.setComputeUnitLimit({
+      units: 250_000,
+    });
+
+  tx.add(modifyComputeUnits);
+
+  // simulation keeps returning different CU results
+  // approximate failure point is 240_000 -> so setting 250_000
+  // actual measurements: 235_675, 239_734, 246_688
+
+  // **uncomment to run simulations**
+  // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+  // const resSim = await simulateTransaction(connection, tx, [payer.payer]);
+  // console.info('resSim:', resSim);
+
+  await sendAndConfirmTransaction(connection, tx, [payer.payer]);
+};
 export const removeLiquidity = async (
   connection: Connection,
   program: anchor.Program<Darklake>,

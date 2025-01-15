@@ -62,6 +62,16 @@ pub mod darklake {
         ctx.accounts.confidential_swap(proof_a, proof_b, proof_c, public_inputs)
     }
 
+    pub fn ibrl_swap(
+        ctx: Context<IbrlSwap>,
+        proof_a: [u8; 64],
+        proof_b: [u8; 128],
+        proof_c: [u8; 64],
+        public_inputs: [[u8; 32]; 3]
+    ) -> Result<()> {
+        ctx.accounts.ibrl_swap(proof_a, proof_b, proof_c, public_inputs)
+    }
+
     pub fn upgrade_pool(ctx: Context<UpgradePool>) -> Result<()> {
         ctx.accounts.upgrade_pool()
     }

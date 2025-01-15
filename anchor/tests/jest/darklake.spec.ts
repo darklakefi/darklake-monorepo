@@ -11,6 +11,7 @@ import {
   convertToSigner,
   fundTokenAccounts,
   getOrCreateAssociatedTokenAccountsMulti,
+  ibrlSwap,
   removeLiquidity,
   swap,
   TokenMintAndProgramId,
@@ -208,6 +209,124 @@ describe('darklake', () => {
   });
 
   describe('Swap', () => {
+    it('IBRL Swap', async () => {
+      const initialLiquidityX = 1_000_000;
+      const initialLiquidityY = 2_000_000_000;
+      // Add liquidity
+      await fundTokenAccounts(
+        provider.connection,
+        payer,
+        TOKEN_X,
+        TOKEN_Y,
+        initialLiquidityX,
+        initialLiquidityY,
+      );
+
+      await addLiquidity(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        TOKEN_X,
+        TOKEN_Y,
+        initialLiquidityX,
+        initialLiquidityY,
+      );
+
+      // Fund user with swap from amount X
+
+      const fundAmountX = 1_000_000;
+      const fundAmountY = 0;
+      await fundTokenAccounts(
+        provider.connection,
+        payer,
+        TOKEN_X,
+        TOKEN_Y,
+        fundAmountX,
+        fundAmountY,
+      );
+
+      // Swap
+
+      const poolAccount = await program.account.pool.fetch(poolPubkey);
+      const publicInputs = {
+        publicBalanceX: poolAccount.reserveX.toString(),
+        publicBalanceY: poolAccount.reserveY.toString(),
+        isSwapXtoY: 1, // Swapping tokenX for tokenY
+      };
+
+      const privateInputs = {
+        privateInputAmount: '100000', // 0.1 token of tokenX
+        privateMinReceived: '180000000', // Adjust this based on your expected output
+      };
+
+      await ibrlSwap(
+        provider.connection,
+        program,
+        payer,
+        poolPubkey,
+        TOKEN_X,
+        TOKEN_Y,
+        publicInputs,
+        privateInputs,
+      );
+
+      try {
+        const [userTokenAccountX, userTokenAccountY] =
+          await getOrCreateAssociatedTokenAccountsMulti(
+            provider.connection,
+            false,
+            payer,
+            payer.publicKey,
+            [TOKEN_X, TOKEN_Y],
+          );
+
+        const userAccountXAfterSwap = await getAccount(
+          provider.connection,
+          userTokenAccountX.address,
+          undefined,
+          tokenXProgramId,
+        );
+        const userAccountYAfterSwap = await getAccount(
+          provider.connection,
+          userTokenAccountY.address,
+          undefined,
+          tokenYProgramId,
+        );
+
+        expect(Number(userAccountXAfterSwap.amount)).toBeLessThan(fundAmountX);
+        expect(Number(userAccountYAfterSwap.amount)).toBeGreaterThan(0);
+
+        const [poolTokenAccountX, poolTokenAccountY] =
+          await getOrCreateAssociatedTokenAccountsMulti(
+            provider.connection,
+            true,
+            payer,
+            poolPubkey,
+            [TOKEN_X, TOKEN_Y],
+          );
+
+        const poolAccountXAfterSwap = await getAccount(
+          provider.connection,
+          poolTokenAccountX.address,
+          undefined,
+          tokenXProgramId,
+        );
+        const poolAccountYAfterSwap = await getAccount(
+          provider.connection,
+          poolTokenAccountY.address,
+          undefined,
+          tokenYProgramId,
+        );
+
+        expect(Number(poolAccountXAfterSwap.amount)).toBeGreaterThan(0);
+        expect(Number(poolAccountYAfterSwap.amount)).toBeGreaterThan(0);
+      } catch (error) {
+        console.error('Error performing IBRL swap:', error);
+        throw error;
+      }
+    }, 10000000);
+
     it('Confidential Swap', async () => {
       const initialLiquidityX = 1_000_000;
       const initialLiquidityY = 2_000_000_000;
