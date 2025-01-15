@@ -50,3 +50,4 @@ test-ledger
 .env.local
 .vercel
 .env.development.local
+.nx
