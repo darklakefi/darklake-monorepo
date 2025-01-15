@@ -1,0 +1,105 @@
+use anchor_lang::prelude::*;
+use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
+use anchor_spl::associated_token::AssociatedToken;
+use groth16_solana::groth16::Groth16Verifier;
+
+use crate::state::Pool;
+use crate::errors::ErrorCode;
+use crate::constants::VERIFYINGKEY;
+use crate::zk::*;
+
+#[derive(Accounts)]
+pub struct IbrlSwap<'info> {
+    #[account(mut)]
+    pub token_mint_x: InterfaceAccount<'info, Mint>,
+    #[account(mut)]
+    pub token_mint_y: InterfaceAccount<'info, Mint>,
+    pub token_mint_x_program: Interface<'info, TokenInterface>,
+    pub token_mint_y_program: Interface<'info, TokenInterface>,
+    #[account(mut,
+        seeds = [b"pool", pool.token_mint_x.key().as_ref(), pool.token_mint_y.key().as_ref()],
+        bump
+    )]
+    pub pool: Account<'info, Pool>,
+    #[account(mut,
+        associated_token::mint = token_mint_x,
+        associated_token::authority = user,
+        associated_token::token_program = token_mint_x_program.key(),
+    )]
+    pub user_token_account_x: InterfaceAccount<'info, TokenAccount>,
+    #[account(mut,
+        associated_token::mint = token_mint_y,
+        associated_token::authority = user,
+        associated_token::token_program = token_mint_y_program.key(),
+    )]
+    pub user_token_account_y: InterfaceAccount<'info, TokenAccount>,
+    #[account(mut,
+        associated_token::mint = token_mint_x,
+        associated_token::authority = pool,
+        associated_token::token_program = token_mint_x_program.key(),
+    )]
+    pub pool_token_account_x: InterfaceAccount<'info, TokenAccount>,
+    #[account(mut,
+        associated_token::mint = token_mint_y,
+        associated_token::authority = pool,
+        associated_token::token_program = token_mint_y_program.key(),
+    )]
+    pub pool_token_account_y: InterfaceAccount<'info, TokenAccount>,
+    pub user: Signer<'info>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
+    pub system_program: Program<'info, System>,
+}
+
+impl<'info> IbrlSwap<'info> {
+    pub fn swap(
+        &self,
+        proof_a: [u8; 64],
+        proof_b: [u8; 128],
+        proof_c: [u8; 64],
+        output_signals: [[u8; 32]; 3],
+    ) -> Result<()> {
+        // Check at the beginning of the function
+        if self.token_mint_x.key() >= self.token_mint_y.key() {
+            return Err(ErrorCode::InvalidTokenOrder.into());
+        }
+
+        msg!("Confidential swap started");
+
+        // Create a new Groth16Verifier instance
+        let mut verifier_result = Groth16Verifier::new(
+            &proof_a,
+            &proof_b,
+            &proof_c,
+            &output_signals,
+            &VERIFYINGKEY,
+        ).map_err(|_| ErrorCode::InvalidGroth16Verifier)?;
+
+        // Verify the proof
+        let verified = verifier_result.verify().map_err(|_| ErrorCode::InvalidProof)?;
+        require!(verified, ErrorCode::InvalidProof);
+        
+        // Now we use the transform verifier to validate the proof under current conditions
+        let real_state = PoolState {
+            x: self.pool.reserve_x,
+            y: self.pool.reserve_y,
+            k: self.pool.reserve_x * self.pool.reserve_y,
+        };
+
+        let new_balance_x = u64::from_be_bytes(output_signals[0][24..].try_into().unwrap());
+        let new_balance_y = u64::from_be_bytes(output_signals[1][24..].try_into().unwrap());
+        let amount_received = u64::from_be_bytes(output_signals[2][24..].try_into().unwrap());
+        
+        let proof_output = ProofOutput {
+            initial_point: self.pool.reserve_x * self.pool.reserve_y,
+            final_point: self.pool.reserve_x * self.pool.reserve_y,
+            commitment1: 0,
+            commitment2: 0,
+        };
+        
+
+        let result = verify_transform(&real_state, &proof_output).map_err(|_| ErrorCode::InvalidProof)?;
+        require!(result, ErrorCode::InvalidProof);
+
+        Ok(())
+    }
+}

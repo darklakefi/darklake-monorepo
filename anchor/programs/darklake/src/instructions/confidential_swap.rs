@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface, transfer_checked, TransferChecked};
 use anchor_spl::associated_token::AssociatedToken;
-use groth16_solana::{self, groth16::Groth16Verifier};
+use groth16_solana::groth16::Groth16Verifier;
 
 use crate::state::Pool;
 use crate::errors::ErrorCode;
@@ -55,7 +55,7 @@ impl<'info> ConfidentialSwap<'info> {
         proof_a: [u8; 64],
         proof_b: [u8; 128],
         proof_c: [u8; 64],
-        public_signals: [[u8; 32]; 3],
+        output_signals: [[u8; 32]; 3],
     ) -> Result<()> {
         // Check at the beginning of the function
         if self.token_mint_x.key() >= self.token_mint_y.key() {
@@ -69,7 +69,7 @@ impl<'info> ConfidentialSwap<'info> {
             &proof_a,
             &proof_b,
             &proof_c,
-            &public_signals,
+            &output_signals,
             &VERIFYINGKEY,
         ).map_err(|_| ErrorCode::InvalidGroth16Verifier)?;
 
@@ -78,9 +78,9 @@ impl<'info> ConfidentialSwap<'info> {
 
         if verified {
             // Extract values from public inputs
-            let new_balance_x = u64::from_be_bytes(public_signals[0][24..].try_into().unwrap());
-            let new_balance_y = u64::from_be_bytes(public_signals[1][24..].try_into().unwrap());
-            let amount_received = u64::from_be_bytes(public_signals[2][24..].try_into().unwrap());
+            let new_balance_x = u64::from_be_bytes(output_signals[0][24..].try_into().unwrap());
+            let new_balance_y = u64::from_be_bytes(output_signals[1][24..].try_into().unwrap());
+            let amount_received = u64::from_be_bytes(output_signals[2][24..].try_into().unwrap());
 
             let is_swap_x_to_y = self.pool.reserve_y > new_balance_y;
             
