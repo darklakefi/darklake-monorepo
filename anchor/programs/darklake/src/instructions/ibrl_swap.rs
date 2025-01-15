@@ -78,24 +78,23 @@ impl<'info> IbrlSwap<'info> {
         let verified = verifier_result.verify().map_err(|_| ErrorCode::InvalidProof)?;
         require!(verified, ErrorCode::InvalidProof);
         
-        // Now we use the transform verifier to validate the proof under current conditions
+        // Extract the circuit outputs correctly
+        let initial_point = u128::from_be_bytes(output_signals[0][16..].try_into().unwrap());
+        let final_point = u128::from_be_bytes(output_signals[1][16..].try_into().unwrap());
+        let commitment2 = u64::from_be_bytes(output_signals[2][24..].try_into().unwrap());
+        
         let real_state = PoolState {
             x: self.pool.reserve_x,
             y: self.pool.reserve_y,
             k: self.pool.reserve_x * self.pool.reserve_y,
         };
-
-        let new_balance_x = u64::from_be_bytes(output_signals[0][24..].try_into().unwrap());
-        let new_balance_y = u64::from_be_bytes(output_signals[1][24..].try_into().unwrap());
-        let amount_received = u64::from_be_bytes(output_signals[2][24..].try_into().unwrap());
         
         let proof_output = ProofOutput {
-            initial_point: self.pool.reserve_x * self.pool.reserve_y,
-            final_point: self.pool.reserve_x * self.pool.reserve_y,
-            commitment1: 0,
-            commitment2: 0,
+            initial_point,
+            final_point,
+            commitment1: 0, // Not needed for verification
+            commitment2,    // Contains the output ratio that should be preserved
         };
-        
 
         let result = verify_transform(&real_state, &proof_output).map_err(|_| ErrorCode::InvalidProof)?;
         require!(result, ErrorCode::InvalidProof);

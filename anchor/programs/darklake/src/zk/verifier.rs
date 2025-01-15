@@ -19,11 +19,13 @@ pub fn verify_transform(
     real_state: &PoolState,
     proof: &ProofOutput,
 ) -> Result<bool, Box<dyn Error>> {
-    // Extract points from proof outputs
-    let proof_x1 = (proof.initial_point >> 128) as u64;
-    let proof_y1 = (proof.initial_point & 0xFFFFFFFFFFFFFFFF) as u64;
-    let proof_x2 = (proof.final_point >> 128) as u64;
-    let proof_y2 = (proof.final_point & 0xFFFFFFFFFFFFFFFF) as u64;
+    // Extract points from proof outputs - fix overflow by using u128
+    let initial_point = proof.initial_point;
+    let final_point = proof.final_point;
+    
+    let proof_x1 = (initial_point >> 64) as u64;
+    let proof_y1 = (initial_point & 0xFFFFFFFFFFFFFFFF) as u64;
+    let proof_y2 = (final_point & 0xFFFFFFFFFFFFFFFF) as u64;
 
     // Calculate transformation scalar
     let alpha = ((real_state.k as f64) / (proof_x1 * proof_y1) as f64).sqrt();
@@ -31,7 +33,6 @@ pub fn verify_transform(
     // Transform points
     let transformed_x1 = (alpha * proof_x1 as f64) as u64;
     let transformed_y1 = (proof_y1 as f64 / alpha) as u64;
-    let transformed_x2 = (alpha * proof_x2 as f64) as u64;
     let transformed_y2 = (proof_y2 as f64 / alpha) as u64;
 
     // Verify transformed points lie on real curve
@@ -43,7 +44,6 @@ pub fn verify_transform(
     let transformed_output = transformed_y2 - transformed_y1;
     
     // The ratio encoded in commitment2 should be preserved under transformation
-    // We don't need to know the actual min_output value
     let output_ratio = transformed_output as f64 * alpha;
     
     // Compare with committed ratio (encoded in commitment2)
