@@ -1,4 +1,13 @@
+#[allow(unused_imports)]
 use std::error::Error;
+use poseidon_rs::Poseidon;
+use poseidon_rs::{Fr, FrRepr};
+use ff::*;
+use ff_ce::*;
+
+use std::error::Error;
+
+const FIXED_POINT_FACTOR: u128 = 1 << 64;
 
 #[derive(Debug)]
 pub struct PoolState {
@@ -9,47 +18,46 @@ pub struct PoolState {
 
 #[derive(Debug)]
 pub struct ProofOutput {
-    pub initial_point: u128,
-    pub final_point: u128,
-    pub commitment1: u64,
-    pub commitment2: u64,
+    pub k_ratio_commitment: u32,
+    pub trade_amount: u64,
 }
 
 pub fn verify_transform(
-    real_state: &PoolState,
+    current_state: &PoolState,
+    initial_state: &PoolState,
     proof: &ProofOutput,
 ) -> Result<bool, Box<dyn Error>> {
-    // Extract points from proof outputs - fix overflow by using u128
-    let initial_point = proof.initial_point;
-    let final_point = proof.final_point;
-    
-    let proof_x1 = (initial_point >> 64) as u64;
-    let proof_y1 = (initial_point & 0xFFFFFFFFFFFFFFFF) as u64;
-    let proof_y2 = (final_point & 0xFFFFFFFFFFFFFFFF) as u64;
-
     // Calculate transformation scalar
-    let alpha = ((real_state.k as f64) / (proof_x1 * proof_y1) as f64).sqrt();
-
-    // Transform points
-    let transformed_x1 = (alpha * proof_x1 as f64) as u64;
-    let transformed_y1 = (proof_y1 as f64 / alpha) as u64;
-    let transformed_y2 = (proof_y2 as f64 / alpha) as u64;
-
-    // Verify transformed points lie on real curve
-    if transformed_x1 * transformed_y1 != real_state.k {
-        return Ok(false);
-    }
-
-    // Verify transformed output maintains same ratio as committed
-    let transformed_output = transformed_y2 - transformed_y1;
+    let alpha = (current_state.k as f64 / initial_state.k as f64).sqrt();
     
-    // The ratio encoded in commitment2 should be preserved under transformation
-    let output_ratio = transformed_output as f64 * alpha;
+    // Transform trade amount
+    let transformed_trade = (proof.trade_amount as f64 * alpha) as u64;
     
-    // Compare with committed ratio (encoded in commitment2)
-    if (output_ratio - proof.commitment2 as f64).abs() > 0.00001 {
+    // Calculate new position after transformed trade
+    let new_x = current_state.x + transformed_trade;
+    let new_y = current_state.k / new_x;
+    let output_amount = current_state.y - new_y;
+
+    // Calculate actual k ratio in current state
+    let actual_k_ratio = (output_amount as u128 * FIXED_POINT_FACTOR) / current_state.k as u128;
+
+    // Generate commitment for actual ratio
+    let actual_commitment = poseidon_hash(actual_k_ratio as u64);
+
+    // The committed minimum ratio should still be valid
+    // If actual_k_ratio ≥ min_k_ratio in initial state
+    // Then it should still be ≥ in current state due to k-relative scaling
+    if actual_commitment < proof.k_ratio_commitment {
         return Ok(false);
     }
 
     Ok(true)
+}
+
+fn poseidon_hash(input: u64) -> Fr {
+    let poseidon = Poseidon::new();
+    // Create FrRepr with input in the lowest 64 bits
+    let repr = FrRepr([input, 0, 0, 0]);
+    let input_fr = Fr::from_raw_repr(repr).unwrap();
+    poseidon.hash(vec![input_fr]).unwrap()
 }
