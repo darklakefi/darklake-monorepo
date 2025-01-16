@@ -1902,6 +1902,7 @@ dependencies = [
  "assert_matches",
  "darklake",
  "mpl-token-metadata",
+ "num 0.4.3",
  "rand 0.8.5",
  "trident-client",
 ]

@@ -14,6 +14,7 @@ assert_matches = "1.4.0"
 mpl-token-metadata = "4.1.2"
 anchor-spl = "0.30.1"
 rand = "0.8" 
+num = "0.4.0"
 
 [dependencies.trident-client]
 version = "0.8.1"
