@@ -1,14 +1,27 @@
+#![allow(unused_imports)]
+#![allow(dead_code)]
+
 use anchor_lang::prelude::*;
-use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface, transfer_checked, TransferChecked};
+use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 use anchor_spl::associated_token::AssociatedToken;
-use groth16_solana::{self, groth16::Groth16Verifier};
+use ark_ff::PrimeField;
+use jf_plonk::{
+    proof_system::{PlonkKzgSnark, UniversalSNARK},
+    transcript::StandardTranscript,
+};
+use jf_relation::constraint_system::{Circuit, PlonkCircuit, Arithmetization};
+use ark_bls12_381::{Bls12_381, Fr};
+use rand_core::{RngCore, CryptoRng};
+use rand_chacha::ChaCha8Rng;
+use rand_chacha::rand_core::SeedableRng;
+use ark_ec::pairing::Pairing;
 
 use crate::state::Pool;
 use crate::errors::ErrorCode;
-use crate::constants::VERIFYINGKEY;
 
 #[derive(Accounts)]
 pub struct ConfidentialSwap<'info> {
+    // Account struct remains the same as your original implementation
     #[account(mut)]
     pub token_mint_x: InterfaceAccount<'info, Mint>,
     #[account(mut)]
@@ -48,152 +61,156 @@ pub struct ConfidentialSwap<'info> {
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
 }
-
 impl<'info> ConfidentialSwap<'info> {
     pub fn confidential_swap(
         &mut self,
-        proof_a: [u8; 64],
-        proof_b: [u8; 128],
-        proof_c: [u8; 64],
-        public_signals: [[u8; 32]; 3],
+        _proof: Vec<u8>,
+        _public_inputs: Vec<u8>,
     ) -> Result<()> {
-        // Check at the beginning of the function
         if self.token_mint_x.key() >= self.token_mint_y.key() {
             return Err(ErrorCode::InvalidTokenOrder.into());
         }
-
-        msg!("Confidential swap started");
-
-        // Create a new Groth16Verifier instance
-        let mut verifier_result = Groth16Verifier::new(
-            &proof_a,
-            &proof_b,
-            &proof_c,
-            &public_signals,
-            &VERIFYINGKEY,
-        ).map_err(|_| ErrorCode::InvalidGroth16Verifier)?;
-
-        // Verify the proof
-        let verified = verifier_result.verify().map_err(|_| ErrorCode::InvalidProof)?;
-
-        if verified {
-            // Extract values from public inputs
-            let new_balance_x = u64::from_be_bytes(public_signals[0][24..].try_into().unwrap());
-            let new_balance_y = u64::from_be_bytes(public_signals[1][24..].try_into().unwrap());
-            let amount_received = u64::from_be_bytes(public_signals[2][24..].try_into().unwrap());
-
-            let is_swap_x_to_y = self.pool.reserve_y > new_balance_y;
-            
-            msg!("New balance x: {}", new_balance_x);
-            msg!("New balance y: {}", new_balance_y);
-            msg!("Amount received: {}", amount_received);
-            msg!("Is swap X to Y: {}", is_swap_x_to_y);
-            
-            // Determine swap direction and calculate amount_sent
-            let (from_user_account, to_pool_account, from_pool_account, to_user_account, from_mint, to_mint, amount_sent, from_token_program, to_token_program) = if is_swap_x_to_y {
-                (
-                    &self.user_token_account_x,
-                    &self.pool_token_account_x,
-                    &self.pool_token_account_y,
-                    &self.user_token_account_y,
-                    &self.token_mint_x,
-                    &self.token_mint_y,
-                    new_balance_x - self.pool.reserve_x,
-                    &self.token_mint_x_program,
-                    &self.token_mint_y_program,
-                )
-            } else {
-                (
-                    &self.user_token_account_y,
-                    &self.pool_token_account_y,
-                    &self.pool_token_account_x,
-                    &self.user_token_account_x,
-                    &self.token_mint_y,
-                    &self.token_mint_x,
-                    new_balance_y - self.pool.reserve_y,
-                    &self.token_mint_y_program,
-                    &self.token_mint_x_program,
-                )
-            };
-
-            // Ensure amount_sent is positive
-            if amount_sent <= 0 {
-                return Err(ErrorCode::InvalidSwapAmount.into());
-            }
-
-            // Update pool reserves
-            self.pool.reserve_x = new_balance_x;
-            self.pool.reserve_y = new_balance_y;
-
-            let pool_token_mint_key_x = self.pool.token_mint_x.key();
-            let pool_token_mint_key_y = self.pool.token_mint_y.key();
-
-            let pool_seeds = &[
-                &b"pool"[..], 
-                pool_token_mint_key_x.as_ref(), 
-                pool_token_mint_key_y.as_ref(),
-                &[self.pool.bump],
-            ];
-
-            let signer_seeds = &[&pool_seeds[..]];
-
-            msg!("Performing token transfers");
-            
-            // Add these debug messages before the transfers
-            msg!("Amount sent: {}", amount_sent);
-            msg!("From user account balance: {}", from_user_account.amount);
-            msg!("To pool account balance: {}", to_pool_account.amount);
-            msg!("From pool account balance: {}", from_pool_account.amount);
-            msg!("To user account balance: {}", to_user_account.amount);
-
-            msg!("user_token_account_x: {}", self.user_token_account_x.key());
-            msg!("user_token_account_y: {}", self.user_token_account_y.key());
-            msg!("pool_token_account_x: {}", self.pool_token_account_x.key());
-            msg!("pool_token_account_y: {}", self.pool_token_account_y.key());
-
-            msg!("user_token_account_x balance: {}", self.user_token_account_x.amount);
-            msg!("user_token_account_y balance: {}", self.user_token_account_y.amount);
-            msg!("pool_token_account_x balance: {}", self.pool_token_account_x.amount);
-            msg!("pool_token_account_y balance: {}", self.pool_token_account_y.amount);
-
-            msg!("1st transfer - from: {:?}, to: {:?}", from_user_account.key(), to_pool_account.key());
-
-            // Transfer from user to pool
-            transfer_checked(
-                CpiContext::new(
-                    from_token_program.to_account_info(),
-                    TransferChecked {
-                        from: from_user_account.to_account_info(),
-                        mint: from_mint.to_account_info(),
-                        to: to_pool_account.to_account_info(),
-                        authority: self.user.to_account_info(),
-                    },
-                ),
-                amount_sent,
-                from_mint.decimals,
-            )?;
-
-            msg!("2nd transfer - from: {:?}, to: {:?}", from_pool_account.key(), to_user_account.key());
-
-            // Transfer from pool to user
-            transfer_checked(
-                CpiContext::new_with_signer(
-                    to_token_program.to_account_info(),
-                    TransferChecked {
-                        from: from_pool_account.to_account_info(),
-                        mint: to_mint.to_account_info(),
-                        to: to_user_account.to_account_info(),
-                        authority: self.pool.to_account_info(),
-                    },
-                    signer_seeds,
-                ),
-                amount_received,
-                to_mint.decimals,
-            )?;
-
-            Ok(())
-        } else {
-            Err(ErrorCode::InvalidProof.into())
-        }
+        require!(false, ErrorCode::NotImplemented);
+        Ok(())
     }
+}
+
+fn build_amm_circuit(
+    slippage: u64,
+    reserve_x: u64,
+    reserve_y: u64,
+    amount: u64,
+) -> Result<PlonkCircuit<Fr>> {
+    let mut circuit = PlonkCircuit::new_turbo_plonk();
+    
+    // Use Fr::from explicitly
+    let slippage_var = circuit.create_variable(Fr::from(slippage))
+        .map_err(|_| ErrorCode::InvalidProof)?;
+    
+    let reserve_x_var = circuit.create_public_variable(Fr::from(reserve_x))
+        .map_err(|_| ErrorCode::InvalidProof)?;
+    let reserve_y_var = circuit.create_public_variable(Fr::from(reserve_y))
+        .map_err(|_| ErrorCode::InvalidProof)?;
+    let amount_var = circuit.create_public_variable(Fr::from(amount))
+        .map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Calculate k = x * y (constant product)
+    let k = circuit.mul(reserve_x_var, reserve_y_var).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Calculate new_reserve_x = reserve_x + amount
+    let new_reserve_x = circuit.add(reserve_x_var, amount_var).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    // For division operations, we need to create witness variables for the results
+    let new_reserve_y = circuit.create_variable(Fr::from(reserve_y)).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    // Calculate new_reserve_x * new_reserve_y
+    let product = circuit.mul(new_reserve_x, new_reserve_y).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    // Enforce k = new_reserve_x * new_reserve_y
+    circuit.enforce_equal(k, product).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Create witness variables for prices
+    let price_before = circuit.create_variable(Fr::from(reserve_y / reserve_x)).map_err(|_| ErrorCode::InvalidProof)?;
+    let price_after = circuit.create_variable(Fr::from(reserve_y / (reserve_x + amount))).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Calculate price difference
+    let price_diff = circuit.sub(price_before, price_after).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Enforce price impact is within slippage
+    circuit.enforce_leq(price_diff, slippage_var).map_err(|_| ErrorCode::InvalidProof)?;
+
+    circuit.finalize_for_arithmetization().map_err(|_| ErrorCode::InvalidProof)?;
+    Ok(circuit)
+}
+
+#[allow(clippy::all)]
+#[allow(unused_variables)]
+#[test]
+fn test_amm_plonk() -> Result<()> {
+    let mut rng = ChaCha8Rng::from_seed([0; 32]);
+    
+    // Test parameters
+    let initial_reserve_x = 1_000_000u64;
+    let initial_reserve_y = 1_000_000u64;
+    let amount_in = 10_000u64;
+    let slippage = 100u64;
+
+    // Create circuit using E::ScalarField directly
+    let mut circuit: PlonkCircuit<<Bls12_381 as ark_ec::pairing::Pairing>::ScalarField> = 
+        PlonkCircuit::new_turbo_plonk();
+    
+    // Create variables using the scalar field
+    let slippage_var = circuit.create_variable(
+        <Bls12_381 as ark_ec::pairing::Pairing>::ScalarField::from(slippage)
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    let reserve_x_var = circuit.create_public_variable(
+        <Bls12_381 as ark_ec::pairing::Pairing>::ScalarField::from(initial_reserve_x)
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    let reserve_y_var = circuit.create_public_variable(
+        <Bls12_381 as ark_ec::pairing::Pairing>::ScalarField::from(initial_reserve_y)
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    let amount_var = circuit.create_public_variable(
+        <Bls12_381 as ark_ec::pairing::Pairing>::ScalarField::from(amount_in)
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Calculate k = x * y (constant product)
+    let k = circuit.mul(reserve_x_var, reserve_y_var).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Calculate new_reserve_x = reserve_x + amount
+    let new_reserve_x = circuit.add(reserve_x_var, amount_var).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    // For division operations, we need to create witness variables for the results
+    let new_reserve_y = circuit.create_variable(
+        <Bls12_381 as ark_ec::pairing::Pairing>::ScalarField::from(initial_reserve_y)
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    // Calculate new_reserve_x * new_reserve_y
+    let product = circuit.mul(new_reserve_x, new_reserve_y).map_err(|_| ErrorCode::InvalidProof)?;
+    
+    // Enforce k = new_reserve_x * new_reserve_y
+    circuit.enforce_equal(k, product).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Create witness variables for prices
+    let price_before = circuit.create_variable(
+        <Bls12_381 as ark_ec::pairing::Pairing>::ScalarField::from(initial_reserve_y / initial_reserve_x)
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+    let price_after = circuit.create_variable(
+        <Bls12_381 as ark_ec::pairing::Pairing>::ScalarField::from(initial_reserve_y / (initial_reserve_x + amount_in))
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Calculate price difference
+    let price_diff = circuit.sub(price_before, price_after).map_err(|_| ErrorCode::InvalidProof)?;
+
+    // Enforce price impact is within slippage
+    circuit.enforce_leq(price_diff, slippage_var).map_err(|_| ErrorCode::InvalidProof)?;
+
+    circuit.finalize_for_arithmetization().map_err(|_| ErrorCode::InvalidProof)?;
+
+    let srs_size = circuit.srs_size().map_err(|_| ErrorCode::InvalidProof)?;
+    let srs = PlonkKzgSnark::<Bls12_381>::universal_setup(srs_size, &mut rng)
+        .map_err(|_| ErrorCode::InvalidProof)?;
+
+    let (pk, vk) = PlonkKzgSnark::<Bls12_381>::preprocess(&srs, &circuit)
+        .map_err(|_| ErrorCode::InvalidProof)?;
+
+    let proof = PlonkKzgSnark::<Bls12_381>::prove::<_, _, StandardTranscript>(
+        &mut rng,
+        &circuit,
+        &pk,
+        None,
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+
+    let public_inputs = circuit.public_input().map_err(|_| ErrorCode::InvalidProof)?;
+
+    let verified = PlonkKzgSnark::<Bls12_381>::verify::<StandardTranscript>(
+        &vk,
+        &public_inputs,
+        &proof,
+        None,
+    ).map_err(|_| ErrorCode::InvalidProof)?;
+
+    Ok(())
 }

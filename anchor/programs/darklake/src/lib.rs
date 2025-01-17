@@ -29,9 +29,9 @@ pub mod instructions;
 pub mod state;
 pub mod errors;
 pub mod events;
-pub mod constants;
 
 use instructions::*;
+use crate::errors::ErrorCode;
 
 declare_id!("GKkoBt4y1oXfUDkRjZG2wj6PQxw39dxZw6MNMM6tYaBy");
 
@@ -52,13 +52,15 @@ pub mod darklake {
     }
 
     pub fn confidential_swap(
-        ctx: Context<ConfidentialSwap>,
-        proof_a: [u8; 64],
-        proof_b: [u8; 128],
-        proof_c: [u8; 64],
-        public_inputs: [[u8; 32]; 3]
+        _ctx: Context<ConfidentialSwap>,
+        _proof_a: [u8; 64],
+        _proof_b: [u8; 128],
+        _proof_c: [u8; 64],
+        _public_inputs: [[u8; 64]; 5],
     ) -> Result<()> {
-        ctx.accounts.confidential_swap(proof_a, proof_b, proof_c, public_inputs)
+        //ctx.accounts.confidential_swap(proof_a, proof_b, proof_c, public_inputs)
+        require!(false, ErrorCode::NotImplemented);
+        Ok(())
     }
 
     pub fn upgrade_pool(ctx: Context<UpgradePool>) -> Result<()> {

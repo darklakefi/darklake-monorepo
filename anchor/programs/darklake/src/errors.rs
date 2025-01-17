@@ -22,4 +22,6 @@ pub enum ErrorCode {
     InvalidMetadataAccount,
     #[msg("LP mint already initialized")]
     LpMintAlreadyInitialized,
+    #[msg("Not implemented")]
+    NotImplemented,
 }
