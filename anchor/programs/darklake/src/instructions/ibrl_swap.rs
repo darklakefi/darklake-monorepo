@@ -86,22 +86,33 @@ impl<'info> IbrlSwap<'info> {
         let final_point = u128::from_be_bytes(output_signals[1][16..].try_into().unwrap());
         let commitment2 = u64::from_be_bytes(output_signals[2][24..].try_into().unwrap());
         
-        let real_state = PoolState {
+        let current_state = PoolState {
             x: self.pool.reserve_x,
             y: self.pool.reserve_y,
             k: self.pool.reserve_x * self.pool.reserve_y,
         };
+
+        // Extract initial x, y from initial_point
+        let initial_x = (initial_point >> 64) as u64;
+        let initial_y = (initial_point & ((1u128 << 64) - 1)) as u64;
+        
+        let initial_state = PoolState {
+            x: initial_x,
+            y: initial_y,
+            k: initial_x * initial_y,
+        };
         
         let proof_output = ProofOutput {
-            k_ratio_commitment: commitment2,
-            trade_amount: initial_point,
+            k_ratio_commitment: commitment2 as u32,
+            trade_amount: initial_point as u64,
         };
         
         debug!("Initial point: {}", initial_point);
         debug!("Final point: {}", final_point);
         debug!("Commitment2: {}", commitment2);
 
-        let result = verify_transform(&real_state, &proof_output).map_err(|_| ErrorCode::InvalidProof)?;
+        let result = verify_transform(&current_state, &initial_state, &proof_output)
+            .map_err(|_| ErrorCode::InvalidProof)?;
         require!(result, ErrorCode::InvalidProof);
 
         Ok(())
