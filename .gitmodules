@@ -4,3 +4,6 @@
 [submodule "snarkjs"]
 	path = snarkjs
 	url = https://github.com/darklakefi/snarkjs
+[submodule "anchor/programs/darklake/vendor/poseidon-rs"]
+	path = anchor/programs/darklake/vendor/poseidon-rs
+	url = https://github.com/darklakefi/poseidon-rs

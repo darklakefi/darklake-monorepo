@@ -134,7 +134,7 @@ describe('darklake', () => {
   beforeEach(async () => {
     await setupMint();
     await setupPool();
-  }, 10000000);
+  }, 100);
 
   afterAll((done) => {
     done();

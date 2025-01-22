@@ -1,11 +1,7 @@
 #[allow(unused_imports)]
 use std::error::Error;
-use poseidon_rs::Poseidon;
-use poseidon_rs::{Fr, FrRepr};
-use ff::*;
-use ff_ce::*;
-
-use std::error::Error;
+use poseidon_rs::*;
+use ff_ce::PrimeField;
 
 const FIXED_POINT_FACTOR: u128 = 1 << 64;
 
@@ -47,7 +43,8 @@ pub fn verify_transform(
     // The committed minimum ratio should still be valid
     // If actual_k_ratio ≥ min_k_ratio in initial state
     // Then it should still be ≥ in current state due to k-relative scaling
-    if actual_commitment < proof.k_ratio_commitment {
+    let a = Fr::from_repr(FrRepr::from(proof.k_ratio_commitment as u64)).unwrap();
+    if actual_commitment < a {
         return Ok(false);
     }
 
@@ -58,6 +55,6 @@ fn poseidon_hash(input: u64) -> Fr {
     let poseidon = Poseidon::new();
     // Create FrRepr with input in the lowest 64 bits
     let repr = FrRepr([input, 0, 0, 0]);
-    let input_fr = Fr::from_raw_repr(repr).unwrap();
+    let input_fr = Fr::from_repr(repr).unwrap();
     poseidon.hash(vec![input_fr]).unwrap()
 }

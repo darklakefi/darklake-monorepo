@@ -93,10 +93,8 @@ impl<'info> IbrlSwap<'info> {
         };
         
         let proof_output = ProofOutput {
-            initial_point,
-            final_point,
-            commitment1: 0, // Not needed for verification
-            commitment2,    // Contains the output ratio that should be preserved
+            k_ratio_commitment: commitment2,
+            trade_amount: initial_point,
         };
         
         debug!("Initial point: {}", initial_point);
