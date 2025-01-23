@@ -84,7 +84,7 @@ impl<'info> IbrlSwap<'info> {
         // Extract the circuit outputs correctly
         let initial_point = u128::from_be_bytes(output_signals[0][16..].try_into().unwrap());
         let final_point = u128::from_be_bytes(output_signals[1][16..].try_into().unwrap());
-        let commitment2 = u64::from_be_bytes(output_signals[2][24..].try_into().unwrap());
+        let k_ratio_commitment = &output_signals[2][..32]; // Take first 32 bytes of the commitment
         
         let current_state = PoolState {
             x: self.pool.reserve_x,
@@ -101,15 +101,20 @@ impl<'info> IbrlSwap<'info> {
             y: initial_y,
             k: initial_x * initial_y,
         };
+
+        // Extract final x, y from final_point to calculate trade amount
+        let final_x = (final_point >> 64) as u64;
+        let trade_amount = final_x.checked_sub(initial_x)
+            .ok_or(ErrorCode::InvalidProof)?;
         
         let proof_output = ProofOutput {
-            k_ratio_commitment: commitment2 as u32,
-            trade_amount: initial_point as u64,
+            k_ratio_commitment: u32::from_be_bytes(k_ratio_commitment[28..32].try_into().unwrap()),
+            trade_amount,
         };
         
         debug!("Initial point: {}", initial_point);
         debug!("Final point: {}", final_point);
-        debug!("Commitment2: {}", commitment2);
+        debug!("Trade amount: {}", trade_amount);
 
         let result = verify_transform(&current_state, &initial_state, &proof_output)
             .map_err(|_| ErrorCode::InvalidProof)?;
