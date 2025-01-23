@@ -1277,6 +1277,7 @@ dependencies = [
  "groth16-solana",
  "mpl-token-metadata",
  "poseidon-rs",
+ "rand 0.4.6",
  "solana-program 2.0.11",
 ]
 
