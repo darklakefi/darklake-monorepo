@@ -1273,6 +1273,7 @@ version = "0.1.0"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
+ "ark-bn254",
  "ff_ce",
  "groth16-solana",
  "mpl-token-metadata",
@@ -5073,8 +5074,10 @@ name = "tests"
 version = "0.1.0"
 dependencies = [
  "anchor-client",
+ "ark-bn254",
  "darklake",
  "groth16-solana",
+ "rand 0.4.6",
  "serde_json",
 ]
 
