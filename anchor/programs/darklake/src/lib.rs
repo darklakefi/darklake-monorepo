@@ -34,6 +34,7 @@ pub mod constants;
 pub mod zk;
 
 use instructions::*;
+use crate::constants::VERIFYINGKEY;
 
 declare_id!("GKkoBt4y1oXfUDkRjZG2wj6PQxw39dxZw6MNMM6tYaBy");
 
@@ -63,14 +64,15 @@ pub mod darklake {
         ctx.accounts.confidential_swap(proof_a, proof_b, proof_c, public_inputs)
     }
 
-    pub fn ibrl_swap(
-        ctx: Context<IbrlSwap>,
+    pub fn lsh_swap(
+        ctx: Context<LshSwap>,
         proof_a: [u8; 64],
         proof_b: [u8; 128],
         proof_c: [u8; 64],
-        public_inputs: [[u8; 32]; 3]
+        public_inputs: [[u8; 32]; VERIFYINGKEY.nr_pubinputs],
+        salt: [u8; 32]
     ) -> Result<()> {
-        ctx.accounts.ibrl_swap(proof_a, proof_b, proof_c, public_inputs)
+        ctx.accounts.lsh_swap(proof_a, proof_b, proof_c, public_inputs, salt)
     }
 
     pub fn upgrade_pool(ctx: Context<UpgradePool>) -> Result<()> {

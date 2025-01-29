@@ -1,0 +1,5 @@
+circuits/gadget_0000.zkey filter=lfs diff=lfs merge=lfs -text
+circuits/pot19_0001.ptau filter=lfs diff=lfs merge=lfs -text
+circuits/circuits/pot19_final.ptau filter=lfs diff=lfs merge=lfs -text
+circuits/circuits/pot19_final_prepared.ptau filter=lfs diff=lfs merge=lfs -text
+circuits/pot19_0000.ptau filter=lfs diff=lfs merge=lfs -text

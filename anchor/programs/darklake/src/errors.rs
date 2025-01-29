@@ -22,4 +22,14 @@ pub enum ErrorCode {
     InvalidMetadataAccount,
     #[msg("LP mint already initialized")]
     LpMintAlreadyInitialized,
+    #[msg("Invalid proof size")]
+    InvalidProofSize,
+    #[msg("Invalid number of public inputs")]
+    InvalidInputSize,
+    #[msg("Proof verification failed")]
+    ProofVerificationFailed,
+    #[msg("Invalid verifying key")]
+    InvalidVerifyingKey,
+    #[msg("Invalid LSH commitment")]
+    InvalidLSHCommitment,
 }

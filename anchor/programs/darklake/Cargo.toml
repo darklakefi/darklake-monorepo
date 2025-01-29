@@ -26,4 +26,7 @@ mpl-token-metadata = "4.1.2"
 poseidon-rs = { path = "vendor/poseidon-rs" }
 ff_ce = { version = "0.11", features = ["derive"] }
 rand = { version = "0.4", default-features = false }
+ark-ff = { version = "0.4.0", default-features = false }
 ark-bn254 = { version = "0.4.0", default-features = false, features = ["curve"] }
+ark-std = "0.4.0"
+ark-crypto-primitives = { version = "0.4.0", features = ["crh"] }

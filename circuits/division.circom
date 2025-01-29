@@ -3,7 +3,7 @@ pragma circom 2.0.0;
 include "node_modules/circomlib/circuits/bitify.circom";
 include "node_modules/circomlib/circuits/comparators.circom";
 
-template ReciprocalDivision(n) {
+template Division(n) {
     signal input dividend;
     signal input divisor;
     signal output quotient;

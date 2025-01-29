@@ -1,16 +1,8 @@
-#[allow(unused_imports)]
-use std::error::Error;
-use poseidon_rs::*;
-use ff_ce::PrimeField;
+use anchor_lang::prelude::*;
+use groth16_solana::groth16::Groth16Verifier;
 
-const FIXED_POINT_FACTOR: u128 = 1 << 64;
-
-#[derive(Debug)]
-pub struct PoolState {
-    pub x: u64,
-    pub y: u64,
-    pub k: u64,
-}
+use crate::constants::*;
+use crate::errors::ErrorCode;
 
 #[derive(Debug)]
 pub struct ProofOutput {
@@ -18,43 +10,69 @@ pub struct ProofOutput {
     pub trade_amount: u64,
 }
 
-pub fn verify_transform(
-    current_state: &PoolState,
-    initial_state: &PoolState,
-    proof: &ProofOutput,
-) -> Result<bool, Box<dyn Error>> {
-    // Calculate transformation scalar
-    let alpha = (current_state.k as f64 / initial_state.k as f64).sqrt();
-    
-    // Transform trade amount
-    let transformed_trade = (proof.trade_amount as f64 * alpha) as u64;
-    
-    // Calculate new position after transformed trade
-    let new_x = current_state.x + transformed_trade;
-    let new_y = current_state.k / new_x;
-    let output_amount = current_state.y - new_y;
+pub fn verify_lsh_proof(
+    proof_a: [u8; 64],
+    proof_b: [u8; 128],
+    proof_c: [u8; 64],
+    public_inputs: [[u8; 32]; VERIFYINGKEY.nr_pubinputs],
+) -> Result<()> {
+    // Extract salt commitment
+    let salt_commitment: [u8; 32] = public_inputs[NUM_PROJECTIONS]
+        .try_into()
+        .map_err(|_| ErrorCode::InvalidLSHCommitment)?;
 
-    // Calculate actual k ratio in current state
-    let actual_k_ratio = (output_amount as u128 * FIXED_POINT_FACTOR) / current_state.k as u128;
+    // Verify the proof
+    let mut verification_result = Groth16Verifier::new(
+        &proof_a,
+        &proof_b,
+        &proof_c,
+        &public_inputs,
+        &VERIFYINGKEY,
+    ).map_err(|_| ErrorCode::InvalidGroth16Verifier)?.verify().map_err(|_| ErrorCode::ProofVerificationFailed)?;
 
-    // Generate commitment for actual ratio
-    let actual_commitment = poseidon_hash(actual_k_ratio as u64);
+    require!(
+        verification_result,
+        ErrorCode::ProofVerificationFailed
+    );
 
-    // The committed minimum ratio should still be valid
-    // If actual_k_ratio ≥ min_k_ratio in initial state
-    // Then it should still be ≥ in current state due to k-relative scaling
-    let a = Fr::from_repr(FrRepr::from(proof.k_ratio_commitment as u64)).unwrap();
-    if actual_commitment < a {
-        return Ok(false);
-    }
-
-    Ok(true)
+    Ok(())
 }
 
-fn poseidon_hash(input: u64) -> Fr {
-    let poseidon = Poseidon::new();
-    // Create FrRepr with input in the lowest 64 bits
-    let repr = FrRepr([input, 0, 0, 0]);
-    let input_fr = Fr::from_repr(repr).unwrap();
-    poseidon.hash(vec![input_fr]).unwrap()
+/// Helper function to check if LSH distance is within threshold
+pub fn check_lsh_distance(
+    lsh_bits1: &[bool; NUM_PROJECTIONS],
+    lsh_bits2: &[bool; NUM_PROJECTIONS],
+    threshold: u32,
+) -> Result<bool> {
+    let mut distance = 0;
+    
+    // Compute Hamming distance
+    for i in 0..NUM_PROJECTIONS {
+        if lsh_bits1[i] != lsh_bits2[i] {
+            distance += 1;
+        }
+    }
+    
+    Ok(distance <= threshold)
+}
+
+// Example instruction handler that combines verification and distance check
+pub fn verify_and_check_distance(
+    proof_a: [u8; 64],
+    proof_b: [u8; 128],
+    proof_c: [u8; 64],
+    public_inputs: [[u8; 32]; VERIFYINGKEY.nr_pubinputs],
+    reference_lsh: [bool; NUM_PROJECTIONS],
+    threshold: u32,
+) -> Result<bool> {
+    // First verify the proof
+    verify_lsh_proof(
+        proof_a,
+        proof_b,
+        proof_c,
+        public_inputs,
+    )?;
+    
+    // Then check distance against reference LSH
+    check_lsh_distance(&reference_lsh, &reference_lsh, threshold)
 }
