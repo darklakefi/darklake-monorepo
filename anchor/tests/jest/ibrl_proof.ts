@@ -22,6 +22,7 @@ export type IbrlResult = {
   proofB: Uint8Array;
   proofC: Uint8Array;
   publicSignals: Uint8Array[];
+  salt: Uint8Array;
 };
 
 export async function ibrlGenerateProof(
@@ -29,13 +30,13 @@ export async function ibrlGenerateProof(
 ): Promise<IbrlResult> {
   const wasmPath = path.join(
     __dirname,
-    '../../../circuits/ibrl_swap_js',
-    'ibrl_swap.wasm',
+    '../../../circuits/gadget_js',
+    'gadget.wasm',
   );
   const zkeyPath = path.join(
     __dirname,
     '../../../circuits',
-    'ibrl_swap_0001.zkey',
+    'gadget_0000.zkey',
   );
 
   const input = {
@@ -73,5 +74,8 @@ export async function ibrlGenerateProof(
     proofB: new Uint8Array(proofB),
     proofC: new Uint8Array(proofC),
     publicSignals: formattedPublicSignals,
+    salt: new Uint8Array(
+      formattedPublicSignals[formattedPublicSignals.length - 1],
+    ),
   };
 }

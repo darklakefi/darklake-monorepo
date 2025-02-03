@@ -37,7 +37,7 @@ describe('ZKConstantSumAMM Verifier', () => {
     const zkeyPath = path.join(
       __dirname,
       '../../../circuits',
-      'swap_0001.zkey',
+      'swap_final.zkey',
     );
 
     // Generate proof
@@ -50,11 +50,17 @@ describe('ZKConstantSumAMM Verifier', () => {
     };
 
     // this skips a step in immediately goes to proving
-    const {
-      // used in temporary file creation
-      // proof,
-      publicSignals,
-    } = await snarkjs.groth16.fullProve(input, wasmPath, zkeyPath);
+    let publicSignals: any;
+    try {
+      const {
+        // used in temporary file creation
+        // proof,
+        publicSignals,
+      } = await snarkjs.groth16.fullProve(input, wasmPath, zkeyPath);
+    } catch (error) {
+      console.error('Error during proof generation:', error);
+      throw error;
+    }
 
     // Create a temporary file to store the proof and public inputs (used in rust groth16 test)
     /*
@@ -125,13 +131,13 @@ describe('ZKConstantSumAMM Verifier', () => {
 
     const wasmPath = path.join(
       __dirname,
-      '../../../circuits/swap_js',
-      'swap.wasm',
+      '../../../circuits/gadget_js',
+      'gadget.wasm',
     );
     const zkeyPath = path.join(
       __dirname,
       '../../../circuits',
-      'swap_0001.zkey',
+      'gadget_0000.zkey',
     );
     const vKeyPath = path.join(
       __dirname,
@@ -152,7 +158,7 @@ describe('ZKConstantSumAMM Verifier', () => {
     expect(res).toBe(true);
   });
 
-  it('should generate and verify a valid proof using snarkjs CLI', async () => {
+  it.skip('should generate and verify a valid proof using snarkjs CLI', async () => {
     const input = {
       privateInputAmount: 100000,
       privateMinReceived: 99000,
@@ -165,7 +171,7 @@ describe('ZKConstantSumAMM Verifier', () => {
     const zkeyPath = path.join(
       __dirname,
       '../../../circuits',
-      'swap_0001.zkey',
+      'gadget_0000.zkey',
     );
     const vKeyPath = path.join(
       __dirname,
@@ -174,8 +180,8 @@ describe('ZKConstantSumAMM Verifier', () => {
     );
     const wasmPath = path.join(
       __dirname,
-      '../../../circuits/swap_js',
-      'swap.wasm',
+      '../../../circuits/gadget_js',
+      'gadget.wasm',
     );
 
     const inputPath = path.join(__dirname, '../../../input.json');

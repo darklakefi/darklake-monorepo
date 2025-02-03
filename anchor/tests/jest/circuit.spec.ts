@@ -21,7 +21,7 @@ describe('ZK Constant Sum AMM Swap', () => {
 
   beforeAll(async () => {
     circuit = await wasm_tester(
-      path.join(__dirname, '../../../circuits', 'swap.circom'),
+      path.join(__dirname, '../../../circuits', 'gadget.circom'),
       {
         include: [path.join(__dirname, '../../../')],
       },

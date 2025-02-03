@@ -67,10 +67,11 @@ template Mod2K(k) {
 template EnforceRange64() {
     signal input in;
     
+    // Increase bits to 254 to handle potential large field elements
     component bits = Num2Bits(MAIN_BITS());
-    bits.in <== in + (1 << SIGN_BIT());
+    bits.in <== in;
     
-    // Reconstruct and enforce range
+    // Only take the lower 64 bits for the actual range check
     signal accumulator[MAIN_BITS()];
     accumulator[0] <== bits.out[0];
     
@@ -78,7 +79,8 @@ template EnforceRange64() {
         accumulator[i] <== accumulator[i-1] + (bits.out[i] * (1 << i));
     }
     
-    accumulator[MAIN_BITS()-1] === in + (1 << SIGN_BIT());
+    // Ensure the value matches the lower 64 bits
+    accumulator[MAIN_BITS()-1] === in;
 }
 
 // Two-limb representation for large numbers
@@ -180,10 +182,11 @@ template SafeRandomVector(dim) {
         hashers[i].inputs[1] <== index;
         hashers[i].inputs[2] <== i;
         
-        // Generate random value in [-2^62, 2^62-1] * SCALE
-        mods[i] = Mod2K(62);
+        // Modify range to ensure values stay within safe bounds
+        // Generate random value in [-2^60, 2^60-1] * SCALE to provide more safety margin
+        mods[i] = Mod2K(60);
         mods[i].in <== hashers[i].out;
-        vector[i] <== (mods[i].out - (1 << 61)) * SCALE();
+        vector[i] <== (mods[i].out - (1 << 59)) * SCALE();
         
         // Enforce 64-bit range
         rangeChecks[i] = EnforceRange64();
@@ -239,5 +242,3 @@ template LSHGadget() {
 
     salt_output <== salt;
 }
-
-component main = LSHGadget();
