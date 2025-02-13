@@ -29,7 +29,15 @@ const ContactForm: React.FC = () => {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(email);
   };
-
+  //prevents user from clicking submit button when forms are empty
+  const isFormValid = () => {
+    return (
+      formInput.name.trim() !== '' &&
+      formInput.email.trim() !== '' &&
+      formInput.message.trim() !== '' &&
+      validateEmail(formInput.email)
+    );
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     //extract values from form input
@@ -89,6 +97,7 @@ const ContactForm: React.FC = () => {
         <Input
           type="text"
           id="name"
+          placeholder="John Doe"
           value={formInput.name}
           //move function to const handleChange instead
           onChange={handleChange}
@@ -106,6 +115,7 @@ const ContactForm: React.FC = () => {
         <Input
           type="email"
           id="email"
+          placeholder="johndoe@gmail.com"
           value={formInput.email}
           onChange={handleChange}
           // required
@@ -122,6 +132,7 @@ const ContactForm: React.FC = () => {
         <TextArea
           id="message"
           value={formInput.message}
+          placeholder="Type message here..."
           //move function to handlechange
           onChange={handleChange}
           // required
@@ -148,7 +159,8 @@ const ContactForm: React.FC = () => {
       <div>
         <Button
           type="submit"
-          disabled={isSubmitting}
+          // can disable submitting if forms are empty
+          disabled={isSubmitting || !isFormValid()}
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-black swap-button-style focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
           <span className="text-black text-sm">
