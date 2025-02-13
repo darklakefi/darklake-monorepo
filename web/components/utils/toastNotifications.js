@@ -5,7 +5,7 @@ import confetti from 'canvas-confetti';
 export const showSuccessToast = (message) => {
   toast.success(message, {
     position: 'bottom-center',
-    duration: 2000,
+    duration: 1500,
     style: {
       background: '#22c55e',
       color: 'white',

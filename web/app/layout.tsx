@@ -39,7 +39,7 @@ export default function RootLayout({
           </ReactQueryProvider>
         </CSPostHogProvider>
         <Analytics />
-        <Toaster position="bottom-center" />
+        <Toaster/>
       </body>
     </html>
   );

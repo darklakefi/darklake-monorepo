@@ -29,6 +29,7 @@ const ContactForm: React.FC = () => {
   // converted validateEmail into a module for import and reuse
 
   //prevents user from clicking submit button when forms are empty
+  //imported regex for use from ../utils/validateEmail
   const isFormValid = () => {
     return (
       formInput.name.trim() !== '' &&
@@ -63,11 +64,11 @@ const ContactForm: React.FC = () => {
       //   message,
       //   subscribeNewsletter,
       // });
-      const success = true;
+      const success = false;
       //change success to true to test sucess toasts
       if (success) {
         //add toast here
-        showSuccessToast('message succesfully sent!');
+        showSuccessToast('Message succesfully sent!');
         setFormInput({
           name: '',
           email: '',

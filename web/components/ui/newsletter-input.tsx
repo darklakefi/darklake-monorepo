@@ -10,6 +10,7 @@ import { validateEmail } from '../utils/validateEmail';
 const NewsletterInput: React.FC = () => {
   const [email, setEmail] = useState('');
 
+  //maybe use usememo ? 
   const isFormValid = () => email.trim() !== '' && validateEmail(email);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,6 +25,7 @@ const NewsletterInput: React.FC = () => {
     }
     // Call the subscribeToNewsletter function
     // const success = await subscribeToNewsletter({ email });
+   
     // set success to true to test
     const success = true;
 
