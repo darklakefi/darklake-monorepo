@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
-import { submitContactForm } from '../../lib/mailchimp';
+// import { submitContactForm } from '../../lib/mailchimp';
 import { Button } from './button';
 import { Input } from './input';
 import { TextArea } from './textarea';
+import { showSuccessToast, showErrorToast } from '../utils/toastNotifications';
 
 const ContactForm: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [subscribeNewsletter, setSubscribeNewsletter] = useState(false);
+  //refactor into just one useState object
+  const [formInput, setFormInput] = useState({
+    name: '',
+    email: '',
+    message: '',
+    subscribeNewsletter: false,
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(
-    null,
-  );
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const target = event.target as HTMLInputElement;
+    setFormInput((prev) => ({
+      ...prev,
+      [target.id]: target.type === 'checkbox' ? target.checked : target.value,
+    }));
+  };
 
   const validateEmail = (email: string) => {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -21,40 +32,46 @@ const ContactForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    //extract values from form input
+    const { name, email, message, subscribeNewsletter } = formInput;
+    // replace alert with toasts
     if (!name || !email || !message) {
-      alert('Please fill in all fields');
+      showErrorToast('Please fill in all fields');
       return;
     }
-
+    // replace alert with toasts
     if (!validateEmail(email)) {
-      alert('Please enter a valid email address');
+      showErrorToast('Please enter a valid email address');
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitStatus(null);
 
     try {
-      const success = await submitContactForm({
-        name,
-        email,
-        message,
-        subscribeNewsletter,
-      });
+      // const success = await submitContactForm({
+      //   name,
+      //   email,
+      //   message,
+      //   subscribeNewsletter,
+      // });
+      const success = true;
+      //change success to true to test sucess toasts
       if (success) {
-        setSubmitStatus('success');
-        // Reset the form fields after successful submission
-        setName('');
-        setEmail('');
-        setMessage('');
-        setSubscribeNewsletter(false);
+        //add toast here
+        showSuccessToast('message succesfully sent!');
+        setFormInput({
+          name: '',
+          email: '',
+          message: '',
+          subscribeNewsletter: false,
+        }); // clear form upon successful submission
       } else {
-        setSubmitStatus('error');
+        //add failure toast here
+        showErrorToast('Error sending message. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      setSubmitStatus('error');
+      showErrorToast('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -72,9 +89,10 @@ const ContactForm: React.FC = () => {
         <Input
           type="text"
           id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
+          value={formInput.name}
+          //move function to const handleChange instead
+          onChange={handleChange}
+          // required
           className="mt-1 block w-full px-3 py-2 border bg-white border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
@@ -88,9 +106,9 @@ const ContactForm: React.FC = () => {
         <Input
           type="email"
           id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          value={formInput.email}
+          onChange={handleChange}
+          // required
           className="mt-1 block w-full px-3 py-2 border bg-white border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
@@ -103,9 +121,10 @@ const ContactForm: React.FC = () => {
         </label>
         <TextArea
           id="message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
+          value={formInput.message}
+          //move function to handlechange
+          onChange={handleChange}
+          // required
           rows={4}
           className="mt-1 block w-full px-3 py-2 border bg-white border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
@@ -113,12 +132,16 @@ const ContactForm: React.FC = () => {
       <div className="flex items-center">
         <Input
           type="checkbox"
-          id="subscribe"
-          checked={subscribeNewsletter}
-          onChange={(e) => setSubscribeNewsletter(e.target.checked)}
+          //changed name to make more readable
+          id="subscribeNewsletter"
+          checked={formInput.subscribeNewsletter}
+          onChange={handleChange}
           className="h-4 w-4 text-white bg-white focus:ring-black border-gray-300 rounded"
         />
-        <label htmlFor="subscribe" className="ml-2 block text-sm text-black">
+        <label
+          htmlFor="subscribeNewsletter"
+          className="ml-2 block text-sm text-black"
+        >
           Subscribe to newsletter
         </label>
       </div>
@@ -128,18 +151,12 @@ const ContactForm: React.FC = () => {
           disabled={isSubmitting}
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-black swap-button-style focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
-          <span className="text-black text-primary-content text-sm">
+          <span className="text-black text-sm">
             {isSubmitting ? 'Sending...' : 'Send Message'}
           </span>
         </Button>
       </div>
-
-      {submitStatus === 'success' && (
-        <p className="text-green-600">Message sent successfully!</p>
-      )}
-      {submitStatus === 'error' && (
-        <p className="text-red-600">Error sending message. Please try again.</p>
-      )}
+      {/* removed plain text notifications. replaced with toasts instead.   */}
     </form>
   );
 };

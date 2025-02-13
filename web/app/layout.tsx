@@ -5,6 +5,7 @@ import { SolanaProvider } from '@/components/solana/solana-provider';
 import { ReactQueryProvider } from './react-query-provider';
 import { CSPostHogProvider } from './providers';
 import { Analytics } from '@vercel/analytics/react';
+import { Toaster } from 'sonner';
 
 export const metadata = {
   title: 'Darklake',
@@ -19,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="notranslate" translate='no'>
+    <html lang="en" className="notranslate" translate="no">
       <head>
         <link
           rel="stylesheet"
@@ -38,6 +39,7 @@ export default function RootLayout({
           </ReactQueryProvider>
         </CSPostHogProvider>
         <Analytics />
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );
