@@ -64,7 +64,7 @@ const ContactForm: React.FC = () => {
       //   message,
       //   subscribeNewsletter,
       // });
-      const success = false;
+      const success = true;
       //change success to true to test sucess toasts
       if (success) {
         //add toast here
@@ -159,6 +159,7 @@ const ContactForm: React.FC = () => {
         </label>
       </div>
       <div>
+        {/* can import button as component for reuse in both contact form and newsletter then customize it here */}
         <Button
           type="submit"
           // can disable submitting if forms are empty

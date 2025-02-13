@@ -22,7 +22,7 @@ export const showSuccessToast = (message) => {
     },
     onAutoClose: () => {
       confetti({
-        particleCount: 100,
+        particleCount: 200,
         spread: 60,
         origin: { y: 0.9 }, // Confetti shoots from the bottom
       });
