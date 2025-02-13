@@ -4,6 +4,7 @@ import { Button } from './button';
 import { Input } from './input';
 import { TextArea } from './textarea';
 import { showSuccessToast, showErrorToast } from '../utils/toastNotifications';
+import { validateEmail } from '../utils/validateEmail';
 
 const ContactForm: React.FC = () => {
   //refactor into just one useState object
@@ -25,10 +26,8 @@ const ContactForm: React.FC = () => {
     }));
   };
 
-  const validateEmail = (email: string) => {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return re.test(email);
-  };
+  // converted validateEmail into a module for import and reuse
+
   //prevents user from clicking submit button when forms are empty
   const isFormValid = () => {
     return (
@@ -43,6 +42,8 @@ const ContactForm: React.FC = () => {
     //extract values from form input
     const { name, email, message, subscribeNewsletter } = formInput;
     // replace alert with toasts
+
+    //only used here so no need to turn into module
     if (!name || !email || !message) {
       showErrorToast('Please fill in all fields');
       return;
@@ -161,7 +162,7 @@ const ContactForm: React.FC = () => {
           type="submit"
           // can disable submitting if forms are empty
           disabled={isSubmitting || !isFormValid()}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-black swap-button-style focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-black swap-button-style focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-800 disabled:opacity-50"
         >
           <span className="text-black text-sm">
             {isSubmitting ? 'Sending...' : 'Send Message'}
