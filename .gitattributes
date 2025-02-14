@@ -6,3 +6,8 @@ circuits/pot19_0000.ptau filter=lfs diff=lfs merge=lfs -text
 circuits/pot19_final.ptau filter=lfs diff=lfs merge=lfs -text
 circuits/pot19_final_prepared.ptau filter=lfs diff=lfs merge=lfs -text
 circuits/gadget.r1cs filter=lfs diff=lfs merge=lfs -text
+circuits/pot_cont.ptau filter=lfs diff=lfs merge=lfs -text
+circuits/pot_final.ptau filter=lfs diff=lfs merge=lfs -text
+circuits/pot.ptau filter=lfs diff=lfs merge=lfs -text
+circuits/swap_0000.zkey filter=lfs diff=lfs merge=lfs -text
+circuits/swap_final.zkey filter=lfs diff=lfs merge=lfs -text

@@ -1,8 +1,8 @@
 pragma circom 2.0.0;
 
-include "node_modules/circomlib/circuits/comparators.circom";
-include "node_modules/circomlib/circuits/bitify.circom";
-include "node_modules/circomlib/circuits/mux1.circom";
+include "circomlib/comparators.circom";
+include "circomlib/bitify.circom";
+include "circomlib/mux1.circom";
 include "division.circom";
 include "gadget.circom";
 
@@ -89,7 +89,7 @@ template ZKConstantProductAMM() {
     lshGadget.x <== newBalanceX;
     lshGadget.y <== newBalanceY;
     lshGadget.tradeOutput <== amountReceived;
-    lshGadget.salt <== 0;
+    lshGadget.salt <== 0; 
     lshBits <== lshGadget.lshBits;
 }
 

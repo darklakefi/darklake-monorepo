@@ -925,7 +925,7 @@ export type Darklake = {
                   32
                 ]
               },
-              66
+              68
             ]
           }
         },

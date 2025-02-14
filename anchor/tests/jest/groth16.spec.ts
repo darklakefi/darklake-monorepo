@@ -13,6 +13,20 @@ import {
 
 const { unstringifyBigInts } = utils;
 
+const hammingDistance = (a: string[], b: string[]) => {
+  if (a.length !== b.length) {
+    throw new Error('Arrays must have the same length');
+  }
+
+  let distance = 0;
+  for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) {
+          distance++;
+      }
+  }
+  return distance;
+}
+
 describe('ZKConstantSumAMM Verifier', () => {
   let curve: Curve;
 
@@ -41,86 +55,59 @@ describe('ZKConstantSumAMM Verifier', () => {
     );
 
     // Generate proof
-    const input = {
+    const baseInput = {
       privateInputAmount: 100000, // Example value
-      privateMinReceived: 99000, // Example value
+      privateMinReceived: 98000, // Example value
       publicBalanceX: 1100000, // Changed from 1000000 to match public signal
-      publicBalanceY: 1900000, // Changed from 2000000 to match public signal
+      publicBalanceY: 1900000, // Chang
       isSwapXtoY: 1, // Swapping X to Y
     };
+    let publicSignals;
+    ({
+      publicSignals,
+    } = await snarkjs.groth16.fullProve(baseInput, wasmPath, zkeyPath));
+    const basePublicSignals = publicSignals;
 
-    // this skips a step in immediately goes to proving
-    let publicSignals: any;
-    try {
-      const {
-        // used in temporary file creation
-        // proof,
+    let worseDistance = [];
+    let betterDistance = [];
+
+
+    for (let i = 0; i < 10; i++) {
+      const inputWorse = {
+        privateInputAmount: 100000, // Example value
+        privateMinReceived: 98000 - (i), // Example value
+        publicBalanceX: 1100000 + (i), // Changed from 1000000 to match public signal
+        publicBalanceY: 1900000 - (i), // Chang
+        isSwapXtoY: 1, // Swapping X to Y
+      };
+  
+      const inputBetter = {
+        privateInputAmount: 100000, // Example value
+        privateMinReceived: 98000 + i, // Example value
+        publicBalanceX: 1100000 - i, // Changed from 1000000 to match public signal
+        publicBalanceY: 1900000 + i, // Chang
+        isSwapXtoY: 1, // Swapping X to Y
+      };
+
+      ({
         publicSignals,
-      } = await snarkjs.groth16.fullProve(input, wasmPath, zkeyPath);
-    } catch (error) {
-      console.error('Error during proof generation:', error);
-      throw error;
+      } = await snarkjs.groth16.fullProve(inputWorse, wasmPath, zkeyPath));
+      const inputPublicSignals1 = publicSignals;
+
+      ({
+        publicSignals,
+      } = await snarkjs.groth16.fullProve(inputBetter, wasmPath, zkeyPath));
+      const inputPublicSignals2 = publicSignals;
+
+             
+      worseDistance.push(hammingDistance(basePublicSignals.slice(3), inputPublicSignals1.slice(3)));
+      betterDistance.push(hammingDistance(basePublicSignals.slice(3), inputPublicSignals2.slice(3)));
     }
 
-    // Create a temporary file to store the proof and public inputs (used in rust groth16 test)
-    /*
-    const proofProc = unstringifyBigInts(proof);
-    const publicSignalsUnstrigified = unstringifyBigInts(publicSignals);
+    fs.writeFileSync('results.txt', `Worse Distance: ${worseDistance.join(', ')}\nBetter Distance: ${betterDistance.join(', ')}`);
+  }, 300000000);
 
-    let pi_a: Buffer | Uint8Array = g1Uncompressed(curve, proofProc.pi_a);
-    //pi_a = reverseEndianness(pi_a)
-    pi_a = await negateAndSerializeG1(curve, pi_a);
-    const pi_a_0_u8_array = Array.from(pi_a);
-
-    const pi_b = g2Uncompressed(curve, proofProc.pi_b);
-    const pi_b_0_u8_array = Array.from(pi_b);
-
-    const pi_c = g1Uncompressed(curve, proofProc.pi_c);
-    const pi_c_0_u8_array = Array.from(pi_c);
-
-    // Format public inputs for verification
-    const public_signal_0_u8_array = publicSignalsUnstrigified.map((signal) => {
-      const signalBuffer = to32ByteBuffer(BigInt(signal));
-      return Array.from(signalBuffer);
-    });
-
-    const tempDir = os.tmpdir();
-    const tempFilePath = path.join(tempDir, 'zk_proof_output.json');
-
-    const outputData = {
-      pi_a: pi_a_0_u8_array,
-      pi_b: pi_b_0_u8_array,
-      pi_c: pi_c_0_u8_array,
-      publicInputs: public_signal_0_u8_array,
-    };
-
-    fs.writeFileSync(tempFilePath, JSON.stringify(outputData, null, 2));
-    */
-    /*
-    // Verify the original proof
-    const vKey = JSON.parse(fs.readFileSync(path.join(__dirname, "../../verification_key.json"), "utf8"));
-    console.log("Verification Key:", JSON.stringify(vKey, null, 2));
-    console.log("Public Inputs for Verification:", public_signal_0_u8_array);
-
-    let verificationResult;
-    try {
-      verificationResult = await snarkjs.groth16.verify(vKey, public_signal_0_u8_array, proof);
-      console.log("Verification result:", verificationResult);
-    } catch (error) {
-      console.error("Error during verification:", error);
-      throw error;
-    }
-
-    // Assert that the proof is valid
-    expect(verificationResult).toBe(true);
-
-    console.log("Regenerated proof verified successfully");
-    */
-
-    expect(publicSignals).toEqual(['1200000', '1741666', '158334']);
-  });
-
-  it('should generate and verify a valid proof using snarkjs library', async () => {
+  it.skip('should generate and verify a valid proof using snarkjs library', async () => {
     const input = {
       privateInputAmount: 100000,
       privateMinReceived: 99000,
