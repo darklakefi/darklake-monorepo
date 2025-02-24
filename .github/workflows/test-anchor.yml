@@ -23,7 +23,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install --frozen-lockfile
 
       - uses: jsonDoge/setup-anchor@v4
         with:
