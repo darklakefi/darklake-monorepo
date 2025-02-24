@@ -12,22 +12,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - run:  |
+          npm install -g corepack@latest
+          corepack enable pnpm
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: 'npm'
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm ci
 
       - uses: jsonDoge/setup-anchor@v4
         with:
           anchor-version: '0.30.1'
           node-version: '22.11.0'
           solana-cli-version: '2.0.15'
-          
+
       - name: Install Circom dependencies
         run: |
           sudo apt-get update
@@ -56,8 +59,8 @@ jobs:
       - name: Cloning snarkjs and groth16-solana
         run: git submodule update --init --recursive
 
-      - run: npm run anchor build
+      - run: pnpm run anchor build
         shell: bash
 
-      - run: npm run anchor test
+      - run: pnpm run anchor test
         shell: bash
