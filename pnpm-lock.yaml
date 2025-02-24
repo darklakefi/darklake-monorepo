@@ -65,6 +65,9 @@ importers:
       '@vercel/blob':
         specifier: ^0.25.1
         version: 0.25.1
+      axios:
+        specifier: ^1.7.9
+        version: 1.7.9(debug@4.4.0)
       bs58:
         specifier: 5.0.0
         version: 5.0.0
