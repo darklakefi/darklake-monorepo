@@ -31,6 +31,33 @@
   .text-link-1 {
     @apply font-secondary text-[18px] leading-[24px] underline active-hover-opacity;
   }
+
+  .button-primary-light {
+    @apply text-body-2 uppercase bg-brand-10 text-brand-70;
+    @apply px-[12px] py-[5px];
+    @apply hover:bg-brand-20 disabled:opacity-50 focus:outline-none;
+    @apply active:ring-[1px] active:bg-brand-10 active:ring-brand-10 active:ring-offset-[3px] active:ring-offset-black;
+  }
+
+  .button-primary-dark {
+    @apply text-body-2 uppercase bg-brand-70 text-brand-10;
+    @apply px-[12px] py-[5px];
+    @apply hover:bg-brand-80 disabled:opacity-50 focus:outline-none;
+    @apply active:ring-[1px] active:bg-brand-70 active:ring-brand-70 active:ring-offset-[3px] active:ring-offset-black;
+  }
+
+  .button-secondary {
+    @apply text-body-2 uppercase underline bg-brand-50 text-brand-20;
+    @apply px-[12px] py-[5px];
+    @apply hover:text-brand-10 disabled:opacity-50 focus:outline-none;
+    @apply active:ring-[1px] active:bg-brand-50 active:ring-brand-20 active:ring-offset-[3px] active:ring-offset-black;
+  }
+
+  .button-tertiary {
+    @apply text-body-2 uppercase underline  text-brand-30;
+    @apply hover:text-brand-20 disabled:opacity-50 focus:outline-none;
+    @apply active:ring-[1px] active:bg-brand-70 active:ring-brand-20 active:ring-offset-[3px] active:ring-offset-black;
+  }
 }
 
 @layer utilities {

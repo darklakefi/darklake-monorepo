@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
-        <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px]">
+        <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
           <Header />
           <MainWrapper>{children}</MainWrapper>
           <Footer />
