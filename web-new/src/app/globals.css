@@ -5,12 +5,31 @@
 @layer base {
   body {
     @apply bg-brand-80 text-brand-20;
-    @apply font-secondary;
+    @apply font-secondary text-body-1;
     box-sizing: border-box;
     background-image: url("../../public/images/bg-body.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+  }
+}
+
+
+@layer components {
+  .text-heading-1 {
+    @apply font-primary text-[28x] leading-[30px];
+  }
+
+  .text-body-1 {
+    @apply font-secondary text-[28x] leading-[34px];
+  }
+
+  .text-body-2 {
+    @apply font-secondary text-[18x] leading-[24px];
+  }
+
+  .text-link-1 {
+    @apply font-secondary text-[18px] leading-[24px] underline active-hover-opacity;
   }
 }
 
