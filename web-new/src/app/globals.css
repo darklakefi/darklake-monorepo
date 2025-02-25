@@ -17,15 +17,15 @@
 
 @layer components {
   .text-heading-1 {
-    @apply font-primary text-[28x] leading-[30px];
+    @apply font-primary text-[28px] leading-[30px];
   }
 
   .text-body-1 {
-    @apply font-secondary text-[28x] leading-[34px];
+    @apply font-secondary text-[28px] leading-[34px];
   }
 
   .text-body-2 {
-    @apply font-secondary text-[18x] leading-[24px];
+    @apply font-secondary text-[18px] leading-[24px];
   }
 
   .text-link-1 {
