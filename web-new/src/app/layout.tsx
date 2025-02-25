@@ -4,6 +4,10 @@ import clsx from "clsx";
 
 import "./globals.css";
 
+import Footer from "@/components/Footer";
+import MainWrapper from "@/components/MainWrapper";
+import Header from "@/components/Header";
+
 const fontBitsumishi = localFont({
   src: "../../public/fonts/bitsumishi.ttf",
   variable: "--font-primary",
@@ -26,10 +30,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}
-      >
-        {children}
+      <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
+        <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px]">
+          <Header />
+          <MainWrapper>{children}</MainWrapper>
+          <Footer />
+        </div>
       </body>
     </html>
   );

@@ -10,5 +10,12 @@
     background-image: url("../../public/images/bg-body.png");
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .active-hover-opacity {
+    @apply hover:opacity-70 active:opacity-50;
   }
 }
