@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="flex flex-row justify-between items-center pb-[80px]">
       <button className="uppercase text-brand-30 text-link-1">What is MEV?</button>
-      <div className="flex flex-row gap-x-[40px]">
+      <div className="flex flex-row items-center gap-x-[40px]">
         {socials.map((social) => (
           <a href={social.url} key={social.title} target="_blank" rel="noreferrer" className="active-hover-opacity">
             <Image src={social.iconUrl} alt={social.title} height={24} width={24} />
