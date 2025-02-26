@@ -2,7 +2,13 @@ import iconGithub from "../../public/images/icon-github.png";
 import iconTelegram from "../../public/images/icon-telegram.png";
 import iconTwitter from "../../public/images/icon-x-twitter.png";
 
-export const socials = [
+interface SocialLink {
+  iconUrl: string;
+  title: string;
+  url: string;
+}
+
+export const socials: SocialLink[] = [
   {
     iconUrl: iconTwitter.src,
     title: "Follow Darklake on X",
