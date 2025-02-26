@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import iconClose from "../../public/images/icon-close.png";
+import iconCloseCircle from "../../public/images/icon-close-circle.png";
 import Image from "next/image";
 import { pasteFromClipboard } from "@/utils/browser";
 import { isValidSolanaAddress } from "@/utils/blockchain";
@@ -62,7 +62,7 @@ const AddressMevLookup = () => {
       </div>
       {!!inputValue?.length && (
         <Image
-          src={iconClose}
+          src={iconCloseCircle}
           onClick={resetInput}
           className="active-hover-opacity cursor-pointer ml-[8px]"
           alt="close"

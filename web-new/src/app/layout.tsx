@@ -7,6 +7,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import MainWrapper from "@/components/MainWrapper";
 import Header from "@/components/Header";
+import GlobalModalProvider from "@/providers/GlobalModalProvider";
 
 const fontBitsumishi = localFont({
   src: "../../public/fonts/bitsumishi.ttf",
@@ -32,9 +33,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
         <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
-          <Header />
-          <MainWrapper>{children}</MainWrapper>
-          <Footer />
+          <GlobalModalProvider>
+            <Header />
+            <MainWrapper>{children}</MainWrapper>
+            <Footer />
+          </GlobalModalProvider>
         </div>
       </body>
     </html>
