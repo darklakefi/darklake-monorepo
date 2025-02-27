@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 
-
 const colors = {
   transparent: "rgba(0, 0, 0 ,0)",
   brand: {
@@ -12,8 +11,8 @@ const colors = {
     60: "#062916",
     70: "#041C0F",
     80: "#010804",
-  }
-}
+  },
+};
 
 export default {
   content: [
