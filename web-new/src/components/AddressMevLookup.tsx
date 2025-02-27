@@ -11,12 +11,16 @@ import { socials, SocialType } from "@/constants/links";
 
 import iconCloseCircle from "../../public/images/icon-close-circle.png";
 import imageWaddles1 from "../../public/images/image-waddles-1.png";
+import { signInWithTwitter } from "@/services/supabase";
+import useSupabaseSession from "@/hooks/useSupabaseSession";
 
 const AddressMevLookup = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [showResultsModal, setShowResultsModal] = useState(true);
+  const [isConnectingTwitter, setIsConnectingTwitter] = useState(false);
+  const supabaseSession = useSupabaseSession();
 
   const resetInput = () => {
     setInputValue("");
@@ -35,6 +39,15 @@ const AddressMevLookup = () => {
   };
 
   const socialsByType = groupBy(socials, "type");
+
+  const onConnectTwitterCLick = async () => {
+    if (isConnectingTwitter) return;
+    setIsConnectingTwitter(true);
+    await signInWithTwitter();
+    setIsConnectingTwitter(false);
+  };
+
+  const connectWithTwitterDisabled = isConnectingTwitter || !!supabaseSession;
 
   return (
     <div className="h-[50px] p-[8px] md:w-[628px] w-full flex flex-row items-center justify-between border border-brand-40 bg-brand-60">
@@ -91,7 +104,15 @@ const AddressMevLookup = () => {
                 <span className="text-brand-20">Connect your X account</span> so I can DM you when your MEV report is
                 ready.
               </p>
-              <button className="button-primary-light w-full mt-[24px] text-center">Connect X Account</button>
+              <button
+                className="button-primary-light w-full mt-[24px] text-center"
+                onClick={onConnectTwitterCLick}
+                disabled={connectWithTwitterDisabled}
+              >
+                {supabaseSession
+                  ? `Connected as @${supabaseSession.user.user_metadata?.preferred_username}`
+                  : "Connect X Account"}
+              </button>
             </div>
             <div className="p-[24px] md:w-[calc(50%-8px)] bg-brand-60">
               <p className="text-body-2 text-brand-30 uppercase">
