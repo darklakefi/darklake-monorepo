@@ -11,7 +11,7 @@ import { socials, SocialType } from "@/constants/links";
 
 import iconCloseCircle from "../../public/images/icon-close-circle.png";
 import imageWaddles1 from "../../public/images/image-waddles-1.png";
-import { signInWithTwitter } from "@/services/supabase";
+import { signInWithTwitter, signOut } from "@/services/supabase";
 import useSupabaseSession from "@/hooks/useSupabaseSession";
 import { LocalStorage } from "@/constants/storage";
 
@@ -131,6 +131,13 @@ const AddressMevLookup = () => {
                   ? `Connected as @${supabaseSession.user.user_metadata?.preferred_username}`
                   : "Connect X Account"}
               </button>
+              {!!supabaseSession && (
+                <div className="text-center mt-[12px]">
+                  <button onClick={signOut} className="button-tertiary">
+                    Sign Out
+                  </button>
+                </div>
+              )}
             </div>
             <div className="p-[24px] md:w-[calc(50%-8px)] bg-brand-60">
               <p className="text-body-2 text-brand-30 uppercase">
