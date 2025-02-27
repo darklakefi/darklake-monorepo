@@ -34,6 +34,20 @@ const AddressMevLookup = () => {
     }
   }, [isInputVisible, inputRef]);
 
+  useEffect(() => {
+    if (!supabaseSession) {
+      return;
+    }
+
+    const signInInitiated = localStorage.getItem(LocalStorage.SIGN_IN_INITIATED);
+    if (!signInInitiated?.length) {
+      return;
+    }
+
+    setShowResultsModal(true);
+    localStorage.removeItem(LocalStorage.SIGN_IN_INITIATED);
+  }, [supabaseSession]);
+
   const onPasteAddressClick = () => {
     pasteFromClipboard((pasted) => setInputValue(pasted.trim()));
     setIsInputVisible(true);

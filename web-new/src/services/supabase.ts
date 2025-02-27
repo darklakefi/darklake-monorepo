@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { LocalStorage } from "@/constants/storage";
 
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -6,10 +7,18 @@ export const supabase = createClient(
 );
 
 export const signInWithTwitter = async () => {
+  localStorage.removeItem(LocalStorage.SIGN_IN_INITIATED);
+
   try {
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "twitter",
     });
+
+    if (error) {
+      return;
+    }
+
+    localStorage.setItem(LocalStorage.SIGN_IN_INITIATED, "1");
   } catch (e) {
     //
   }
