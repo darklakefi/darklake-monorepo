@@ -33,6 +33,7 @@ export default function SupabaseAuthProvider({ children }: { children: React.Rea
 
       try {
         await supabase.auth.updateUser({ data: { walletAddress } });
+        localStorage.removeItem(LocalStorage.LOOKUP_ADDRESS);
       } catch (e) {
         //
       }
