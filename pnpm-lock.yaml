@@ -247,7 +247,7 @@ importers:
         specifier: ~5.4.2
         version: 5.4.5
 
-  web-new:
+  web:
     dependencies:
       '@headlessui/react':
         specifier: ^2.2.0
