@@ -8,7 +8,13 @@ export enum SocialType {
   TELEGRAM = "TELEGRAM",
 }
 
-export const socials = [
+interface SocialLink {
+  iconUrl: string;
+  title: string;
+  url: string;
+  type: SocialType;
+}
+export const socials: SocialLink[] = [
   {
     type: SocialType.TWITTER,
     iconUrl: iconTwitter.src,
