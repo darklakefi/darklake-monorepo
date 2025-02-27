@@ -4,6 +4,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 
 import { supabase } from "@/services/supabase";
+import { LocalStorage } from "@/constants/storage";
 
 export const SupabaseAuthContext = createContext<{ session: Session | null } | null>(null);
 
@@ -13,11 +14,27 @@ export default function SupabaseAuthProvider({ children }: { children: React.Rea
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_OUT") {
         setSession(null);
-      } else if (session) {
-        setSession(session);
+        return;
+      }
+
+      if (!session) {
+        return;
+      }
+
+      setSession(session);
+
+      const walletAddress = localStorage.getItem(LocalStorage.LOOKUP_ADDRESS);
+      if (!walletAddress?.length) {
+        return;
+      }
+
+      try {
+        await supabase.auth.updateUser({ data: { walletAddress } });
+      } catch (e) {
+        //
       }
     });
 

@@ -13,6 +13,7 @@ import iconCloseCircle from "../../public/images/icon-close-circle.png";
 import imageWaddles1 from "../../public/images/image-waddles-1.png";
 import { signInWithTwitter } from "@/services/supabase";
 import useSupabaseSession from "@/hooks/useSupabaseSession";
+import { LocalStorage } from "@/constants/storage";
 
 const AddressMevLookup = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
@@ -43,7 +44,10 @@ const AddressMevLookup = () => {
   const onConnectTwitterCLick = async () => {
     if (isConnectingTwitter) return;
     setIsConnectingTwitter(true);
+
     await signInWithTwitter();
+    localStorage.setItem(LocalStorage.LOOKUP_ADDRESS, inputValue);
+
     setIsConnectingTwitter(false);
   };
 
