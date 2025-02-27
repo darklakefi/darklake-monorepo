@@ -2,21 +2,29 @@ import iconGithub from "../../public/images/icon-github.png";
 import iconTelegram from "../../public/images/icon-telegram.png";
 import iconTwitter from "../../public/images/icon-x-twitter.png";
 
+export enum SocialType {
+  TWITTER = "TWITTER",
+  GITHUB = "GITHUB",
+  TELEGRAM = "TELEGRAM",
+}
+
 export const socials = [
   {
+    type: SocialType.TWITTER,
     iconUrl: iconTwitter.src,
     title: "Follow Darklake on X",
     url: "https://x.com/darklakefi",
   },
   {
+    type: SocialType.GITHUB,
     iconUrl: iconGithub.src,
     title: "Check Darklake GitHub",
     url: "https://github.com/darklakefi",
   },
   {
+    type: SocialType.TELEGRAM,
     iconUrl: iconTelegram.src,
     title: "Join Darklake on Telegram",
-    // TODO: add right link
-    url: "https://tg.me",
+    url: "https://t.me/darklakeficonvo",
   },
 ];

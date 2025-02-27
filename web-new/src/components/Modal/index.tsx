@@ -4,7 +4,6 @@ import { PropsWithChildren, useState } from "react";
 import clsx from "clsx";
 import Image from "next/image";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-
 import iconClose from "../../../public/images/icon-close.png";
 
 export interface ModalProps {
@@ -39,15 +38,15 @@ export default function Modal({
           <div className="p-[16px]">
             <div
               className={clsx(
-                "w-full md:w-[510px] max-h-[80vh] lg:max-h-none overflow-auto",
+                "max-h-[80vh] lg:max-h-none overflow-auto",
                 "p-[16px] md:p-[40px] bg-brand-70",
-                "shadow-[12px_12px_0px_0px] shadow-brand-60",
+                "shadow-[12px_12px_0px_0px] shadow-brand-60 relative",
                 contentWrapperClassName,
               )}
             >
               <div
                 className={clsx(
-                  "w-full flex flex-row items-center mb-[16px]",
+                  "flex flex-row items-center mb-[16px]",
                   title?.length ? "border-b border-b-brand-50 pb-[12px] justify-between" : "justify-end",
                 )}
               >
