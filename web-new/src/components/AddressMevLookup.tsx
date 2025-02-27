@@ -30,7 +30,8 @@ const AddressMevLookup = () => {
   }, [isInputVisible, inputRef]);
 
   const onPasteAddressClick = () => {
-    pasteFromClipboard((pasted) => setInputValue(pasted));
+    pasteFromClipboard((pasted) => setInputValue(pasted.trim()));
+    setIsInputVisible(true);
   };
 
   const socialsByType = groupBy(socials, "type");
