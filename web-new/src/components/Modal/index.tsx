@@ -35,7 +35,7 @@ export default function Modal({
       <DialogBackdrop className="fixed inset-0 bg-modal-backdrop" />
       <div className="flex flex-col fixed inset-0 w-screen items-center justify-center">
         <DialogPanel>
-          <div className="p-[16px]">
+          <div className="py-[16px] pl-[16px] pr-[28px]">
             <div
               className={clsx(
                 "max-h-[80vh] lg:max-h-none overflow-auto",

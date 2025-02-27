@@ -81,8 +81,8 @@ const AddressMevLookup = () => {
         <button className="button-primary-light ml-[12px] flex-shrink-0">Reveal Losses</button>
       )}
       <Modal title="MEV case file: opening soon" isOpen={showResultsModal} onClose={() => setShowResultsModal(false)}>
-        <div className="flex flex-row gap-x-[80px] w-[960px]">
-          <div className="flex flex-row flex-wrap gap-[16px] w-[530px]">
+        <div className="flex flex-col-reverse items-center lg:flex-row gap-x-[80px] w-full lg:w-[960px]">
+          <div className="flex flex-row flex-wrap gap-[16px] w-full lg:w-[530px]">
             <div className="p-[24px] bg-brand-60">
               <p className="text-heading-1 text-brand-30 uppercase">
                 <span className="text-brand-20">Connect your X account</span> so I can DM you when your MEV report is
@@ -90,7 +90,7 @@ const AddressMevLookup = () => {
               </p>
               <button className="button-primary-light w-full mt-[24px] text-center">Connect X Account</button>
             </div>
-            <div className="p-[24px] w-[calc(50%-8px)] bg-brand-60">
+            <div className="p-[24px] md:w-[calc(50%-8px)] bg-brand-60">
               <p className="text-body-2 text-brand-30 uppercase">
                 <span className="text-brand-20">Join our Telegram</span> channel for real-time updates on the launch
               </p>
@@ -104,7 +104,7 @@ const AddressMevLookup = () => {
                 Join Telegram
               </a>
             </div>
-            <div className="p-[24px] w-[calc(50%-8px)] bg-brand-60">
+            <div className="p-[24px] md:w-[calc(50%-8px)] bg-brand-60">
               <p className="text-body-2 text-brand-30 uppercase">
                 <span className="text-brand-20">Follow @darklakefi on X</span> for daily updates on our investigation
               </p>
@@ -119,7 +119,7 @@ const AddressMevLookup = () => {
               </a>
             </div>
           </div>
-          <Image src={imageWaddles1} alt="darklake waddles 1" className="relative bottom-[-40px]" />
+          <Image src={imageWaddles1} alt="darklake waddles 1" className="relative lg:bottom-[-40px] hidden lg:block" />
         </div>
       </Modal>
     </div>
