@@ -5,16 +5,17 @@ export default function WhatIsMevModal(props: ModalProps) {
     <Modal title="What is MEV?" {...props}>
       <div className="md:w-[430px]">
         <p className="uppercase">
-          MEV (Maximum Extractable Value) refers to the profits that miners, validators, or anyone controlling
-          transaction ordering can extract by reordering, including, or excluding transactions within a block.
+          MEV (MAXIMUM EXTRACTABLE VALUE) REFERS TO THE PROFITS THAT MINERS, VALIDATORS, OR ANYONE CONTROLLING
+          TRANSACTION ORDERING CAN EXTRACT BY REORDERING, INCLUDING, OR EXCLUDING TRANSACTIONS WITHIN A BLOCK.
           <br />
           <br />
-          One of the most common forms of MEV is the <span className="text-brand-20">Sandwich Attack</span>. This
-          happens when a malicious actor places a trade right before and after a user&#39;s trade to manipulate the
-          price, extracting profit in the process.
+          ONE OF THE MOST COMMON FORMS OF MEV IS THE SANDWICH ATTACK. THIS HAPPENS WHEN A MALICIOUS ACTOR PLACES A TRADE
+          RIGHT BEFORE AND AFTER A USER&#39;S TRADE TO MANIPULATE THE PRICE, EXTRACTING PROFIT IN THE PROCESS.
           <br />
           <br />
-          In this tool, we calculate the MEV loss specifically from Sandwich Attacks on Raydium and Pump.fun.
+          <span className="text-brand-20">
+            COMING SOON: THIS TOOL WILL CALCULATE MEV LOSS ANALYZING YOUR LAST 1000 TRANSACTIONS ON SOLANA.
+          </span>
         </p>
       </div>
     </Modal>
