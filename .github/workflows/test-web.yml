@@ -22,7 +22,7 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "pnpm"
 
-      - run: cp web-new/.env.example web-new/.env # copy .env.example to .env for server tests
+      - run: cp web-new/.env.example web-new/.env # copy .env.example to .env for tests
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
