@@ -18,7 +18,7 @@ const AddressMevLookup = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [showResultsModal, setShowResultsModal] = useState(true);
+  const [showResultsModal, setShowResultsModal] = useState(false);
   const [isConnectingTwitter, setIsConnectingTwitter] = useState(false);
   const supabaseSession = useSupabaseSession();
 
