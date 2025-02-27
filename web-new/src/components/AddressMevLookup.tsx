@@ -16,7 +16,7 @@ const AddressMevLookup = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [showResultsModal, setShowResultsModal] = useState(true);
+  const [showResultsModal, setShowResultsModal] = useState(false);
 
   const resetInput = () => {
     setInputValue("");
@@ -78,7 +78,9 @@ const AddressMevLookup = () => {
         />
       )}
       {isValidSolanaAddress(inputValue) && (
-        <button className="button-primary-light ml-[12px] flex-shrink-0">Reveal Losses</button>
+        <button className="button-primary-light ml-[12px] flex-shrink-0" onClick={() => setShowResultsModal(true)}>
+          Reveal Losses
+        </button>
       )}
       <Modal title="MEV case file: opening soon" isOpen={showResultsModal} onClose={() => setShowResultsModal(false)}>
         <div className="flex flex-col-reverse items-center lg:flex-row gap-x-[80px] w-full lg:w-[960px]">
