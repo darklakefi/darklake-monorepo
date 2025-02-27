@@ -12,6 +12,7 @@ const colors = {
     70: "#041C0F",
     80: "#010804",
   },
+  "modal-backdrop": "rgba(1,15,6,0.9)",
 };
 
 export default {
