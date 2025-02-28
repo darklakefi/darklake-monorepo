@@ -9,6 +9,7 @@ import MainWrapper from "@/components/MainWrapper";
 import Header from "@/components/Header";
 import GlobalModalProvider from "@/providers/GlobalModalProvider";
 import SupabaseAuthProvider from "@/providers/SupabaseAuthProvider";
+import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
 
 const fontBitsumishi = localFont({
   src: "../../public/fonts/bitsumishi.ttf",
@@ -34,13 +35,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
         <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
-          <SupabaseAuthProvider>
-            <GlobalModalProvider>
-              <Header />
-              <MainWrapper>{children}</MainWrapper>
-              <Footer />
-            </GlobalModalProvider>
-          </SupabaseAuthProvider>
+          <AnalyticsProvider>
+            <SupabaseAuthProvider>
+              <GlobalModalProvider>
+                <Header />
+                <MainWrapper>{children}</MainWrapper>
+                <Footer />
+              </GlobalModalProvider>
+            </SupabaseAuthProvider>
+          </AnalyticsProvider>
         </div>
       </body>
     </html>
