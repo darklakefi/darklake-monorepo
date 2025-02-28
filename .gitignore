@@ -53,11 +53,11 @@ test-ledger
 .nx
 
 # Devenv
-.devenv*
-devenv.local.nix
+*devenv*
+.envrc
 
 # direnv
-.direnv
+*direnv*
 
 # pre-commit
 .pre-commit-config.yaml
