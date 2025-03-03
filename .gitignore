@@ -51,6 +51,7 @@ test-ledger
 .vercel
 .env.development.local
 .nx
+.nx/workspace-data
 
 # devenv
 *devenv*
@@ -64,17 +65,6 @@ devenv.local.nix
 
 # pre-commit
 .pre-commit-config.yaml
+# env
+.env
 
-# Devenv
-.devenv*
-devenv.local.nix
-
-# direnv
-.direnv
-
-# pre-commit
-.pre-commit-config.yaml
-
-
-
-.nx/workspace-data
