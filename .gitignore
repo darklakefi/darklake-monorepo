@@ -52,12 +52,15 @@ test-ledger
 .env.development.local
 .nx
 
+# env
+.env
+
 # Devenv
 .devenv*
 devenv.local.nix
 
+# direnv
+.direnv
+
 # pre-commit
 .pre-commit-config.yaml
-
-# env
-.env
