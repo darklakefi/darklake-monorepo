@@ -3,11 +3,8 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "feature": "nx generate @solana-developers/preset-react:feature",
-    "build:old": "nx build web-old",
-    "dev:old": "nx serve web-old",
-    "build": "nx build web",
-    "dev": "nx dev web",
+    "build": "turbo run build --filter=web",
+    "dev": "turbo run dev --filter=web",
     "snarkjs": "node snarkjs/cli.js",
     "prettier": "prettier --write .",
     "eslint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern 'node_modules/*'"
