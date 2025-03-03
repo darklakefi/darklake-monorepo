@@ -11,12 +11,12 @@ import GlobalModalProvider from "@/providers/GlobalModalProvider";
 import SupabaseAuthProvider from "@/providers/SupabaseAuthProvider";
 
 const fontBitsumishi = localFont({
-  src: "../../public/fonts/bitsumishi.ttf",
+  src: "../public/fonts/bitsumishi.ttf",
   variable: "--font-primary",
 });
 
 const fontClassicConsoleNeue = localFont({
-  src: "../../public/fonts/classic-console-neue.ttf",
+  src: "../public/fonts/classic-console-neue.ttf",
   variable: "--font-secondary",
 });
 

@@ -2,16 +2,20 @@
 
 import React, { createContext, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
-
 import { supabase } from "@/services/supabase";
 import { LocalStorage } from "@/constants/storage";
+import invariant from "tiny-invariant";
 
 export const SupabaseAuthContext = createContext<{ session: Session | null } | null>(null);
 
 export default function SupabaseAuthProvider({ children }: { children: React.ReactNode }) {
+
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
+
+    invariant(supabase, "Supabase is undefined");
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -32,7 +36,7 @@ export default function SupabaseAuthProvider({ children }: { children: React.Rea
       }
 
       try {
-        await supabase.auth.updateUser({ data: { walletAddress } });
+        await supabase!.auth.updateUser({ data: { walletAddress } });
         localStorage.removeItem(LocalStorage.LOOKUP_ADDRESS);
       } catch (e) {
         //
