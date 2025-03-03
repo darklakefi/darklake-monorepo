@@ -50,14 +50,6 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@nx/eslint": "20.0.8",
-    "@nx/eslint-plugin": "19.0.0",
-    "@nx/jest": "20.0.6",
-    "@nx/js": "19.0.0",
-    "@nx/next": "19.0.0",
-    "@nx/react": "20.0.6",
-    "@nx/rollup": "19.0.0",
-    "@nx/workspace": "20.0.8",
     "@swc-node/register": "~1.8.0",
     "@swc/cli": "~0.3.12",
     "@swc/core": "~1.9.1",

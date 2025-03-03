@@ -19,7 +19,7 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "../node_modules/.bin/nx run anchor:jest"
+test = "../node_modules/.bin/pnpm run test --filter=anchor"
 
 [test]
 startup_wait = 5000
