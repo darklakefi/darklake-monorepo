@@ -19,8 +19,7 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "../node_modules/.bin/pnpm run test --filter=anchor"
-
+test = "../node_modules/.bin/jest ./tests/jest --config ./jest.config.ts"
 [test]
 startup_wait = 5000
 shutdown_wait = 2000

@@ -18,7 +18,7 @@
     "migrate:devnet": "NETWORK=devnet anchor migrate",
     "build": "anchor build",
     "localnet": "anchor localnet",
-    "test": "jest",
+    "test": "anchor test",
     "cargo-test": "cargo test",
     "test-all": "jest && cargo test"
   }
