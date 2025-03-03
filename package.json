@@ -93,6 +93,7 @@
     "tailwindcss": "3.2.7",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
+    "turbo": "^2.4.4",
     "typescript": "~5.4.2"
   },
   "packageManager": "pnpm@9.15.5"
