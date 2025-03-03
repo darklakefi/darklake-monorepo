@@ -1,69 +1,44 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "production": [
-      "default",
-      "!{projectRoot}/.eslintrc.json",
-      "!{projectRoot}/eslint.config.js",
-      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/test-setup.[jt]s"
-    ],
-    "sharedGlobals": []
-  },
+  "defaultBase": "develop",
   "targetDefaults": {
-    "@nx/next:build": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "cache": true
     },
-    "@nx/eslint:lint": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.js"
-      ]
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ],
+      "cache": true
     },
-    "@nx/rollup:rollup": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
-    "@nx/jest:jest": {
-      "cache": true,
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
+    "dev": {
+      "cache": true
     }
   },
-  "generators": {
-    "@nx/next": {
-      "application": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    }
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "cacheDirectory": ".nx-cache",
-        "cacheSize": 10000
+        "targetName": "eslint:lint"
+      }
+    },
+    {
+      "plugin": "@nx/next/plugin",
+      "options": {
+        "startTargetName": "next:start",
+        "buildTargetName": "next:build",
+        "devTargetName": "next:dev",
+        "serveStaticTargetName": "serve-static",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
       }
     }
-  }
+  ],
+  "nxCloudId": "67c599835fc5f84ab22d347f"
 }
