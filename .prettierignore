@@ -1,7 +1,6 @@
 # Add files here to ignore them from prettier formatting
 /dist
 /coverage
-/.nx/cache
 .anchor
 anchor/target/deploy
 anchor/target/debug
@@ -17,7 +16,6 @@ build
 test-ledger
 groth16-solana/
 snarkjs/
-/.nx-cache
 /web/.next
 /web/public
 /anchor/target

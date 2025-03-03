@@ -32,7 +32,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-.nx/cache
 # Next.js
 .next
 out
@@ -46,24 +45,26 @@ anchor/target/.rustc_info.json
 !anchor/target/types/*.ts
 test-ledger
 .yarn
-.nx-cache/
 .env.local
 .vercel
 .env.development.local
-.nx
 
 # env
 .env
 
 # Devenv
-.devenv*
+*devenv*
 devenv.local.nix
 
 # direnv
 .direnv
+.envrc
 
 # pre-commit
 .pre-commit-config.yaml
 
 # env
 .env
+
+# turborepo
+.turbo
