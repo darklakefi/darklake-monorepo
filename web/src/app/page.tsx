@@ -4,7 +4,7 @@ import WhatIsMevInlineButton from "@/components/Button/WhatIsMevInlineButton";
 export default function Home() {
   return (
     <div>
-      <h1 className="text-heading-1 text-brand-30 mb-[32px]">
+      <h1 className="font-primary text-3xl leading-[30px] text-brand-30 mb-[32px]">
         Your wallet is bleeding. I can prove it.
         <br />
         <span className="text-brand-20">
