@@ -1,0 +1,14 @@
+{
+  "name": "anchor",
+  "version": "0.1.0",
+  "scripts": {
+    "anchor": "anchor",
+    "migrate:localnet": "NETWORK=localnet anchor migrate",
+    "migrate:devnet": "NETWORK=devnet anchor migrate",
+    "build": "anchor build",
+    "localnet": "anchor localnet",
+    "test": "jest",
+    "cargo-test": "cargo test",
+    "test-all": "jest && cargo test"
+  }
+}

@@ -3,14 +3,6 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "anchor": "nx run anchor:anchor",
-    "anchor-migrate-localnet": "NETWORK=localnet nx run anchor:anchor-migrate",
-    "anchor-migrate-devnet": "NETWORK=devnet nx run anchor:anchor-migrate",
-    "anchor-build": "nx run anchor:anchor build",
-    "anchor-localnet": "nx run anchor:anchor localnet",
-    "anchor-test": "nx run anchor:test && nx run anchor:cargo test",
-    "anchor-jest-test": "nx run anchor:test",
-    "anchor-rust-test": "nx run anchor:cargo test",
     "feature": "nx generate @solana-developers/preset-react:feature",
     "build:old": "nx build web-old",
     "dev:old": "nx serve web-old",
@@ -95,7 +87,6 @@
     "jest": "^29.4.1",
     "jest-environment-jsdom": "^29.4.1",
     "jest-environment-node": "^29.4.1",
-    "nx": "19.0.0",
     "postcss": "8.4.41",
     "prettier": "^3.3.3",
     "snarkjs": "^0.7.4",
@@ -104,5 +95,5 @@
     "ts-node": "^10.9.1",
     "typescript": "~5.4.2"
   },
-  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"
+  "packageManager": "pnpm@9.15.5"
 }
