@@ -20,7 +20,6 @@ if (swcJestConfig.swcrc === undefined) {
 
 export default {
   displayName: 'anchor',
-  preset: '../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
