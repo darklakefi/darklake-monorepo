@@ -1,5 +1,5 @@
 {
-  "name": "web-new",
+  "name": "web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -16,6 +16,7 @@
     "@supabase/supabase-js": "^2.49.1",
     "clsx": "^2.1.1",
     "lodash": "^4.17.21",
+    "date-fns": "^4.1.0",
     "next": "15.1.7",
     "posthog-js": "^1.174.3",
     "react": "^19.0.0",

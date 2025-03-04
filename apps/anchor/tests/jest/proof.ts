@@ -24,10 +24,10 @@ export async function generateProof(
 }> {
   const wasmPath = path.join(
     __dirname,
-    '../../../circuits/swap_js',
+    '../../../../circuits/swap_js',
     'swap.wasm',
   );
-  const zkeyPath = path.join(__dirname, '../../../circuits', 'swap_0001.zkey');
+  const zkeyPath = path.join(__dirname, '../../../../circuits', 'swap_0001.zkey');
 
   const input = {
     privateInputAmount: privateInputs.privateInputAmount,
