@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import clsx from "clsx";
+import { Bounce, ToastContainer } from "react-toastify";
 
 import "./globals.css";
 
@@ -9,6 +10,8 @@ import MainWrapper from "@/components/MainWrapper";
 import Header from "@/components/Header";
 import GlobalModalProvider from "@/providers/GlobalModalProvider";
 import SupabaseAuthProvider from "@/providers/SupabaseAuthProvider";
+import ToastIcon from "@/components/Toast/ToastIcon";
+import ToastCloseButton from "@/components/Toast/ToastCloseButton";
 
 const fontBitsumishi = localFont({
   src: "../../public/fonts/bitsumishi.ttf",
@@ -33,6 +36,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
+        <ToastContainer
+          position="top-right"
+          autoClose={false}
+          hideProgressBar
+          newestOnTop
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover
+          theme="dark"
+          transition={Bounce}
+          closeButton={ToastCloseButton}
+          icon={ToastIcon}
+          className="z-99"
+        />
         <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
           <SupabaseAuthProvider>
             <GlobalModalProvider>

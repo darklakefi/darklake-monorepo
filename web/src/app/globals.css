@@ -1,3 +1,6 @@
+@import "react-toastify/dist/ReactToastify.css";
+@import "@hackernoon/pixel-icon-library/fonts/iconfont.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,7 +8,7 @@
 @layer base {
   body {
     @apply bg-brand-80 text-brand-20;
-    @apply font-secondary font-secondary text-3xl leading-8;
+    @apply font-secondary text-3xl leading-8;
     box-sizing: border-box;
     background-image: url("../../public/images/bg-body.png");
     background-size: cover;
@@ -14,4 +17,29 @@
   }
 }
 
+.Toastify__toast {
+  @apply bg-neutral-dark text-neutral-grey uppercase font-secondary text-lg leading-6;
+  @apply shadow-[4px_4px_0px_0px] shadow-brand-80;
+  width: 320px;
+  padding: 16px 45px 16px 16px;
+  align-items: flex-start;
+}
+
+@media (max-width: 480px) {
+  .Toastify__toast-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .Toastify__toast {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 8px 21px 8px 8px;
+  }
+}
+
+.Toastify__toast-icon {
+  margin-top: 2px;
+  margin-right: 15px;
+}
 
