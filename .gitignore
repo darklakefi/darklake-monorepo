@@ -49,9 +49,9 @@ test-ledger
 .vercel
 .env.development.local
 
-# env
-.env
-
+# devenv
+*devenv*
+.envrc
 # Devenv
 *devenv*
 devenv.local.nix
@@ -62,7 +62,6 @@ devenv.local.nix
 
 # pre-commit
 .pre-commit-config.yaml
-
 # env
 .env
 

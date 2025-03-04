@@ -79,7 +79,7 @@ const AddressMevLookup = () => {
           >
             Enter or{" "}
             <button
-              className="font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1 hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50 active:ring-brand-20 active:ring-offset-2 active:ring-offset-black;"
+              className="font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1 hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50 active:ring-brand-20 active:ring-offset-2 active:ring-offset-black"
               onClick={onPasteAddressClick}
             >
               Paste

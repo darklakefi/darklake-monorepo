@@ -79,7 +79,9 @@ export default function BrutalMevExtractionsLiveEvidence(props: BrutalMevExtract
               <span className="text-lg text-brand-20">{percentageExtracted}% Extracted</span>
               <span className="text-lg text-brand-30 mb-4">From a {totalSolTransactionAmount} SOL Transaction</span>
               <hr className="border-brand-40 mb-4" />
-              <Link href={attackBreakdownLink} className="text-lg text-brand-30 underline">View Attack Breakdown</Link>
+              <Link href={attackBreakdownLink} className="text-lg text-brand-30 underline">
+                View Attack Breakdown
+              </Link>
             </MevExtractionCard>
           );
         })}
