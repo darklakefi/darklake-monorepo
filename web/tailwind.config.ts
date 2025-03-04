@@ -56,6 +56,9 @@ export default {
         "3xl": "30px",
       },
       colors,
+      screens: {
+        xs: "481px",
+      },
     },
   },
   plugins: [],

@@ -28,7 +28,7 @@ export default function ToastContentExtended({
   return (
     <div>
       {!!title?.length && <h3 className="text-white">{title}</h3>}
-      {children}
+      <div>{children}</div>
       {!!action && (
         <button
           className={clsx(
