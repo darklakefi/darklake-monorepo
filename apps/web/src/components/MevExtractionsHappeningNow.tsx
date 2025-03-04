@@ -1,4 +1,3 @@
-import { useId } from "react";
 import MevExtractionCard from "./MevExtractionCard";
 
 interface MevExtractionsHappeningNowProps {
@@ -18,9 +17,8 @@ interface MevExtractionsHappeningNowProps {
 
 export default function MevExtractionsHappeningNow(props: MevExtractionsHappeningNowProps) {
   const { drainToday, weekTotal, attacksToday } = props;
-  const id = useId();
   return (
-    <div key={id}>
+    <div>
       <h2 className="text-3xl uppercase text-brand-30 font-primary mb-4">
         Mev Extraction <span className="text-brand-20">Happening Now</span>
       </h2>

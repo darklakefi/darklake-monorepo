@@ -1,4 +1,4 @@
-import iconGithub from "../../public/images/icon-github.png";
+import iconGithub from "../../../public/images/icon-github.png";
 import iconTelegram from "../../public/images/icon-telegram.png";
 import iconTwitter from "../../public/images/icon-x-twitter.png";
 
