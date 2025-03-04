@@ -1,6 +1,7 @@
 import Link from "next/link";
 import MevExtractionCard from "./MevExtractionCard";
 import { format } from "date-fns";
+import { useId } from "react";
 interface MevExtractionCase {
   caseNumber: number;
   tokenName: string;
@@ -65,9 +66,10 @@ export default function BrutalMevExtractionsLiveEvidence(props: BrutalMevExtract
           } = extractionCase;
 
           const formattedDate = format(date, "yyyy-MM-dd hh:mm OOO");
+          const key = useId();
 
           return (
-            <MevExtractionCard>
+            <MevExtractionCard key={key}>
               <h3 className="text-lg text-brand-30">Case {caseNumber}</h3>
               <span className="text-lg text-brand-30">Token: {tokenName}</span>
               <span className="text-lg text-brand-30 mb-4">Date: {formattedDate}</span>
