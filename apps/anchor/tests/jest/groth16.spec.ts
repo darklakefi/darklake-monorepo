@@ -30,13 +30,13 @@ describe('ZKConstantSumAMM Verifier', () => {
     // wasm
     const wasmPath = path.join(
       __dirname,
-      '../../../circuits/swap_js',
+      '../../../../circuits/swap_js',
       'swap.wasm',
     );
     // zkey
     const zkeyPath = path.join(
       __dirname,
-      '../../../circuits',
+      '../../../../circuits',
       'swap_0001.zkey',
     );
 
@@ -125,17 +125,17 @@ describe('ZKConstantSumAMM Verifier', () => {
 
     const wasmPath = path.join(
       __dirname,
-      '../../../circuits/swap_js',
+      '../../../../circuits/swap_js',
       'swap.wasm',
     );
     const zkeyPath = path.join(
       __dirname,
-      '../../../circuits',
+      '../../../../circuits',
       'swap_0001.zkey',
     );
     const vKeyPath = path.join(
       __dirname,
-      '../../../circuits',
+      '../../../../circuits',
       'verification_key.json',
     );
 
@@ -161,27 +161,27 @@ describe('ZKConstantSumAMM Verifier', () => {
       isSwapXtoY: 1,
     };
 
-    const snarkjsCli = path.join(__dirname, '../../../snarkjs/build/cli.cjs');
+    const snarkjsCli = path.join(__dirname, '../../../../snarkjs/build/cli.cjs');
     const zkeyPath = path.join(
       __dirname,
-      '../../../circuits',
+      '../../../../circuits',
       'swap_0001.zkey',
     );
     const vKeyPath = path.join(
       __dirname,
-      '../../../circuits',
+      '../../../../circuits',
       'verification_key.json',
     );
     const wasmPath = path.join(
       __dirname,
-      '../../../circuits/swap_js',
+      '../../../../circuits/swap_js',
       'swap.wasm',
     );
 
-    const inputPath = path.join(__dirname, '../../../input.json');
-    const witnessPath = path.join(__dirname, '../../../witness.wtns');
-    const proofPath = path.join(__dirname, '../../../proof.json');
-    const publicPath = path.join(__dirname, '../../../public.json');
+    const inputPath = path.join(__dirname, '../../../../input.json');
+    const witnessPath = path.join(__dirname, '../../../../witness.wtns');
+    const proofPath = path.join(__dirname, '../../../../proof.json');
+    const publicPath = path.join(__dirname, '../../../../public.json');
 
     // Write input to file
     fs.writeFileSync(inputPath, JSON.stringify(input));

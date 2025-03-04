@@ -59,8 +59,10 @@ jobs:
       - name: Cloning snarkjs and groth16-solana
         run: git submodule update --init --recursive
 
-      - run: pnpm run anchor build
+      - run: pnpm run build
+        working-directory: ./apps/anchor
         shell: bash
 
-      - run: pnpm run anchor test
+      - run: pnpm run test
+        working-directory: ./apps/anchor
         shell: bash
