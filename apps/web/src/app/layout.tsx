@@ -39,7 +39,7 @@ export default function RootLayout({
       <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
         <ToastContainer
           position="top-right"
-          autoClose={false}
+          autoClose={5000}
           hideProgressBar
           newestOnTop
           closeOnClick={false}
@@ -51,7 +51,6 @@ export default function RootLayout({
           transition={Bounce}
           closeButton={ToastCloseButton}
           icon={ToastIcon}
-          className="z-99"
         />
         <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
           <AnalyticsProvider>
