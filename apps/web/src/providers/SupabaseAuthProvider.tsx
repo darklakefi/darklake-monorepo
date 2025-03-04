@@ -4,7 +4,6 @@ import React, { createContext, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/services/supabase";
 import { LocalStorage } from "@/constants/storage";
-import { toast } from "react-toastify";
 
 export const SupabaseAuthContext = createContext<{ session: Session | null } | null>(null);
 
@@ -12,8 +11,6 @@ export default function SupabaseAuthProvider({ children }: { children: React.Rea
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    toast.success("test");
-    toast.success("test 2");
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
