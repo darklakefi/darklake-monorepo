@@ -19,6 +19,7 @@
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
     "next": "15.1.7",
+    "posthog-js": "^1.174.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.5",

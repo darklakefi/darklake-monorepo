@@ -32,39 +32,38 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-.nx/cache
 # Next.js
 .next
 out
 .anchor
-anchor/target/deploy
-anchor/target/debug
-anchor/target/release
-anchor/target/sbf-solana-solana
-anchor/target/.rustc_info.json
-!anchor/target/idl/*.json
-!anchor/target/types/*.ts
+apps/anchor/target/deploy
+apps/anchor/target/debug
+apps/anchor/target/release
+apps/anchor/target/sbf-solana-solana
+apps/anchor/target/.rustc_info.json
+!apps/anchor/target/idl/*.json
+!apps/anchor/target/types/*.ts
 test-ledger
 .yarn
-.nx-cache/
 .env.local
 .vercel
 .env.development.local
-.nx
-.nx/workspace-data
 
 # devenv
 *devenv*
 .envrc
 # Devenv
-.devenv*
+*devenv*
 devenv.local.nix
 
 # direnv
 .direnv
+.envrc
 
 # pre-commit
 .pre-commit-config.yaml
 # env
 .env
 
+# turborepo
+.turbo

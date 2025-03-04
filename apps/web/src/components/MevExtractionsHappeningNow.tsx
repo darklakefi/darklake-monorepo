@@ -26,7 +26,7 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
       </h2>
       <div className="flex gap-4 flex-col md:flex-row">
         <MevExtractionCard>
-          <h3 className="mb-4 text-lg text-brand-30">Today's Drain</h3>
+          <h3 className="mb-4 text-lg text-brand-30">Today&apos;s Drain</h3>
           <span className="text-3xl">{drainToday.amountSol} SOL</span>
           <span className="text-lg text-brand-30">
             {drainToday.amountUsd.toLocaleString("en-US", {

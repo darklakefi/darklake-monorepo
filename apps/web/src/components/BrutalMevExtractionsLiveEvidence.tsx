@@ -65,11 +65,11 @@ export default function BrutalMevExtractionsLiveEvidence(props: BrutalMevExtract
             attackBreakdownLink,
           } = extractionCase;
 
-          const id = useId();
           const formattedDate = format(date, "yyyy-MM-dd hh:mm OOO");
+          const key = useId();
 
           return (
-            <MevExtractionCard key={id}>
+            <MevExtractionCard key={key}>
               <h3 className="text-lg text-brand-30">Case {caseNumber}</h3>
               <span className="text-lg text-brand-30">Token: {tokenName}</span>
               <span className="text-lg text-brand-30 mb-4">Date: {formattedDate}</span>

@@ -55,7 +55,9 @@ export default function Modal({
                   <Image src="/images/icon-close.png" alt="modal close" width={20} height={20} />
                 </button>
               </div>
-              <div className="font-secondary text-lg leading-6 text-brand-30">{children}</div>
+              <div className="font-secondary text-lg leading-6 text-brand-30">
+                {children}
+              </div>
             </div>
           </div>
         </DialogPanel>
