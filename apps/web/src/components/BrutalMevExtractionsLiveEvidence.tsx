@@ -2,6 +2,7 @@ import Link from "next/link";
 import MevExtractionCard from "./MevExtractionCard";
 import { format } from "date-fns";
 import { useId } from "react";
+
 interface MevExtractionCase {
   caseNumber: number;
   tokenName: string;
@@ -48,13 +49,15 @@ function MevExtractionProgressBar(props: MevExtractionProgressBarProps) {
 
 export default function BrutalMevExtractionsLiveEvidence(props: BrutalMevExtractionsLiveEvidenceProps) {
   const { extractionCases } = props;
+  const key = useId();
+
   return (
     <div>
       <h2 className="text-3xl uppercase text-brand-30 font-primary mb-4">
         Brutal MEV Extractions <span className="text-brand-20">Live Evidence</span>
       </h2>
       <div className="flex flex-col md:flex-row gap-4">
-        {extractionCases.map((extractionCase) => {
+        {extractionCases.map((extractionCase, index) => {
           const {
             caseNumber,
             tokenName,
@@ -66,10 +69,9 @@ export default function BrutalMevExtractionsLiveEvidence(props: BrutalMevExtract
           } = extractionCase;
 
           const formattedDate = format(date, "yyyy-MM-dd hh:mm OOO");
-          const key = useId();
 
           return (
-            <MevExtractionCard key={key}>
+            <MevExtractionCard key={`${key}-${index}`}>
               <h3 className="text-lg text-brand-30">Case {caseNumber}</h3>
               <span className="text-lg text-brand-30">Token: {tokenName}</span>
               <span className="text-lg text-brand-30 mb-4">Date: {formattedDate}</span>

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc --noEmit && next lint",
+    "format": "prettier --check ."
   },
   "dependencies": {
     "@hackernoon/pixel-icon-library": "^1.0.4",
@@ -33,6 +34,7 @@
     "eslint": "^9.21.0",
     "eslint-config-next": "15.1.7",
     "postcss": "^8.5.3",
+    "prettier": "^3.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.2"
   }

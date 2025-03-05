@@ -3,7 +3,7 @@ name: Test and Build Anchor
 on:
   pull_request:
   push:
-    branches: ['main']
+    branches: ["main"]
 
 jobs:
   test-and-build:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run:  |
+      - run: |
           npm install -g corepack@latest
           corepack enable pnpm
 
@@ -27,9 +27,9 @@ jobs:
 
       - uses: jsonDoge/setup-anchor@v4
         with:
-          anchor-version: '0.30.1'
-          node-version: '22.11.0'
-          solana-cli-version: '2.0.15'
+          anchor-version: "0.30.1"
+          node-version: "22.11.0"
+          solana-cli-version: "2.0.15"
 
       - name: Install Circom dependencies
         run: |
