@@ -15,7 +15,13 @@ const Footer = () => {
       </button>
       <div className="flex flex-row items-center gap-x-[40px]">
         {socials.map((social) => (
-          <a href={social.url} key={social.title} target="_blank" rel="noreferrer" className="hover:opacity-70 active:opacity-50">
+          <a
+            href={social.url}
+            key={social.title}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:opacity-70 active:opacity-50"
+          >
             <Image src={social.iconUrl} alt={social.title} height={24} width={24} />
           </a>
         ))}

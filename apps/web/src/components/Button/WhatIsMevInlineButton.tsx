@@ -10,7 +10,10 @@ export default function WhatIsMevInlineButton() {
   const { openModal } = useGlobalModal();
 
   return (
-    <button onClick={() => openModal(GlobalModalType.WHAT_IS_MEV)} className="inline hover:opacity-70 active:opacity-50">
+    <button
+      onClick={() => openModal(GlobalModalType.WHAT_IS_MEV)}
+      className="inline hover:opacity-70 active:opacity-50"
+    >
       <Image src={iconQuestion} alt="what is mev" />
     </button>
   );

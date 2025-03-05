@@ -23,7 +23,7 @@ describe('ZK Constant Sum AMM Swap', () => {
     circuit = await wasm_tester(
       path.join(__dirname, '../../../../circuits', 'swap.circom'),
       {
-        include: [path.join(__dirname, '../../../../')],
+        include: [path.join(__dirname, '../../')],
       },
     );
   });
@@ -125,7 +125,7 @@ describe('ReciprocalDivision', () => {
     divisionCircuit = await wasm_tester(
       path.join(__dirname, '../../../../circuits', 'division_test.circom'),
       {
-        include: [path.join(__dirname, '../../../../')],
+        include: [path.join(__dirname, '../../')],
       },
     );
   });

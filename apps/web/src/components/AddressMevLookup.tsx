@@ -11,6 +11,7 @@ import { socials, SocialType } from "@/constants/links";
 import { signInWithTwitter } from "@/services/supabase";
 import useSupabaseSession from "@/hooks/useSupabaseSession";
 import { LocalStorage } from "@/constants/storage";
+import clsx from "clsx";
 
 const AddressMevLookup = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
@@ -61,11 +62,14 @@ const AddressMevLookup = () => {
 
     setIsConnectingTwitter(false);
   };
-
   const connectWithTwitterDisabled = isConnectingTwitter || !!supabaseSession;
 
   return (
-    <div className="h-12 p-2 md:max-w-2xl w-full flex flex-row items-center justify-between border border-brand-40 bg-brand-60">
+    <div
+      className={clsx(
+        "h-12 p-2 md:max-w-2xl w-full flex flex-row items-center justify-between border border-brand-40 bg-brand-60",
+      )}
+    >
       <div className="flex items-center flex-grow">
         <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">&gt;</span>
         {!isInputVisible && (
@@ -79,7 +83,11 @@ const AddressMevLookup = () => {
           >
             Enter or{" "}
             <button
-              className="font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1 hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50 active:ring-brand-20 active:ring-offset-2 active:ring-offset-black"
+              className={clsx(
+                "font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1",
+                "hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50 ",
+                "active:ring-brand-20 active:ring-offset-2 active:ring-offset-black",
+              )}
               onClick={onPasteAddressClick}
             >
               Paste
@@ -90,7 +98,10 @@ const AddressMevLookup = () => {
         {isInputVisible && (
           <input
             ref={inputRef}
-            className="w-full bg-transparent min-w-0 max-w-full border-none focus:outline-none font-secondary text-lg leading-6 text-brand-20"
+            className={clsx(
+              "w-full bg-transparent min-w-0 max-w-full border-none",
+              "focus:outline-none font-secondary text-lg leading-6 text-brand-20",
+            )}
             type="text"
             value={inputValue}
             onBlur={() => {
@@ -111,7 +122,11 @@ const AddressMevLookup = () => {
       )}
       {isValidSolanaAddress(inputValue) && (
         <button
-          className="font-secondary text-lg leading-6 uppercase bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10 active:ring-offset-2 active:ring-offset-black ml-3 flex-shrink-0"
+          className={clsx(
+            "font-secondary text-lg leading-6 uppercase bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20",
+            "disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10",
+            "active:ring-offset-2 active:ring-offset-black ml-3 flex-shrink-0",
+          )}
           onClick={() => setShowResultsModal(true)}
         >
           Reveal Losses
@@ -126,7 +141,11 @@ const AddressMevLookup = () => {
                 ready.
               </h1>
               <button
-                className="font-secondary text-lg leading-6 uppercase bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10 active:ring-offset-2 active:ring-offset-black w-full mt-6 text-center"
+                className={clsx(
+                  "font-secondary text-lg leading-6 uppercase bg-brand-10 text-brand-70 px-3 py-1",
+                  "hover:bg-brand-20 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10",
+                  "active:ring-brand-10 active:ring-offset-2 active:ring-offset-black w-full mt-6 text-center",
+                )}
                 onClick={onConnectTwitterCLick}
                 disabled={connectWithTwitterDisabled}
               >
@@ -144,7 +163,11 @@ const AddressMevLookup = () => {
                 target="_blank"
                 rel="noreferrer"
                 title="Join Darklake Telegram"
-                className="font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1 hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50 active:ring-brand-20 active:ring-offset-2 active:ring-offset-black; block mt-[24px] text-center"
+                className={clsx(
+                  "font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1",
+                  "hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50",
+                  "active:ring-brand-20 active:ring-offset-2 active:ring-offset-black; block mt-[24px] text-center",
+                )}
               >
                 Join Telegram
               </a>
@@ -158,7 +181,12 @@ const AddressMevLookup = () => {
                 target="_blank"
                 rel="noreferrer"
                 title="Follow Darklake on X"
-                className="font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1 hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50 active:ring-brand-20 active:ring-offset-2 active:ring-offset-black; block mt-6 text-center"
+                className={clsx(
+                  "bg-brand-50 text-brand-20 px-3 py-1 block mt-6",
+                  "font-secondary text-lg leading-6 uppercase underline text-center",
+                  "hover:text-brand-10 disabled:opacity-50 focus:outline-none",
+                  "active:ring-1 active:bg-brand-50 active:ring-brand-20 active:ring-offset-2 active:ring-offset-black",
+                )}
               >
                 Follow on X
               </a>
