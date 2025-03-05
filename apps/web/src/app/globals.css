@@ -5,7 +5,7 @@
 @layer base {
   body {
     @apply bg-brand-80 text-brand-20;
-    @apply font-secondary font-secondary text-3xl leading-8;
+    @apply font-secondary text-3xl leading-8;
     box-sizing: border-box;
     background-image: url("../../public/images/bg-body.png");
     background-size: cover;
