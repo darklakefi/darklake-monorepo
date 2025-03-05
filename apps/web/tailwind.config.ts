@@ -12,7 +12,7 @@ const colors = {
     70: "#041C0F",
     80: "#010804",
   },
-  "modal-backdrop": "rgba(1,15,6,0.9)",
+  "modal-backdrop": "rgba(1,15,6,0.9)", 
 };
 
 export default {
@@ -26,6 +26,12 @@ export default {
       fontFamily: {
         primary: ["var(--font-primary)"],
         secondary: ["var(--font-secondary)"],
+      },
+      fontSize: {
+        "3xl": "28px"
+      },
+      lineHeight: {
+        "3xl": "30px"
       },
       colors,
     },
