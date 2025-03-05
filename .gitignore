@@ -49,9 +49,6 @@ test-ledger
 .vercel
 .env.development.local
 
-# env
-.env
-
 # Devenv
 *devenv*
 devenv.local.nix

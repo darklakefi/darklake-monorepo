@@ -9,29 +9,31 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hackernoon/pixel-icon-library": "^1.0.4",
     "@headlessui/react": "^2.2.0",
     "@solana/web3.js": "1.95.4",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.49.1",
     "clsx": "^2.1.1",
-    "lodash": "^4.17.21",
     "date-fns": "^4.1.0",
+    "lodash": "^4.17.21",
     "next": "15.1.7",
     "posthog-js": "^1.174.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@types/lodash": "^4.17.15",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@eslint/eslintrc": "^3.3.0",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^20.17.22",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "eslint": "^9.21.0",
     "eslint-config-next": "15.1.7",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.2"
   }
 }
