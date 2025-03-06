@@ -7,8 +7,11 @@
     "lint": {
       "dependsOn": ["format"]
     },
+    "test": {
+      "dependsOn": ["lint"]
+    },
     "web#build": {
-      "dependsOn": ["lint"],
+      "dependsOn": ["test"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "dev": {
