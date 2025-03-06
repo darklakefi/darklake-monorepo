@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import clsx from "clsx";
 import { Bounce, ToastContainer } from "react-toastify";
 
 import "./globals.css";
@@ -13,6 +12,7 @@ import SupabaseAuthProvider from "@/providers/SupabaseAuthProvider";
 import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
 import ToastIcon from "@/components/Toast/ToastIcon";
 import ToastCloseButton from "@/components/Toast/ToastCloseButton";
+import { cn } from "@/utils/common";
 
 const fontBitsumishi = localFont({
   src: "../../public/fonts/bitsumishi.ttf",
@@ -36,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
+      <body className={cn(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
         <ToastContainer
           position="top-right"
           autoClose={5000}
