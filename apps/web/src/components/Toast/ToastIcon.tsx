@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import clsx from "clsx";
 import { IconProps, TypeOptions } from "react-toastify";
+import { cn } from "@/utils/common";
 
 const typeToIconClassName: Record<TypeOptions, string | undefined> = {
   success: "hn-check-circle-solid text-status-success-20",
@@ -20,5 +20,5 @@ export default function ToastIcon({ type }: IconProps) {
     return null;
   }
 
-  return <i className={clsx("text-[18px] hn", iconClassName)} />;
+  return <i className={cn("text-[18px] hn", iconClassName)} />;
 }

@@ -1,10 +1,7 @@
 "use client";
 
-import Image from "next/image";
-
 import useGlobalModal from "@/hooks/useGlobalModal";
 import { GlobalModalType } from "@/providers/GlobalModalProvider";
-import iconQuestion from "../../../public/images/icon-question.png";
 
 export default function WhatIsMevInlineButton() {
   const { openModal } = useGlobalModal();
@@ -12,9 +9,9 @@ export default function WhatIsMevInlineButton() {
   return (
     <button
       onClick={() => openModal(GlobalModalType.WHAT_IS_MEV)}
-      className="inline hover:opacity-70 active:opacity-50"
+      className="align-middle hover-with-active rounded-full size-5 bg-brand-50 border border-brand-40"
     >
-      <Image src={iconQuestion} alt="what is mev" />
+      <i className="hn hn-question-solid text-brand-30 text-[12px] leading-[18px]" />
     </button>
   );
 }

@@ -1,7 +1,3 @@
-import iconGithub from "../../public/images/icon-github.png";
-import iconTelegram from "../../public/images/icon-telegram.png";
-import iconTwitter from "../../public/images/icon-x-twitter.png";
-
 export enum SocialType {
   TWITTER = "TWITTER",
   GITHUB = "GITHUB",
@@ -9,7 +5,7 @@ export enum SocialType {
 }
 
 interface SocialLink {
-  iconUrl: string;
+  iconClassName: string;
   title: string;
   url: string;
   type: SocialType;
@@ -17,19 +13,19 @@ interface SocialLink {
 export const socials: SocialLink[] = [
   {
     type: SocialType.TWITTER,
-    iconUrl: iconTwitter.src,
+    iconClassName: "hn hn-x",
     title: "Follow Darklake on X",
     url: "https://x.com/darklakefi",
   },
   {
     type: SocialType.GITHUB,
-    iconUrl: iconGithub.src,
+    iconClassName: "hn hn-github",
     title: "Check Darklake GitHub",
     url: "https://github.com/darklakefi",
   },
   {
     type: SocialType.TELEGRAM,
-    iconUrl: iconTelegram.src,
+    iconClassName: "hn hn-telegram",
     title: "Join Darklake on Telegram",
     url: "https://t.me/darklakeficonvo",
   },

@@ -1,9 +1,8 @@
 "use client";
 
 import { PropsWithChildren, useState } from "react";
-import clsx from "clsx";
-import Image from "next/image";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
+import { cn } from "@/utils/common";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -37,7 +36,7 @@ export default function Modal({
         <DialogPanel>
           <div className="py-4 pl-4 pr-7">
             <div
-              className={clsx(
+              className={cn(
                 "max-h-[80vh] lg:max-h-none overflow-auto",
                 "p-[16px] md:p-[40px] bg-brand-70",
                 "shadow-[12px_12px_0px_0px] shadow-brand-60 relative",
@@ -45,14 +44,14 @@ export default function Modal({
               )}
             >
               <div
-                className={clsx(
+                className={cn(
                   "flex flex-row items-center mb-4",
                   title?.length ? "border-b border-b-brand-50 pb-3 justify-between" : "justify-end",
                 )}
               >
                 {!!title?.length && <p className="font-primary text-3xl leading-3xl text-brand-20">{title}</p>}
-                <button type="button" onClick={onModalClose} className="hover:opacity-70 active:opacity-50">
-                  <Image src="/images/icon-close.png" alt="modal close" width={20} height={20} />
+                <button type="button" onClick={onModalClose} className="hover-with-active flex items-center">
+                  <i className="hn hn-times text-brand-30 text-xl leading-5" />
                 </button>
               </div>
               <div className="font-secondary text-lg leading-6 text-brand-30">{children}</div>

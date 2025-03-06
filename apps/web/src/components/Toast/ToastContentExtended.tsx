@@ -1,7 +1,7 @@
 "use client";
 
 import { ToastContentProps, TypeOptions } from "react-toastify";
-import clsx from "clsx";
+import { cn } from "@/utils/common";
 
 interface ToastContentExtendedProps extends React.PropsWithChildren {
   title?: string;
@@ -31,7 +31,7 @@ export default function ToastContentExtended({
       <div>{children}</div>
       {!!action && (
         <button
-          className={clsx(
+          className={cn(
             "mt-[16px] text-body-2 uppercase underline",
             "disabled:opacity-50 focus:outline-none active:bg-transparent",
             "active:ring-[1px] active:ring-offset-[3px] active:ring-offset-black",

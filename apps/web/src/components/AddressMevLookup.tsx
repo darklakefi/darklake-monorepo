@@ -11,7 +11,8 @@ import { socials, SocialType } from "@/constants/links";
 import { signInWithTwitter } from "@/services/supabase";
 import useSupabaseSession from "@/hooks/useSupabaseSession";
 import { LocalStorage } from "@/constants/storage";
-import clsx from "clsx";
+import { cn } from "@/utils/common";
+import Button from "@/components/Button";
 
 const AddressMevLookup = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
@@ -66,7 +67,7 @@ const AddressMevLookup = () => {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         "h-12 p-2 md:max-w-2xl w-full flex flex-row items-center justify-between border border-brand-40 bg-brand-60",
       )}
     >
@@ -82,23 +83,16 @@ const AddressMevLookup = () => {
             }}
           >
             Enter or{" "}
-            <button
-              className={clsx(
-                "font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1",
-                "hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50 ",
-                "active:ring-brand-20 active:ring-offset-2 active:ring-offset-black",
-              )}
-              onClick={onPasteAddressClick}
-            >
+            <Button intent="secondary" className="px-3 py-1" onClick={onPasteAddressClick}>
               Paste
-            </button>{" "}
+            </Button>{" "}
             Solana address...
           </div>
         )}
         {isInputVisible && (
           <input
             ref={inputRef}
-            className={clsx(
+            className={cn(
               "w-full bg-transparent min-w-0 max-w-full border-none",
               "focus:outline-none font-secondary text-lg leading-6 text-brand-20",
             )}
@@ -113,16 +107,13 @@ const AddressMevLookup = () => {
         )}
       </div>
       {!!inputValue?.length && (
-        <Image
-          src="/images/icon-close-circle.png"
-          onClick={resetInput}
-          className="hover:opacity-70 active:opacity-50 cursor-pointer ml-2"
-          alt="close"
-        />
+        <button onClick={resetInput} className="hover-with-active cursor-pointer ml-2 flex items-center">
+          <i className="hn hn-times-circle-solid text-brand-30 text-lg leading-5" />
+        </button>
       )}
       {isValidSolanaAddress(inputValue) && (
         <button
-          className={clsx(
+          className={cn(
             "font-secondary text-lg leading-6 uppercase bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20",
             "disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10",
             "active:ring-offset-2 active:ring-offset-black ml-3 flex-shrink-0",
@@ -141,7 +132,7 @@ const AddressMevLookup = () => {
                 ready.
               </h1>
               <button
-                className={clsx(
+                className={cn(
                   "font-secondary text-lg leading-6 uppercase bg-brand-10 text-brand-70 px-3 py-1",
                   "hover:bg-brand-20 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10",
                   "active:ring-brand-10 active:ring-offset-2 active:ring-offset-black w-full mt-6 text-center",
@@ -163,7 +154,7 @@ const AddressMevLookup = () => {
                 target="_blank"
                 rel="noreferrer"
                 title="Join Darklake Telegram"
-                className={clsx(
+                className={cn(
                   "font-secondary text-lg leading-6 uppercase underline bg-brand-50 text-brand-20 px-3 py-1",
                   "hover:text-brand-10 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-50",
                   "active:ring-brand-20 active:ring-offset-2 active:ring-offset-black; block mt-[24px] text-center",
@@ -181,7 +172,7 @@ const AddressMevLookup = () => {
                 target="_blank"
                 rel="noreferrer"
                 title="Follow Darklake on X"
-                className={clsx(
+                className={cn(
                   "bg-brand-50 text-brand-20 px-3 py-1 block mt-6",
                   "font-secondary text-lg leading-6 uppercase underline text-center",
                   "hover:text-brand-10 disabled:opacity-50 focus:outline-none",
@@ -195,6 +186,8 @@ const AddressMevLookup = () => {
           <Image
             src="/images/image-waddles-1.png"
             alt="darklake waddles 1"
+            width={350}
+            height={430}
             className="relative lg:bottom-[-40px] hidden lg:block"
           />
         </div>
