@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Modal /> displays content successfully when open 1`] = `
+<body>
+  <div />
+  <div
+    id="headlessui-portal-root"
+  >
+    <div
+      data-headlessui-portal=""
+    >
+      <button
+        aria-hidden="true"
+        data-headlessui-focus-guard="true"
+        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+        type="button"
+      />
+      <div>
+        <div
+          aria-modal="true"
+          class="relative"
+          data-headlessui-state="open"
+          data-open=""
+          id="headlessui-dialog-:r0:"
+          role="dialog"
+          tabindex="-1"
+        >
+          <div
+            aria-hidden="true"
+            class="fixed inset-0 bg-modal-backdrop"
+            data-headlessui-state="open"
+            data-open=""
+          />
+          <div
+            class="flex flex-col fixed inset-0 w-screen items-center justify-center"
+          >
+            <div
+              data-headlessui-state="open"
+              data-open=""
+              id="headlessui-dialog-panel-:r7:"
+            >
+              <div
+                class="py-4 pl-4 pr-7"
+              >
+                <div
+                  class="max-h-[80vh] lg:max-h-none overflow-auto p-[16px] md:p-[40px] bg-brand-70 shadow-[12px_12px_0px_0px] shadow-brand-60 relative"
+                >
+                  <div
+                    class="flex flex-row items-center mb-4 border-b border-b-brand-50 pb-3 justify-between"
+                  >
+                    <p
+                      class="font-primary text-3xl leading-3xl text-brand-20"
+                    >
+                      Some modal title
+                    </p>
+                    <button
+                      class="hover-with-active flex items-center"
+                      type="button"
+                    >
+                      <i
+                        class="hn hn-times text-brand-30 text-xl leading-5"
+                      />
+                    </button>
+                  </div>
+                  <div
+                    class="font-secondary text-lg leading-6 text-brand-30"
+                  >
+                    Some content.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        aria-hidden="true"
+        data-headlessui-focus-guard="true"
+        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+        type="button"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<Modal /> does not display content when closed 1`] = `
+<body>
+  <div />
+</body>
+`;

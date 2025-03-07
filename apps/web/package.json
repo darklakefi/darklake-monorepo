@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint && tsc --noEmit",
-    "format": "prettier --check ."
+    "format": "prettier --check .",
+    "test": "TZ=UTC jest --detectOpenHandles",
+    "test:update": "pnpm test -- --updateSnapshot"
   },
   "dependencies": {
     "@hackernoon/pixel-icon-library": "^1.0.4",
@@ -29,15 +31,22 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@types/jest": "^29.4.0",
     "@types/lodash": "^4.17.16",
     "@types/node": "^20.17.22",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "eslint": "^9.21.0",
     "eslint-config-next": "15.1.7",
+    "jest": "^29.4.1",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "tailwindcss": "^3.4.17",
+    "ts-node": "^10.9.1",
     "typescript": "^5.8.2"
   }
 }
