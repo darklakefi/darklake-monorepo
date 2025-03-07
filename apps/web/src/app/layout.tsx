@@ -27,6 +27,11 @@ export const metadata: Metadata = {
   description: "Solana's first DEX delivering real-time, MEV-resistant order execution.",
 };
 
+const tailwindClassName = twMerge(
+  "bg-no-repeat bg-fixed bg-cover box-border bg-[url(/images/bg-body.png)] bg-brand-80",
+  "text-brand-20 font-secondary text-3xl leading-8",
+);
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,14 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={clsx(
-          fontBitsumishi.variable,
-          fontClassicConsoleNeue.variable,
-          // eslint-disable-next-line max-len
-          "bg-no-repeat bg-fixed bg-cover box-border bg-[url(/images/bg-body.png)] bg-brand-80 text-brand-20 font-secondary text-3xl leading-8",
-        )}
-      >
+      <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable, tailwindClassName)}>
         <ToastContainer
           position="top-right"
           autoClose={5000}
