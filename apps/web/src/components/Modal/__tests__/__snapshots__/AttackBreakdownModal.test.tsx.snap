@@ -66,7 +66,7 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                     class="font-secondary text-lg leading-6 text-brand-30"
                   >
                     <div
-                      class="md:w-[960px]"
+                      class="lg:w-[960px]"
                     >
                       <div
                         class="uppercase text-lg leading-6 text-brand-30 mb-6"
@@ -130,19 +130,19 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                         class="relative"
                       >
                         <span
-                          class="w-px h-full absolute left-[11.5px] top-0 bg-brand-50"
+                          class="w-px h-full absolute left-[11.5px] max-md:hidden top-0 bg-brand-50"
                         />
                         <div
-                          class="flex flex-row items-center w-full gap-x-[7px] mb-6 relative uppercase text-lg leading-5 group"
+                          class="md:flex flex-row items-center w-full gap-x-[7px] md:mb-6 relative uppercase text-lg leading-5 group"
                         >
                           <span
-                            class="hidden group-first-of-type:block absolute top-0 left-0 bg-brand-70 h-1/2 w-full"
+                            class="hidden md:group-first-of-type:block absolute top-0 left-0 bg-brand-70 h-1/2 w-full"
                           />
                           <span
-                            class="hidden group-last-of-type:block absolute bottom-0 left-0 bg-brand-70 h-1/2 w-full"
+                            class="hidden md:group-last-of-type:block absolute bottom-0 left-0 bg-brand-70 h-1/2 w-full"
                           />
                           <div
-                            class="text-brand-20 w-[264px] flex flex-row items-center py-[18px] bg-brand-70 relative"
+                            class="text-brand-20 md:w-[264px] flex flex-row items-center justify-center py-[18px] bg-brand-70 relative"
                           >
                             <i
                               class="text-[22px] hn mr-4 hn-exclamation-triangle-solid"
@@ -151,7 +151,7 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                               Frontrun Attack
                             </p>
                             <span
-                              class="ml-[5px] h-px w-[74px] bg-brand-50 flex-1"
+                              class="max-md:hidden ml-[5px] h-px w-[74px] bg-brand-50 flex-1"
                             />
                           </div>
                           <div
@@ -174,18 +174,21 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                               View TX
                             </a>
                           </div>
+                          <span
+                            class="block group-last-of-type:hidden md:hidden w-px mt-4 h-8 mx-auto bg-brand-50"
+                          />
                         </div>
                         <div
-                          class="flex flex-row items-center w-full gap-x-[7px] mb-6 relative uppercase text-lg leading-5 group"
+                          class="md:flex flex-row items-center w-full gap-x-[7px] md:mb-6 relative uppercase text-lg leading-5 group"
                         >
                           <span
-                            class="hidden group-first-of-type:block absolute top-0 left-0 bg-brand-70 h-1/2 w-full"
+                            class="hidden md:group-first-of-type:block absolute top-0 left-0 bg-brand-70 h-1/2 w-full"
                           />
                           <span
-                            class="hidden group-last-of-type:block absolute bottom-0 left-0 bg-brand-70 h-1/2 w-full"
+                            class="hidden md:group-last-of-type:block absolute bottom-0 left-0 bg-brand-70 h-1/2 w-full"
                           />
                           <div
-                            class="text-brand-20 w-[264px] flex flex-row items-center py-[18px] bg-brand-70 relative"
+                            class="text-brand-20 md:w-[264px] flex flex-row items-center justify-center py-[18px] bg-brand-70 relative"
                           >
                             <i
                               class="text-[22px] hn mr-4 hn-refresh-solid"
@@ -194,7 +197,7 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                               Victim Transaction
                             </p>
                             <span
-                              class="ml-[5px] h-px w-[74px] bg-brand-50 flex-1"
+                              class="max-md:hidden ml-[5px] h-px w-[74px] bg-brand-50 flex-1"
                             />
                           </div>
                           <div
@@ -217,18 +220,21 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                               View TX
                             </a>
                           </div>
+                          <span
+                            class="block group-last-of-type:hidden md:hidden w-px mt-4 h-8 mx-auto bg-brand-50"
+                          />
                         </div>
                         <div
-                          class="flex flex-row items-center w-full gap-x-[7px] mb-6 relative uppercase text-lg leading-5 group"
+                          class="md:flex flex-row items-center w-full gap-x-[7px] md:mb-6 relative uppercase text-lg leading-5 group"
                         >
                           <span
-                            class="hidden group-first-of-type:block absolute top-0 left-0 bg-brand-70 h-1/2 w-full"
+                            class="hidden md:group-first-of-type:block absolute top-0 left-0 bg-brand-70 h-1/2 w-full"
                           />
                           <span
-                            class="hidden group-last-of-type:block absolute bottom-0 left-0 bg-brand-70 h-1/2 w-full"
+                            class="hidden md:group-last-of-type:block absolute bottom-0 left-0 bg-brand-70 h-1/2 w-full"
                           />
                           <div
-                            class="text-brand-20 w-[264px] flex flex-row items-center py-[18px] bg-brand-70 relative"
+                            class="text-brand-20 md:w-[264px] flex flex-row items-center justify-center py-[18px] bg-brand-70 relative"
                           >
                             <i
                               class="text-[22px] hn mr-4 hn-exclamation-triangle-solid"
@@ -237,7 +243,7 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                               Backrun Attack
                             </p>
                             <span
-                              class="ml-[5px] h-px w-[74px] bg-brand-50 flex-1"
+                              class="max-md:hidden ml-[5px] h-px w-[74px] bg-brand-50 flex-1"
                             />
                           </div>
                           <div
@@ -260,6 +266,9 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                               View TX
                             </a>
                           </div>
+                          <span
+                            class="block group-last-of-type:hidden md:hidden w-px mt-4 h-8 mx-auto bg-brand-50"
+                          />
                         </div>
                       </div>
                     </div>
