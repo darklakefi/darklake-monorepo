@@ -198,8 +198,8 @@ const AddressMevLookup = () => {
             src="/images/image-waddles-1.png"
             alt="darklake waddles 1"
             className="relative lg:bottom-[-40px] hidden lg:block"
-            width={24}
-            height={24}
+            width={350}
+            height={430}
           />
         </div>
       </Modal>

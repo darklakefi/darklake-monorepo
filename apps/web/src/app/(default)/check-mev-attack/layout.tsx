@@ -5,6 +5,7 @@ import MainWrapper from "@/components/MainWrapper";
 import Header from "@/components/Header";
 import { useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { twMerge } from "tailwind-merge";
 
 function BackgroundRevealElement() {
   const element = useRef<HTMLDivElement | null>(null);
@@ -25,8 +26,10 @@ function BackgroundRevealElement() {
     document.addEventListener("mousemove", handler);
     return () => document.removeEventListener("mousemove", handler);
   }, []);
-  const className = `bg-[url(/images/bg-masked.png)] mouse-tracker fixed w-screen
-  h-screen z-10 top-0 left-0 opacity-90 bg-cover bg-no-repeat bg-fixed invisible`;
+  const className = twMerge(
+    "bg-[url(/images/bg-masked.png)] mouse-tracker fixed w-screen",
+    "h-screen z-10 top-0 left-0 opacity-90 bg-cover bg-no-repeat bg-fixed invisible",
+  );
   return createPortal(
     <>
       <div className={className} ref={element} />
@@ -35,16 +38,18 @@ function BackgroundRevealElement() {
   );
 }
 
+const className = twMerge(
+  "w-screen h-screen bg-[url(/images/bg-body.png)] bg-cover",
+  "bg-no-repeat bg-fixed relative top-0 left-0 bg-brand-80 text-brand-20",
+);
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <div
-      className="w-screen h-screen bg-[url(/images/bg-body.png)] bg-cover
-     bg-no-repeat bg-fixed relative top-0 left-0 bg-brand-80 text-brand-20"
-    >
+    <div className={className}>
       <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-16 px-6 z-20 relative">
         <BackgroundRevealElement />
 
