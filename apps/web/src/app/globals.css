@@ -5,18 +5,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-brand-80 text-brand-20;
-    @apply font-secondary text-3xl leading-8;
-    box-sizing: border-box;
-    background-image: url("../../public/images/bg-body.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-}
-
 .Toastify__toast {
   @apply bg-neutral-dark text-neutral-grey uppercase font-secondary text-lg leading-6;
   @apply shadow-[4px_4px_0px_0px] shadow-brand-80;

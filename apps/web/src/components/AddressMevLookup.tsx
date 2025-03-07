@@ -115,6 +115,8 @@ const AddressMevLookup = () => {
       {!!inputValue?.length && (
         <Image
           src="/images/icon-close-circle.png"
+          width={24}
+          height={24}
           onClick={resetInput}
           className="hover:opacity-70 active:opacity-50 cursor-pointer ml-2"
           alt="close"
@@ -196,6 +198,8 @@ const AddressMevLookup = () => {
             src="/images/image-waddles-1.png"
             alt="darklake waddles 1"
             className="relative lg:bottom-[-40px] hidden lg:block"
+            width={350}
+            height={430}
           />
         </div>
       </Modal>

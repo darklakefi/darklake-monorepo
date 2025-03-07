@@ -5,14 +5,12 @@ import { Bounce, ToastContainer } from "react-toastify";
 
 import "./globals.css";
 
-import Footer from "@/components/Footer";
-import MainWrapper from "@/components/MainWrapper";
-import Header from "@/components/Header";
 import GlobalModalProvider from "@/providers/GlobalModalProvider";
 import SupabaseAuthProvider from "@/providers/SupabaseAuthProvider";
 import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
 import ToastIcon from "@/components/Toast/ToastIcon";
 import ToastCloseButton from "@/components/Toast/ToastCloseButton";
+import { twMerge } from "tailwind-merge";
 
 const fontBitsumishi = localFont({
   src: "../../public/fonts/bitsumishi.ttf",
@@ -29,6 +27,11 @@ export const metadata: Metadata = {
   description: "Solana's first DEX delivering real-time, MEV-resistant order execution.",
 };
 
+const tailwindClassName = twMerge(
+  "bg-no-repeat bg-fixed bg-cover box-border bg-[url(/images/bg-body.png)] bg-brand-80",
+  "text-brand-20 font-secondary text-3xl leading-8",
+);
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable)}>
+      <body className={clsx(fontBitsumishi.variable, fontClassicConsoleNeue.variable, tailwindClassName)}>
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -52,17 +55,11 @@ export default function RootLayout({
           closeButton={ToastCloseButton}
           icon={ToastIcon}
         />
-        <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
-          <AnalyticsProvider>
-            <SupabaseAuthProvider>
-              <GlobalModalProvider>
-                <Header />
-                <MainWrapper>{children}</MainWrapper>
-                <Footer />
-              </GlobalModalProvider>
-            </SupabaseAuthProvider>
-          </AnalyticsProvider>
-        </div>
+        <AnalyticsProvider>
+          <SupabaseAuthProvider>
+            <GlobalModalProvider>{children}</GlobalModalProvider>
+          </SupabaseAuthProvider>
+        </AnalyticsProvider>
       </body>
     </html>
   );
