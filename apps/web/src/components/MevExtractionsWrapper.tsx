@@ -13,7 +13,7 @@ export default function MevExtractionsWrapper(props: MevExtractionsWrapperProps)
         alt="Waddles"
         width={400}
         height={585.84}
-        className="absolute -top-[520px] -right-[40px]"
+        className="absolute -top-[520px] -right-[40px] hidden lg:block"
       />
       {children}
     </div>
