@@ -1,5 +1,4 @@
 import MevExtractionCard from "./MevExtractionCard";
-
 interface MevExtractionsHappeningNowProps {
   drainToday: {
     amountSol: number;
