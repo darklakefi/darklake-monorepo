@@ -20,6 +20,6 @@ export const signInWithTwitter = async () => {
 
     localStorage.setItem(LocalStorage.SIGN_IN_INITIATED, "1");
   } catch (e) {
-    //
+    console.error(e);
   }
 };

@@ -5,6 +5,7 @@ export const pasteFromClipboard = async (onSuccess: (value: string) => void) => 
       onSuccess(clipboardText);
     }
   } catch (e) {
+    console.error(e);
     // TODO: shown error toast when implemented
   }
 };

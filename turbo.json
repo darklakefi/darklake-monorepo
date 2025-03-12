@@ -10,9 +10,9 @@
     "test": {
       "dependsOn": ["lint"]
     },
-    "web#build": {
+    "build": {
       "dependsOn": ["test"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "dev": {
       "persistent": true,
