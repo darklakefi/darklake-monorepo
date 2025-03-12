@@ -1,4 +1,4 @@
-name: Test and Build Web
+name: Test and Build API Server
 
 on:
   pull_request:
@@ -22,10 +22,10 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "pnpm"
 
-      - run: cp apps/web/.env.example apps/web/.env # copy .env.example to .env for tests
+      - run: cp apps/server/.env.example apps/server/.env # copy .env.example to .env for tests
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build project
-        run: pnpm run build:web
+        run: pnpm run build:server
