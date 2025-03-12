@@ -1,6 +1,23 @@
 {
-  "extends": "../tsconfig.base.json",
+  "compileOnSave": false,
   "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2020",
+    "module": "esnext",
+    "lib": ["ES2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./web/*"],
+      "@darklakefi/anchor": ["anchor/src/index.ts"]
+    },
     "jsx": "preserve",
     "allowJs": true,
     "esModuleInterop": true,
@@ -27,5 +44,5 @@
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "jest.config.ts", "**/*.spec.ts", "**/*.test.ts"]
+  "exclude": ["node_modules", "jest.config.ts", "**/*.spec.ts", "**/*.test.ts", "tmp"]
 }
