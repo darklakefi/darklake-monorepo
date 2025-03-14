@@ -1,0 +1,33 @@
+services:
+  database:
+    image: postgres:alpine
+    restart: always
+    env_file:
+      - ./apps/server/.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+  cache:
+    image: redis:alpine
+    restart: always
+    env_file:
+      - ./apps/server/.env
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --maxmemory-policy allkeys-lru
+    volumes:
+      - cache:/data
+
+volumes:
+  database:
+    driver: local
+  cache:
+    driver: local

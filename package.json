@@ -8,7 +8,8 @@
     "dev": "turbo run dev --parallel",
     "snarkjs": "node snarkjs/cli.js",
     "format": "turbo run format -- --write .",
-    "lint": "turbo run lint -- --fix --ext .js,.jsx,.ts,.tsx --ignore-pattern 'node_modules/*'"
+    "lint": "turbo run lint -- --fix --ext .js,.jsx,.ts,.tsx --ignore-pattern 'node_modules/*'",
+    "docker:setup": "docker-compose rm -fsv && docker-compose --env-file ./apps/server/.env up -d"
   },
   "private": true,
   "devDependencies": {
