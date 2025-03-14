@@ -3,7 +3,8 @@ import Image from "next/image";
 import ConnectedWalletDropdown from "./ConnectedWalletDropdown";
 
 const Header = () => {
-  const currentWalletAddress = null;
+  // TODO: wire with added/connected wallet
+  const currentWalletAddress = "fdggdfrtesg453g3445gy";
   return (
     <header className="flex flex-row justify-between items-center pb-[64px]">
       <Link href="/" title="Darklake.fi" className="active:opacity-80">
