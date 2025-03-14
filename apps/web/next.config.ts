@@ -5,11 +5,10 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/mev",
-        has: [
+        missing: [
           {
             type: "query",
             key: "share",
-            value: "(?!.*)", // ?share is empty
           },
         ],
         destination: "/",

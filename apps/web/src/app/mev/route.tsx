@@ -4,8 +4,7 @@
 }
 
 import { ImageResponse } from "next/og";
-import { NextRequest } from "next/server";
-import { notFound } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
 import { formatMoney } from "@/utils/number";
 import { cn } from "@/utils/common";
 
@@ -58,7 +57,7 @@ const WaddlesMessageText = ({ solAmount }: { solAmount: number }) => {
 export async function GET(request: NextRequest) {
   const address = request.nextUrl.searchParams.get("share");
   if (!address) {
-    notFound();
+    return NextResponse.redirect(new URL("/", request.nextUrl));
   }
 
   const fontBitsumishi = await loadFont("bitsumishi.ttf");
