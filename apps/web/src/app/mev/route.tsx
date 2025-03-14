@@ -13,7 +13,11 @@ import { cn } from "@/utils/common";
 const siteUrl = getSiteUrl();
 
 const loadFont = async (filename: string) => {
-  const loaded = await fetch(new URL(`${siteUrl}/fonts/${filename}`));
+  const loaded = await fetch(new URL(`/fonts/${filename}`, siteUrl));
+  // eslint-disable-next-line no-console
+  console.log("siteUrl", siteUrl);
+  // eslint-disable-next-line no-console
+  console.log("path", `/fonts/${filename}`);
   return loaded.arrayBuffer();
 };
 
