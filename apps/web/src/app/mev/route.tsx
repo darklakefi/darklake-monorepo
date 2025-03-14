@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
         <div
           tw="rounded-[41px] bg-[#062916] p-30 w-full h-full flex flex-col relative overflow-hidden"
           style={{
-            backgroundImage: `url(${process.env.NEXT_PUBLIC_HOSTNAME}/images/bg-body.png)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_HOSTNAME}/images/bg-twitter-share-card.jpg)`,
           }}
         >
           <img
@@ -83,7 +83,12 @@ export async function GET(request: NextRequest) {
             height={48}
             tw="mb-30"
           />
-          <div tw="bg-[#2CFF8E] flex flex-col p-[30px] w-[400px] text-[#1A9A56] text-[35px] leading-[37.5px] uppercase">
+          <div
+            tw={cn(
+              "bg-[#2CFF8E] flex flex-col p-[30px] w-[400px]",
+              "text-[#1A9A56] text-[35px] leading-[37.5px] uppercase",
+            )}
+          >
             <p tw="m-0">Total extracted</p>
             <p tw="text-[#041C0F] h-[110px] flex flex-row items-end m-0">
               <span tw="text-[125px] leading-[93px]">{solAmountParts[0]}</span>
@@ -101,11 +106,18 @@ export async function GET(request: NextRequest) {
             <WaddlesMessageText solAmount={data.solAmount} />
           </div>
           <img
+            src={`${process.env.NEXT_PUBLIC_HOSTNAME}/images/image-twitter-share-waddles-shadow.png`}
+            alt="waddles shadow"
+            width={597}
+            height={84}
+            tw="absolute -right-[100px] bottom-[230px]"
+          />
+          <img
             src={`${process.env.NEXT_PUBLIC_HOSTNAME}/images/image-waddles-2.png`}
             alt="waddles"
             width={464.625}
             height={543.951}
-            tw="absolute right-0 top-[270px]"
+            tw="absolute right-0 top-[290px]"
           />
         </div>
       </div>
