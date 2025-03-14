@@ -4,7 +4,7 @@ import ConnectedWalletDropdown from "./ConnectedWalletDropdown";
 
 const Header = () => {
   // TODO: wire with added/connected wallet
-  const currentWalletAddress = "fdggdfrtesg453g3445gy";
+  const currentWalletAddress = null;
   return (
     <header className="flex flex-row justify-between items-center pb-[64px]">
       <Link href="/" title="Darklake.fi" className="active:opacity-80">
