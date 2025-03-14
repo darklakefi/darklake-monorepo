@@ -1,3 +1,4 @@
+import { truncate } from "@/utils/common";
 import { twMerge } from "tailwind-merge";
 interface ConnectedWalletDropdownProps {
   currentWalletAddress: string;
@@ -5,8 +6,6 @@ interface ConnectedWalletDropdownProps {
 
 export default function ConnectedWalletDropdown(props: ConnectedWalletDropdownProps) {
   const { currentWalletAddress } = props;
-
-  const displayedCurrentWalletAddress = `${currentWalletAddress.slice(0, 5)}...${currentWalletAddress.slice(-6)}`;
 
   return (
     <div
@@ -18,7 +17,7 @@ export default function ConnectedWalletDropdown(props: ConnectedWalletDropdownPr
       <i className="hn hn-wallet text-2xl leading-none"></i>
       <select value={currentWalletAddress} className="bg-transparent uppercase appearance-none pr-4 h-6 leading-6">
         <option value={currentWalletAddress} className="p-0">
-          {displayedCurrentWalletAddress}
+          {truncate(currentWalletAddress)}
         </option>
       </select>
     </div>
