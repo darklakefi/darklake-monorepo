@@ -1,3 +1,8 @@
+{
+  /* disable no-img-element rule for this file as Image won't work with ImageResponse */
+  /* eslint-disable @next/next/no-img-element */
+}
+
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { notFound } from "next/navigation";
