@@ -23,7 +23,7 @@ CREATE TABLE "sandwich_events" (
     "attacker_address" TEXT NOT NULL,
     "victim_address" TEXT NOT NULL,
     "lp_address" TEXT NOT NULL,
-    "lp_name" TEXT NOT NULL,
+    "dex_name" TEXT NOT NULL,
     "ocurred_at" TIMESTAMP(3) NOT NULL,
     "added_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -33,3 +33,6 @@ CREATE TABLE "sandwich_events" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "block_queue_slot_key" ON "block_queue"("slot");
+
+-- CreateIndex
+CREATE INDEX "sandwich_events_victim_address_idx" ON "sandwich_events"("victim_address");

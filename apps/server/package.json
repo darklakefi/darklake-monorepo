@@ -17,6 +17,7 @@
     "db:prepare": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset",
     "postinstall": "pnpm db:prepare"
   },
   "dependencies": {

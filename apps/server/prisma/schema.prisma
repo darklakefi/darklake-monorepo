@@ -49,11 +49,12 @@ model SandwichEvent {
   attacker_address      String
   victim_address        String
   lp_address            String
-  lp_name               String
+  dex_name              String
   ocurred_at            DateTime
   added_at              DateTime @default(now())
   updated_at            DateTime @updatedAt
 
   @@id([tx_hash_victim_swap, token_address, attacker_address, victim_address])
+  @@index(victim_address)
   @@map("sandwich_events")
 }
