@@ -10,7 +10,7 @@ import { formatMoney } from "@/utils/number";
 import { cn } from "@/utils/common";
 
 const loadFont = async (filename: string) => {
-  const loaded = await fetch(new URL(`${process.env.NEXT_PUBLIC_HOSTNAME}/fonts/${filename}`));
+  const loaded = await fetch(new URL(`${process.env.NEXT_PUBLIC_SITE_URL}/fonts/${filename}`));
   return loaded.arrayBuffer();
 };
 
@@ -78,11 +78,11 @@ export async function GET(request: NextRequest) {
         <div
           tw="rounded-[41px] bg-[#062916] p-30 w-full h-full flex flex-col relative overflow-hidden"
           style={{
-            backgroundImage: `url(${process.env.NEXT_PUBLIC_HOSTNAME}/images/bg-twitter-share-card.jpg)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_SITE_URL}/images/bg-twitter-share-card.jpg)`,
           }}
         >
           <img
-            src={`${process.env.NEXT_PUBLIC_HOSTNAME}/images/logo-h-darklake.png`}
+            src={`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo-h-darklake.png`}
             alt="logo"
             width={293.96}
             height={48}
@@ -111,14 +111,14 @@ export async function GET(request: NextRequest) {
             <WaddlesMessageText solAmount={data.solAmount} />
           </div>
           <img
-            src={`${process.env.NEXT_PUBLIC_HOSTNAME}/images/image-twitter-share-waddles-shadow.png`}
+            src={`${process.env.NEXT_PUBLIC_SITE_URL}/images/image-twitter-share-waddles-shadow.png`}
             alt="waddles shadow"
             width={597}
             height={84}
             tw="absolute -right-[100px] bottom-[230px]"
           />
           <img
-            src={`${process.env.NEXT_PUBLIC_HOSTNAME}/images/image-waddles-2.png`}
+            src={`${process.env.NEXT_PUBLIC_SITE_URL}/images/image-waddles-2.png`}
             alt="waddles"
             width={464.625}
             height={543.951}
