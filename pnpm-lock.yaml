@@ -124,6 +124,9 @@ importers:
       '@types/node':
         specifier: ^20.3.1
         version: 20.17.23
+      '@types/readline-sync':
+        specifier: ^1.4.8
+        version: 1.4.8
       '@types/supertest':
         specifier: ^6.0.0
         version: 6.0.2
@@ -133,6 +136,12 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.0.0
         version: 8.26.0(eslint@8.57.1)(typescript@5.8.2)
+      chalk:
+        specifier: '4'
+        version: 4.1.2
+      csv-parser:
+        specifier: ^3.2.0
+        version: 3.2.0
       eslint:
         specifier: ^8.0.0
         version: 8.57.1
@@ -151,6 +160,9 @@ importers:
       prisma:
         specifier: ^6.5.0
         version: 6.5.0(typescript@5.8.2)
+      readline-sync:
+        specifier: ^1.4.10
+        version: 1.4.10
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -2767,6 +2779,9 @@ packages:
   '@types/react@19.0.10':
     resolution: {integrity: sha512-JuRQ9KXLEjaUNjTWpzuR231Z2WpIwczOkBEIvbHNCzQefFIT0L8IqE6NV6ULLyC1SI/i234JnDoMkfg+RjQj2g==}
 
+  '@types/readline-sync@1.4.8':
+    resolution: {integrity: sha512-BL7xOf0yKLA6baAX6MMOnYkoflUyj/c7y3pqMRfU0va7XlwHAOTOIo4x55P/qLfMsuaYdJJKubToLqRVmRtRZA==}
+
   '@types/retry@0.12.0':
     resolution: {integrity: sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==}
 
@@ -3830,6 +3845,11 @@ packages:
 
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
+
+  csv-parser@3.2.0:
+    resolution: {integrity: sha512-fgKbp+AJbn1h2dcAHKIdKNSSjfp43BZZykXsCjzALjKy80VXQNHPFJ6T9Afwdzoj24aMkq8GwDS7KGcDPpejrA==}
+    engines: {node: '>= 10'}
+    hasBin: true
 
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
@@ -6624,6 +6644,10 @@ packages:
   readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
+
+  readline-sync@1.4.10:
+    resolution: {integrity: sha512-gNva8/6UAe8QYepIQH/jQ2qn91Qj0B9sYjMBBs3QOB8F2CXcKgLxQaJRP76sWVRQt+QU+8fAkCbCvjjMFu7Ycw==}
+    engines: {node: '>= 0.8.0'}
 
   readline@1.3.0:
     resolution: {integrity: sha512-k2d6ACCkiNYz222Fs/iNze30rRJ1iIicW7JuX/7/cozvih6YCkFZH+J6mAFDVgv0dRBaAyr4jDqC95R2y4IADg==}
@@ -11365,6 +11389,8 @@ snapshots:
     dependencies:
       csstype: 3.1.3
 
+  '@types/readline-sync@1.4.8': {}
+
   '@types/retry@0.12.0': {}
 
   '@types/send@0.17.4':
@@ -12719,6 +12745,8 @@ snapshots:
       cssom: 0.3.8
 
   csstype@3.1.3: {}
+
+  csv-parser@3.2.0: {}
 
   damerau-levenshtein@1.0.8: {}
 
@@ -16250,6 +16278,8 @@ snapshots:
       picomatch: 2.3.1
 
   readdirp@4.1.2: {}
+
+  readline-sync@1.4.10: {}
 
   readline@1.3.0: {}
 

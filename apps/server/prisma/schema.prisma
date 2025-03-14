@@ -50,7 +50,7 @@ model SandwichEvent {
   victim_address        String
   lp_address            String
   dex_name              String
-  ocurred_at            DateTime
+  occurred_at           DateTime
   added_at              DateTime @default(now())
   updated_at            DateTime @updatedAt
 

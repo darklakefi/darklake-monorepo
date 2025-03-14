@@ -24,7 +24,7 @@ CREATE TABLE "sandwich_events" (
     "victim_address" TEXT NOT NULL,
     "lp_address" TEXT NOT NULL,
     "dex_name" TEXT NOT NULL,
-    "ocurred_at" TIMESTAMP(3) NOT NULL,
+    "occurred_at" TIMESTAMP(3) NOT NULL,
     "added_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
