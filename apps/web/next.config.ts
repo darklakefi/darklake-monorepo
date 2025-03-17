@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/mev",
+        missing: [
+          {
+            type: "query",
+            key: "share",
+          },
+        ],
         destination: "/",
         permanent: true,
       },

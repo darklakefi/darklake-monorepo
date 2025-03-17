@@ -9,3 +9,7 @@ export const pasteFromClipboard = async (onSuccess: (value: string) => void) => 
     // TODO: shown error toast when implemented
   }
 };
+
+export const shareOnTwitter = (text: string) => {
+  window.open(`https://x.com/intent/post?text=${encodeURIComponent(text)}`, "_blank");
+};
