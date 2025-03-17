@@ -3,9 +3,19 @@
 import { formatMoney } from "@/utils/number";
 import { cn } from "@/utils/common";
 import Button from "@/components/Button";
+import { shareOnTwitter } from "@/utils/browser";
 
-export default function TotalExtracted({ solAmount, usdAmount }: { solAmount: number; usdAmount: number }) {
-  const solAmountParts = formatMoney(solAmount).split(".");
+export default function TotalExtracted({
+  solAmount,
+  usdAmount,
+  address,
+}: {
+  solAmount: number;
+  usdAmount: number;
+  address: string;
+}) {
+  const solAmountFormatted = formatMoney(solAmount);
+  const solAmountParts = solAmountFormatted.split(".");
 
   return (
     <div
@@ -22,7 +32,15 @@ export default function TotalExtracted({ solAmount, usdAmount }: { solAmount: nu
         </p>
       </div>
       <p>{formatMoney(usdAmount)} USD</p>
-      <Button className="w-full mt-8">
+      <Button
+        className="w-full mt-8"
+        onClick={() =>
+          shareOnTwitter(
+            `I lost ${solAmountFormatted} SOL to MEV` +
+              `\n\nCheck how much you got MEV'd at darklake.fi/mev?share${address}`,
+          )
+        }
+      >
         Expose the truth on <i className="hn hn-x text-xl" />
       </Button>
     </div>

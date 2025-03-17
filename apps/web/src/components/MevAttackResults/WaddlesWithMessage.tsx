@@ -56,10 +56,10 @@ export default function WaddlesWithMessage({ solAmount }: { solAmount: number })
   return (
     <div className={cn(className.wrapper, "lg:pr-[234px]")}>
       <p className={cn(className.message, "sm:w-[307px]")}>
-        You&#39;ve lost some value to MEV –
+        You&#39;ve lost some value to MEV -
         <br />
         <br />
-        not getting rekt, but still <strong>leaving money on the table</strong> by MEV attacks
+        not getting rekt, but still <strong>leaving money on the table.</strong>
       </p>
       <Image
         className={cn(className.image)}
