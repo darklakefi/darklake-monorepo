@@ -65,12 +65,9 @@ const AddressMevLookup = () => {
   };
   const connectWithTwitterDisabled = isConnectingTwitter || !!supabaseSession;
 
+  const wrapperFlexClassName = "flex flex-row items-center justify-between";
   return (
-    <div
-      className={cn(
-        "h-12 p-2 md:max-w-2xl w-full flex flex-row items-center justify-between border border-brand-40 bg-brand-60",
-      )}
-    >
+    <div className={cn("h-12 p-2 mb-6 md:max-w-2xl w-full border border-brand-40 bg-brand-60", wrapperFlexClassName)}>
       <div className="flex items-center flex-grow">
         <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">&gt;</span>
         {!isInputVisible && (
