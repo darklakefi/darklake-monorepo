@@ -14,7 +14,7 @@
     "bs58": "5.0.0"
   },
   "devDependencies": {
-    "@swc/jest": "0.2.20",
+    "@swc/jest": "0.2.37",
     "@types/jest": "^29.4.0",
     "@types/node": "18.16.9",
     "circom_tester": "github:darklakefi/circom_tester",
