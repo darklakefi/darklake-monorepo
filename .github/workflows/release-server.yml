@@ -37,7 +37,8 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: darklake-api:${{ github.sha }}
+          ECR_REPOSITORY: darklakake/api-server
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build --file apps/server/Dockerfile -t $ECR_REGISTRY/$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$IMAGE_TAG
+          docker build --file apps/server/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
