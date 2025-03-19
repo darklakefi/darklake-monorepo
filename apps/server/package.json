@@ -12,7 +12,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "format": "prettier --check .",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix && tsc --noEmit",
+    "lint": "eslint . && tsc --noEmit",
     "test": "TZ=UTC jest --detectOpenHandles --passWithNoTests",
     "db:prepare": "prisma generate",
     "db:migrate": "prisma migrate dev",
