@@ -1,0 +1,43 @@
+name: Release API Server
+
+on:
+  push:
+    branches: ["develop", "feature/aws-deploy-setup"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: eu-central-1
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::120569614788:role/darklake-api-deploy-role
+        permissions:
+          id-token: write
+          contents: read
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: private
+
+      - name: Build, tag, and push the image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: darklake-api:${{ github.sha }}
+        run: |
+          docker build --file apps/server/Dockerfile -t $ECR_REGISTRY/$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$IMAGE_TAG
