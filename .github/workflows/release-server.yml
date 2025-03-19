@@ -12,6 +12,10 @@ concurrency:
 env:
   AWS_REGION: eu-central-1
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -24,9 +28,6 @@ jobs:
         with:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: arn:aws:iam::120569614788:role/darklake-api-deploy-role
-        permissions:
-          id-token: write
-          contents: read
 
       - name: Login to Amazon ECR
         id: login-ecr
