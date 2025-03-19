@@ -1,6 +1,7 @@
 name: Release API Server
 
 on:
+  pull_request_target:
   push:
     branches: ["develop", "feature/aws-deploy-setup"]
 
