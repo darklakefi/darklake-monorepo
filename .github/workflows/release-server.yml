@@ -31,7 +31,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: arn:aws:iam::120569614788:role/darklake-api-deploy-role
+          role-to-assume: ${{ secrets.AWS_CREDENTIALS_ROLE_TO_ASSUME }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -64,4 +64,3 @@ jobs:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
