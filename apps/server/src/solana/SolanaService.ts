@@ -19,7 +19,20 @@ export class SolanaService {
   }
 
   getLast1000ConfirmedSlotsByAddress = async (address: string): Promise<number[]> => {
-    const signatures = await this.rpc.getSignaturesForAddress(new PublicKey(address), { limit: 1000 }, "confirmed");
+    this.logger.log("getLast1000ConfirmedSlotsByAddress()", address);
+    this.logger.log(
+      "getLast1000ConfirmedSlotsByAddress() solanaRpcHttpUrl",
+      this.configService.get("solanaRpcHttpUrl"),
+    );
+
+    let signatures = [];
+
+    try {
+      signatures = await this.rpc.getSignaturesForAddress(new PublicKey(address), { limit: 1000 }, "confirmed");
+    } catch (e) {
+      this.logger.error("getSignaturesForAddress() failed:", e);
+    }
+
     return signatures.map((signature) => signature.slot);
   };
 }
