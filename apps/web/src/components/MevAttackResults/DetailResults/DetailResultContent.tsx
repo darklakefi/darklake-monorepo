@@ -1,7 +1,30 @@
+
 import { useState } from "react";
 import Tabs from "@/components/Tabs";
 import SummaryTab from "./SummaryTab";
 import AttackDetailsTab from "./AttackDetailsTab";
+import { MevAttack, MevAttackSwapType, MevTransaction } from "@/types/Mev";
+
+const mockMevAttackTransaction: MevTransaction = {
+  address: "someAddress",
+  signature: "someSignature",
+};
+
+const mockMevAttack: MevAttack = {
+  swapType: MevAttackSwapType.BUY,
+  timestamp: +new Date("2024-03-26"),
+  tokenName: "TRUMP",
+  solAmount: {
+    sent: 100,
+    lost: 30,
+  },
+  transactions: {
+    frontRun: mockMevAttackTransaction,
+    victim: mockMevAttackTransaction,
+    backRun: mockMevAttackTransaction,
+  },
+};
+
 
 const TAB_NAMES = [
   {
@@ -14,6 +37,14 @@ const TAB_NAMES = [
 
 export default function DetailResultContent() {
   const [activeTab, setActiveTab] = useState(0);
+
+  const [attacks, setAttacks] = useState<MevAttack[]>([
+    mockMevAttack, mockMevAttack, mockMevAttack, mockMevAttack, mockMevAttack, mockMevAttack
+  ]);
+  const [isHasMore] = useState(true);
+  const handleLoadMore = () => {
+    setAttacks([...attacks, mockMevAttack, mockMevAttack, mockMevAttack]);
+  };
 
   return (
     <div className="">
@@ -33,10 +64,14 @@ export default function DetailResultContent() {
       </div>
 
       <div className={activeTab === 0 ? "block" : "hidden"}>
-        <SummaryTab />
+        <SummaryTab  mevAttacks={[mockMevAttack, mockMevAttack, mockMevAttack]} />
       </div>
       <div className={activeTab === 1 ? "block" : "hidden"}>
-        <AttackDetailsTab />
+        <AttackDetailsTab
+          mevAttacks={attacks}
+          hasMore={isHasMore}
+          onLoadMore={handleLoadMore}
+        />
       </div>
     </div>
   );

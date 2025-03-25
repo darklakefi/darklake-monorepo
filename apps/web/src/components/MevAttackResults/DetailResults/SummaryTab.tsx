@@ -1,7 +1,12 @@
+import { MevAttack } from "@/types/Mev";
 import AttackDetailCard from "./AttackDetailCard";
 import SummaryCard from "./SummaryCard";
 
-const SummaryTab = () => {
+type SummaryTabProps = {
+  mevAttacks: MevAttack[];
+}
+
+const SummaryTab = ({ mevAttacks }: SummaryTabProps) => {
   return (
     <div className="flex flex-col gap-[16px]">
       <div className="flex flex-row gap-[16px]">
@@ -28,15 +33,13 @@ const SummaryTab = () => {
         </div>
       </div>
       <div className="flex flex-row flex-wrap gap-[16px]">
-        <div className="flex-1">
-          <AttackDetailCard index={1} />
-        </div>
-        <div className="flex-1">
-          <AttackDetailCard index={2} />
-        </div>
-        <div className="flex-1">
-          <AttackDetailCard index={3} />
-        </div>
+        {
+          mevAttacks.slice(0, 3).map((attack, index) => (
+            <div className="flex-1" key={index}>
+              <AttackDetailCard mevAttack={attack} index={index + 1} />
+            </div>
+          ))
+        }
       </div>
     </div>
   );
