@@ -1,0 +1,67 @@
+name: Release API Server
+
+# TODO: replace to production branch once we ready
+on:
+  pull_request_target:
+  push:
+    branches: ["develop"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: eu-central-1
+  ECS_TASK_DEFINITION_FAMILY: darklake-api-server-fargate-task-def
+  CONTAINER_NAME: darklake-server-api
+  ECS_SERVICE: darklake-api-server-fargate
+  ECS_CLUSTER: darklake-api-server
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_CREDENTIALS_ROLE_TO_ASSUME }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: private
+
+      - name: Build, tag, and push the image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: darklakake/api-server
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build --file apps/server/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition-family: ${{ env.ECS_TASK_DEFINITION_FAMILY }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
