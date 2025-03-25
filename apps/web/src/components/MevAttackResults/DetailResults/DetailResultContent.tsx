@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Tabs from "@/components/Tabs";
 import SummaryTab from "./SummaryTab";
@@ -25,7 +24,6 @@ const mockMevAttack: MevAttack = {
   },
 };
 
-
 const TAB_NAMES = [
   {
     text: "[SUMMARY]",
@@ -39,7 +37,12 @@ export default function DetailResultContent() {
   const [activeTab, setActiveTab] = useState(0);
 
   const [attacks, setAttacks] = useState<MevAttack[]>([
-    mockMevAttack, mockMevAttack, mockMevAttack, mockMevAttack, mockMevAttack, mockMevAttack
+    mockMevAttack,
+    mockMevAttack,
+    mockMevAttack,
+    mockMevAttack,
+    mockMevAttack,
+    mockMevAttack,
   ]);
   const [isHasMore] = useState(true);
   const handleLoadMore = () => {
@@ -64,14 +67,10 @@ export default function DetailResultContent() {
       </div>
 
       <div className={activeTab === 0 ? "block" : "hidden"}>
-        <SummaryTab  mevAttacks={[mockMevAttack, mockMevAttack, mockMevAttack]} />
+        <SummaryTab mevAttacks={[mockMevAttack, mockMevAttack, mockMevAttack]} />
       </div>
       <div className={activeTab === 1 ? "block" : "hidden"}>
-        <AttackDetailsTab
-          mevAttacks={attacks}
-          hasMore={isHasMore}
-          onLoadMore={handleLoadMore}
-        />
+        <AttackDetailsTab mevAttacks={attacks} hasMore={isHasMore} onLoadMore={handleLoadMore} />
       </div>
     </div>
   );
