@@ -4,6 +4,8 @@ import config, { AppConfig } from "./config";
 import { CacheModule } from "@nestjs/cache-manager";
 import { createKeyv } from "@keyv/redis";
 import { PrismaModule } from "./prisma/PrismaModule";
+import { ThrottlerModule } from "@nestjs/throttler";
+import { MevModule } from "./mev/MevModule";
 
 @Module({
   imports: [
@@ -25,7 +27,16 @@ import { PrismaModule } from "./prisma/PrismaModule";
       },
       isGlobal: true,
     }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 1000,
+          limit: 10,
+        },
+      ],
+    }),
     PrismaModule,
+    MevModule,
   ],
   controllers: [],
   providers: [],
