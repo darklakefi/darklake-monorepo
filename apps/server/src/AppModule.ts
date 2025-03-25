@@ -6,6 +6,7 @@ import { createKeyv } from "@keyv/redis";
 import { PrismaModule } from "./prisma/PrismaModule";
 import { ThrottlerModule } from "@nestjs/throttler";
 import { MevModule } from "./mev/MevModule";
+import { HealthModule } from "./health/HealthModule";
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { MevModule } from "./mev/MevModule";
     }),
     PrismaModule,
     MevModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [],
