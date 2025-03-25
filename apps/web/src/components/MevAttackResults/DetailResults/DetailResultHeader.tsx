@@ -28,9 +28,7 @@ export default function DetailResultHeader({ address, processedTime, isSignedWit
           <div>{format(processedTime, "yyyy-MM-dd HH:mm 'UTC'")}</div>
         </div>
       </div>
-      {!isSignedWithTwitter && (
-        <Image src="/images/icon-lock.png" alt="icon-lock" width={64} height={64} className="relative" />
-      )}
+      {!isSignedWithTwitter && <i className="relative hn hn-lock-alt-solid text-[64px] text-brand-50" />}
       {isSignedWithTwitter && (
         <Image
           src="/images/darklake-text.svg"
