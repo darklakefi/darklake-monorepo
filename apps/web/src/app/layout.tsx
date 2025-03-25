@@ -52,7 +52,7 @@ export default function RootLayout({
           closeButton={ToastCloseButton}
           icon={ToastIcon}
         />
-        <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
+        <div className="max-w-6xl w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
           <AnalyticsProvider>
             <SupabaseAuthProvider>
               <GlobalModalProvider>

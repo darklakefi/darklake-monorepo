@@ -4,18 +4,25 @@ import { formatMoney } from "@/utils/number";
 import { cn } from "@/utils/common";
 import Button from "@/components/Button";
 import { shareOnTwitter } from "@/utils/browser";
+import { getSiteUrl } from "@/utils/env";
 
 export default function TotalExtracted({
   solAmount,
   usdAmount,
   address,
+  processedBlocks,
 }: {
   solAmount: number;
   usdAmount: number;
   address: string;
+  processedBlocks?: { total: number; completed: number };
 }) {
   const solAmountFormatted = formatMoney(solAmount);
   const solAmountParts = solAmountFormatted.split(".");
+
+  const siteUrl = (getSiteUrl() || "darklake.fi").replaceAll("http://", "").replaceAll("https://", "");
+
+  const progress = processedBlocks ? (processedBlocks.completed / processedBlocks.total) * 100 : 0;
 
   return (
     <div
@@ -32,17 +39,24 @@ export default function TotalExtracted({
         </p>
       </div>
       <p>{formatMoney(usdAmount)} USD</p>
-      <Button
-        className="w-full mt-8"
-        onClick={() =>
-          shareOnTwitter(
-            `I lost ${solAmountFormatted} SOL to MEV` +
-              `\n\nCheck how much you got MEV'd at darklake.fi/mev?share${address}`,
-          )
-        }
-      >
-        Expose the truth on <i className="hn hn-x text-xl" />
-      </Button>
+      {progress > 50 && solAmount > 0 && (
+        <Button
+          className="w-full mt-8"
+          onClick={() =>
+            shareOnTwitter(
+              `I lost ${solAmountFormatted} SOL to MEV` +
+                `\n\nCheck how much you got MEV'd at ${siteUrl}/mev?share${address}`,
+            )
+          }
+        >
+          Expose the truth on <i className="hn hn-x text-xl" />
+        </Button>
+      )}
+      {!processedBlocks && (
+        <Button className="w-full mt-8" disabled>
+          / Analyzing blockchain evidence
+        </Button>
+      )}
     </div>
   );
 }
