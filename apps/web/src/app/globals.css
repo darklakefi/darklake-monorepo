@@ -17,15 +17,36 @@
   }
 }
 
-@layer components {
+@layer utilities {
   .text-body-2 {
-    @apply font-[400] text-[18px] leading-[24px] tracking-[0.1em];
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
   }
+
   .text-body {
-    @apply font-[400] text-[28px] leading-[34px] tracking-[0.2em];
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 34px;
+    letter-spacing: 0.2em;
   }
+
   .text-link {
-    @apply uppercase underline text-lg leading-6 hover-with-active;
+    text-transform: uppercase;
+    text-decoration: underline;
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .text-link:hover {
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .text-link:active {
+    opacity: 0.5;
+    transition: all 0.3s ease;
   }
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
+import { cn } from "@/utils/common";
 import { useState } from "react";
-import clsx from "clsx";
 
 interface TabsProps {
   tabs: string[];
@@ -24,7 +24,7 @@ export default function Tabs({ tabs, onChange, wrapperClassName, tabClassName, a
   };
 
   return (
-    <div className={clsx("flex flex-row items-center", wrapperClassName)}>
+    <div className={cn("flex flex-row items-center", wrapperClassName)}>
       {tabs.map((tabTitle, index) => {
         const isActiveTab = (fixedActiveTab ?? activeTab) === index;
 
@@ -33,7 +33,7 @@ export default function Tabs({ tabs, onChange, wrapperClassName, tabClassName, a
             type="button"
             key={tabTitle}
             onClick={() => onTabClick(index)}
-            className={clsx(
+            className={cn(
               "text-body-2 p-[8px]",
               "cursor-pointer select-none",
               !isActiveTab && "text-brand-30",
