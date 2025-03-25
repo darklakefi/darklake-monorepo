@@ -17,6 +17,18 @@
   }
 }
 
+@layer components {
+  .text-body-2 {
+    @apply font-[400] text-[18px] leading-[24px] tracking-[0.1em];
+  }
+  .text-body {
+    @apply font-[400] text-[28px] leading-[34px] tracking-[0.2em];
+  }
+  .text-link {
+    @apply uppercase underline text-lg leading-6 hover-with-active;
+  }
+}
+
 .hover-with-active:hover {
   opacity: 0.7;
 }
