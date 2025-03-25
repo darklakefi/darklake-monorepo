@@ -13,13 +13,13 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
           class="flex flex-row items-center py-[16px] gap-[24px]"
         >
           <button
-            class="text-body-2 p-[8px] cursor-pointer select-none bg-brand-60 text-brand-20"
+            class="p-[8px] cursor-pointer select-none bg-brand-60 text-brand-20"
             type="button"
           >
             [SUMMARY]
           </button>
           <button
-            class="text-body-2 p-[8px] cursor-pointer select-none text-brand-30"
+            class="p-[8px] cursor-pointer select-none text-brand-30"
             type="button"
           >
             [ATTACKS]
