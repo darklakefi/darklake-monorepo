@@ -1,5 +1,7 @@
 import { MevAttack } from "@/types/Mev";
 import AttackDetailCard from "./AttackDetailCard";
+import { useState } from "react";
+import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
 
 type AttackDetailsTabProps = {
   mevAttacks: MevAttack[];
@@ -8,10 +10,25 @@ type AttackDetailsTabProps = {
 };
 
 const AttackDetailsTab = ({ mevAttacks, hasMore, onLoadMore }: AttackDetailsTabProps) => {
+  const [isOpenBreakdownModal, setIsOpenBreakdownModal] = useState(false);
+  const [selectedMevAttack, setSelectedMevAttack] = useState<MevAttack | undefined>(undefined);
+
+  const openModal = (attack: MevAttack) => {
+    setSelectedMevAttack(attack);
+    setIsOpenBreakdownModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedMevAttack(undefined);
+    setIsOpenBreakdownModal(false);
+  };
+
   return (
     <div className="flex flex-col gap-[16px]">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[16px]">
-        {mevAttacks?.map((attack, index) => <AttackDetailCard mevAttack={attack} key={index} />)}
+        {mevAttacks?.map((attack, index) => (
+          <AttackDetailCard key={index} mevAttack={attack} onOpenModal={() => openModal(attack)} />
+        ))}
       </div>
 
       {hasMore && (
@@ -22,6 +39,8 @@ const AttackDetailsTab = ({ mevAttacks, hasMore, onLoadMore }: AttackDetailsTabP
           <div className="text-body-2 text-brand-20">Load More</div>
         </button>
       )}
+
+      <AttackBreakdownModal mevAttack={selectedMevAttack} isOpen={isOpenBreakdownModal} onClose={closeModal} />
     </div>
   );
 };

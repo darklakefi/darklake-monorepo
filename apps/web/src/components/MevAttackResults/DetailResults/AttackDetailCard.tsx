@@ -1,7 +1,15 @@
 import { MevAttack } from "@/types/Mev";
 import { format } from "date-fns";
 
-const AttackDetailCard = ({ mevAttack, index }: { mevAttack: MevAttack; index?: number }) => {
+type AttackDetailCardProps = { mevAttack: MevAttack; index?: number; onOpenModal?: () => void };
+
+const AttackDetailCard = ({ mevAttack, index, onOpenModal }: AttackDetailCardProps) => {
+  const handleOpenBreakdownModal = () => {
+    if (onOpenModal) {
+      onOpenModal();
+    }
+  };
+
   return (
     <div className="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full">
       <div className="flex flex-col">
@@ -19,7 +27,7 @@ const AttackDetailCard = ({ mevAttack, index }: { mevAttack: MevAttack; index?: 
           <div className="text-body-2 text-brand-30">FROM A {mevAttack.solAmount.sent} SOL TRANSACTION</div>
         </div>
       </div>
-      <button className="text-link text-brand-30 w-fit" onClick={() => {}}>
+      <button className="text-link text-brand-30 w-fit" onClick={handleOpenBreakdownModal}>
         View attack breakdown
       </button>
     </div>

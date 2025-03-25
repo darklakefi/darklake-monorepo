@@ -1,12 +1,27 @@
 import { MevAttack } from "@/types/Mev";
 import AttackDetailCard from "./AttackDetailCard";
 import SummaryCard from "./SummaryCard";
+import { useState } from "react";
+import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
 
 type SummaryTabProps = {
   mevAttacks: MevAttack[];
 };
 
 const SummaryTab = ({ mevAttacks }: SummaryTabProps) => {
+  const [isOpenBreakdownModal, setIsOpenBreakdownModal] = useState(false);
+  const [selectedMevAttack, setSelectedMevAttack] = useState<MevAttack | undefined>(undefined);
+
+  const openModal = (attack: MevAttack) => {
+    setSelectedMevAttack(attack);
+    setIsOpenBreakdownModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedMevAttack(undefined);
+    setIsOpenBreakdownModal(false);
+  };
+
   return (
     <div className="flex flex-col gap-[16px]">
       <div className="flex flex-row gap-[16px]">
@@ -35,10 +50,11 @@ const SummaryTab = ({ mevAttacks }: SummaryTabProps) => {
       <div className="flex flex-row flex-wrap gap-[16px]">
         {mevAttacks.slice(0, 3).map((attack, index) => (
           <div className="flex-1" key={index}>
-            <AttackDetailCard mevAttack={attack} index={index + 1} />
+            <AttackDetailCard mevAttack={attack} index={index + 1} onOpenModal={() => openModal(attack)} />
           </div>
         ))}
       </div>
+      <AttackBreakdownModal mevAttack={selectedMevAttack} isOpen={isOpenBreakdownModal} onClose={closeModal} />
     </div>
   );
 };
