@@ -1,0 +1,317 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
+<body>
+  <div>
+    <div
+      class="relative"
+    >
+      <div
+        class=""
+      >
+        <div
+          class="flex flex-row items-center py-[16px] gap-[24px]"
+        >
+          <button
+            class="text-body-2 p-[8px] cursor-pointer select-none bg-brand-60 text-brand-20"
+            type="button"
+          >
+            [SUMMARY]
+          </button>
+          <button
+            class="text-body-2 p-[8px] cursor-pointer select-none text-brand-30"
+            type="button"
+          >
+            [ATTACKS]
+          </button>
+        </div>
+        <div>
+          <div
+            class="flex flex-col gap-[16px]"
+          >
+            <div
+              class="flex flex-row gap-[16px]"
+            >
+              <div
+                class="flex-1"
+              >
+                <div
+                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                >
+                  <div
+                    class="text-body-2 text-brand-30"
+                  >
+                    Total Extracted
+                  </div>
+                  <div
+                    class="flex flex-col gap-[2px] py-[1px]"
+                  >
+                    <div
+                      class="text-body text-brand-20"
+                    >
+                      ██.██ SOL
+                    </div>
+                    <div
+                      class="text-body-2 text-brand-30"
+                    >
+                      ████.██ USDC
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex-1 max-md:hidden"
+              >
+                <div
+                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                >
+                  <div
+                    class="text-body-2 text-brand-30"
+                  >
+                    Confirmed Attack
+                  </div>
+                  <div
+                    class="flex flex-col gap-[2px] py-[1px]"
+                  >
+                    <div
+                      class="text-body text-brand-20"
+                    >
+                      ██
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex flex-row flex-wrap gap-[16px]"
+            >
+              <div
+                class="flex-1"
+              >
+                <div
+                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                >
+                  <div
+                    class="flex flex-col"
+                  >
+                    <div
+                      class="text-body-2 text-brand-20"
+                    >
+                      #
+                      1
+                       LARGEST EXTRACTION EVENT
+                    </div>
+                    <div
+                      class="text-body-2 text-brand-30"
+                    >
+                      TOKEN: █████
+                    </div>
+                    <div
+                      class="text-body-2 text-brand-30"
+                    >
+                      ████-██-██ ██:██ UTC
+                    </div>
+                  </div>
+                  <div
+                    class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+                  >
+                    <div
+                      class="text-body"
+                    >
+                      ██.██ SOL LOST
+                    </div>
+                    <div
+                      class="text-body-2"
+                    >
+                      ░░░░░░░░░░░░░░░░░░░░░░░░░░
+                    </div>
+                    <div
+                      class="flex flex-col"
+                    >
+                      <div
+                        class="text-body-2 text-brand-20"
+                      >
+                        ██% EXTRACTED
+                      </div>
+                      <div
+                        class="text-body-2 text-brand-30"
+                      >
+                        FROM A ██.██ SOL TRANSACTION
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    class="text-link text-brand-30 w-fit"
+                  >
+                    View attack breakdown
+                  </button>
+                </div>
+              </div>
+              <div
+                class="flex-1 max-md:hidden"
+              >
+                <div
+                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                >
+                  <div
+                    class="flex flex-col"
+                  >
+                    <div
+                      class="text-body-2 text-brand-20"
+                    >
+                      #
+                      2
+                       LARGEST EXTRACTION EVENT
+                    </div>
+                    <div
+                      class="text-body-2 text-brand-30"
+                    >
+                      TOKEN: █████
+                    </div>
+                    <div
+                      class="text-body-2 text-brand-30"
+                    >
+                      ████-██-██ ██:██ UTC
+                    </div>
+                  </div>
+                  <div
+                    class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+                  >
+                    <div
+                      class="text-body"
+                    >
+                      ██.██ SOL LOST
+                    </div>
+                    <div
+                      class="text-body-2"
+                    >
+                      ░░░░░░░░░░░░░░░░░░░░░░░░░░
+                    </div>
+                    <div
+                      class="flex flex-col"
+                    >
+                      <div
+                        class="text-body-2 text-brand-20"
+                      >
+                        ██% EXTRACTED
+                      </div>
+                      <div
+                        class="text-body-2 text-brand-30"
+                      >
+                        FROM A ██.██ SOL TRANSACTION
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    class="text-link text-brand-30 w-fit"
+                  >
+                    View attack breakdown
+                  </button>
+                </div>
+              </div>
+              <div
+                class="flex-1 max-md:hidden"
+              >
+                <div
+                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                >
+                  <div
+                    class="flex flex-col"
+                  >
+                    <div
+                      class="text-body-2 text-brand-20"
+                    >
+                      #
+                      3
+                       LARGEST EXTRACTION EVENT
+                    </div>
+                    <div
+                      class="text-body-2 text-brand-30"
+                    >
+                      TOKEN: █████
+                    </div>
+                    <div
+                      class="text-body-2 text-brand-30"
+                    >
+                      ████-██-██ ██:██ UTC
+                    </div>
+                  </div>
+                  <div
+                    class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+                  >
+                    <div
+                      class="text-body"
+                    >
+                      ██.██ SOL LOST
+                    </div>
+                    <div
+                      class="text-body-2"
+                    >
+                      ░░░░░░░░░░░░░░░░░░░░░░░░░░
+                    </div>
+                    <div
+                      class="flex flex-col"
+                    >
+                      <div
+                        class="text-body-2 text-brand-20"
+                      >
+                        ██% EXTRACTED
+                      </div>
+                      <div
+                        class="text-body-2 text-brand-30"
+                      >
+                        FROM A ██.██ SOL TRANSACTION
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    class="text-link text-brand-30 w-fit"
+                  >
+                    View attack breakdown
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute inset-0 flex items-center justify-center bg-[#010F06F2] bg-opacity-95"
+      >
+        <div
+          class="flex flex-col gap-[40px]"
+        >
+          <div
+            class="flex flex-col gap-[20px] text-body-2 text-center"
+          >
+            <div>
+               ******************************** 
+            </div>
+            <div
+              class="uppercase"
+            >
+               * ACCESS DENIED * 
+            </div>
+            <div>
+               ******************************** 
+            </div>
+          </div>
+          <button
+            class="bg-brand-10 px-[12px] py-[5px]"
+          >
+            <div
+              class="flex flex-row items-center gap-[8px] text-[#041C0F] max-md:text-[16px] uppercase"
+            >
+              Connect 
+              <i
+                class="hn hn-x text-brand-30"
+              />
+               to access complete case file
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

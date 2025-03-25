@@ -1,0 +1,197 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
+<body>
+  <div>
+    <div
+      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+    >
+      <div
+        class="flex flex-col"
+      >
+        <div
+          class="text-body-2 text-brand-20"
+        >
+          #
+          1
+           LARGEST EXTRACTION EVENT
+        </div>
+        <div
+          class="text-body-2 text-brand-30"
+        >
+          TOKEN: 
+          TRUMP
+        </div>
+        <div
+          class="text-body-2 text-brand-30"
+        >
+          2024-03-26 00:00 UTC
+        </div>
+      </div>
+      <div
+        class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+      >
+        <div
+          class="text-body"
+        >
+          30
+           SOL LOST
+        </div>
+        <div
+          class="text-body-2"
+        >
+          ██████████████████░░░░░░░░░░░░░
+        </div>
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="text-body-2 text-brand-20"
+          >
+            64% EXTRACTED
+          </div>
+          <div
+            class="text-body-2 text-brand-30"
+          >
+            FROM A 
+            100
+             SOL TRANSACTION
+          </div>
+        </div>
+      </div>
+      <button
+        class="text-link text-brand-30 w-fit"
+      >
+        View attack breakdown
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<AttackDetailCard /> displays attack detail 1`] = `
+<body>
+  <div>
+    <div
+      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+    >
+      <div
+        class="flex flex-col"
+      >
+        <div
+          class="text-body-2 text-brand-30"
+        >
+          TOKEN: 
+          TRUMP
+        </div>
+        <div
+          class="text-body-2 text-brand-30"
+        >
+          2024-03-26 00:00 UTC
+        </div>
+      </div>
+      <div
+        class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+      >
+        <div
+          class="text-body"
+        >
+          30
+           SOL LOST
+        </div>
+        <div
+          class="text-body-2"
+        >
+          ██████████████████░░░░░░░░░░░░░
+        </div>
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="text-body-2 text-brand-20"
+          >
+            64% EXTRACTED
+          </div>
+          <div
+            class="text-body-2 text-brand-30"
+          >
+            FROM A 
+            100
+             SOL TRANSACTION
+          </div>
+        </div>
+      </div>
+      <button
+        class="text-link text-brand-30 w-fit"
+      >
+        View attack breakdown
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<AttackDetailCard /> displays blurred attack detail 1`] = `
+<body>
+  <div>
+    <div
+      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+    >
+      <div
+        class="flex flex-col"
+      >
+        <div
+          class="text-body-2 text-brand-20"
+        >
+          #
+          1
+           LARGEST EXTRACTION EVENT
+        </div>
+        <div
+          class="text-body-2 text-brand-30"
+        >
+          TOKEN: █████
+        </div>
+        <div
+          class="text-body-2 text-brand-30"
+        >
+          ████-██-██ ██:██ UTC
+        </div>
+      </div>
+      <div
+        class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+      >
+        <div
+          class="text-body"
+        >
+          ██.██ SOL LOST
+        </div>
+        <div
+          class="text-body-2"
+        >
+          ░░░░░░░░░░░░░░░░░░░░░░░░░░
+        </div>
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="text-body-2 text-brand-20"
+          >
+            ██% EXTRACTED
+          </div>
+          <div
+            class="text-body-2 text-brand-30"
+          >
+            FROM A ██.██ SOL TRANSACTION
+          </div>
+        </div>
+      </div>
+      <button
+        class="text-link text-brand-30 w-fit"
+      >
+        View attack breakdown
+      </button>
+    </div>
+  </div>
+</body>
+`;

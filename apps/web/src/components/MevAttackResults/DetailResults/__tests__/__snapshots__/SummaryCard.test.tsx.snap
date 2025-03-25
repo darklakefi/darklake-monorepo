@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SummaryCard /> displays content successfully 1`] = `
+<body>
+  <div>
+    <div
+      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+    >
+      <div
+        class="text-body-2 text-brand-30"
+      >
+        Total Extracted
+      </div>
+      <div
+        class="flex flex-col gap-[2px] py-[1px]"
+      >
+        <div
+          class="text-body text-brand-20"
+        >
+          16.32 SOL
+        </div>
+        <div
+          class="text-body-2 text-brand-30"
+        >
+          2,774.32 USDC
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<SummaryCard /> displays content successfully 2`] = `
+<body>
+  <div>
+    <div
+      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+    >
+      <div
+        class="text-body-2 text-brand-30"
+      >
+        Confirmed Attack
+      </div>
+      <div
+        class="flex flex-col gap-[2px] py-[1px]"
+      >
+        <div
+          class="text-body text-brand-20"
+        >
+          47
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
