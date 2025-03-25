@@ -16,10 +16,7 @@ const AttackDetailCard = ({ index }: { index?: number }) => {
           <div className="text-body-2 text-brand-30">FROM A 14.13 SOL TRANSACTION</div>
         </div>
       </div>
-      <button
-        className="text-link text-brand-30 w-fit"
-        onClick={() => {}}
-      >
+      <button className="text-link text-brand-30 w-fit" onClick={() => {}}>
         View attack breakdown
       </button>
     </div>
@@ -42,10 +39,7 @@ const BlurredMode = ({ index }: { index: number }) => {
           <div className="text-body-2 text-brand-30">FROM A ██.██ SOL TRANSACTION</div>
         </div>
       </div>
-      <button
-        className="text-link text-brand-30 w-fit"
-        onClick={() => {}}
-      >
+      <button className="text-link text-brand-30 w-fit" onClick={() => {}}>
         View attack breakdown
       </button>
     </div>

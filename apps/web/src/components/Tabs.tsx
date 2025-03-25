@@ -13,13 +13,7 @@ interface TabsProps {
   activeTab?: number;
 }
 
-export default function Tabs({
-  tabs,
-  onChange,
-  wrapperClassName,
-  tabClassName,
-  activeTab: fixedActiveTab,
-}: TabsProps) {
+export default function Tabs({ tabs, onChange, wrapperClassName, tabClassName, activeTab: fixedActiveTab }: TabsProps) {
   const [activeTab, setActiveTab] = useState(0);
 
   const onTabClick = (tabIndex: number) => {
@@ -30,12 +24,7 @@ export default function Tabs({
   };
 
   return (
-    <div
-      className={clsx(
-        "flex flex-row items-center",
-        wrapperClassName,
-      )}
-    >
+    <div className={clsx("flex flex-row items-center", wrapperClassName)}>
       {tabs.map((tabTitle, index) => {
         const isActiveTab = (fixedActiveTab ?? activeTab) === index;
 

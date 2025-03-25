@@ -10,12 +10,9 @@ export default function DetailResults({ address }: { address: string }) {
     <div>
       <DetailResultHeader address={address} processedTime={new Date()} isSignedWithTwitter={isSignedWithTwitter} />
 
-      {!isSignedWithTwitter && <LookedDetailResultContent 
-        onConnect={() => setIsSignedWithTwitter(true)}
-      />}
+      {!isSignedWithTwitter && <LookedDetailResultContent onConnect={() => setIsSignedWithTwitter(true)} />}
 
       {isSignedWithTwitter && <DetailResultContent />}
     </div>
   );
 }
-
