@@ -10,19 +10,19 @@ export default function TotalExtracted({
   solAmount,
   usdAmount,
   address,
-  processedBlocks,
+  processingBlocks,
 }: {
   solAmount: number;
   usdAmount: number;
   address: string;
-  processedBlocks?: { total: number; completed: number };
+  processingBlocks?: { total: number; completed: number };
 }) {
   const solAmountFormatted = formatMoney(solAmount);
   const solAmountParts = solAmountFormatted.split(".");
 
   const siteUrl = (getSiteUrl() || "darklake.fi").replaceAll("http://", "").replaceAll("https://", "");
 
-  const progress = processedBlocks ? (processedBlocks.completed / processedBlocks.total) * 100 : 0;
+  const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
 
   return (
     <div
@@ -39,12 +39,12 @@ export default function TotalExtracted({
         </p>
       </div>
       <p>{formatMoney(usdAmount)} USDC</p>
-      {!processedBlocks && (
+      {!processingBlocks && (
         <Button className="w-full mt-8" disabled>
           / Analyzing blockchain evidence
         </Button>
       )}
-      {!!processedBlocks && progress !== 100 && (
+      {!!processingBlocks && progress !== 100 && (
         <div className="mt-8">
           <div className="text-lg flex flex-row overflow-hidden select-none">
             <div
@@ -67,7 +67,7 @@ export default function TotalExtracted({
           <div className="mt-1 font-secondary text-lg flex flex-row justify-between">
             <span>&gt; Analyzing blocks:</span>
             <span>
-              {processedBlocks.completed}/{processedBlocks.total} ({Math.floor(progress)}%)
+              {processingBlocks.completed}/{processingBlocks.total} ({Math.floor(progress)}%)
             </span>
           </div>
         </div>

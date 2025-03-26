@@ -22,3 +22,15 @@ export interface MevAttack {
     backRun: MevTransaction;
   };
 }
+
+export interface MevTotalExtracted {
+  totalSolExtracted: number;
+}
+
+export interface GetMevTotalExtractedResponse {
+  data?: MevTotalExtracted;
+  processingBlocks: {
+    completed: number;
+    total: number;
+  };
+}
