@@ -6,7 +6,7 @@ import Button from "@/components/Button";
 import { shareOnTwitter } from "@/utils/browser";
 import { getSiteUrl } from "@/utils/env";
 
-export default function TotalExtracted({
+const TotalExtracted = ({
   solAmount,
   usdAmount,
   address,
@@ -16,7 +16,7 @@ export default function TotalExtracted({
   usdAmount: number;
   address: string;
   processedBlocks?: { total: number; completed: number };
-}) {
+}) => {
   const solAmountFormatted = formatMoney(solAmount);
   const solAmountParts = solAmountFormatted.split(".");
 
@@ -59,4 +59,29 @@ export default function TotalExtracted({
       )}
     </div>
   );
-}
+};
+
+const TotalExtractedSkeleton = () => {
+  return (
+    <div
+      className={cn(
+        "bg-brand-10 p-6 shadow-[12px_12px_0px_0px] shadow-brand-80",
+        "text-brand-30 uppercase font-primary text-3xl",
+      )}
+    >
+      <p>Total Extracted</p>
+      <div className="text-brand-70 h-[88px] flex flex-col justify-end">
+        <p>
+          <i className="hn hn-spinner-solid text-5xl"></i> SOL
+        </p>
+      </div>
+      <p>
+        <i className="hn hn-spinner-solid"></i> USD
+      </p>
+    </div>
+  );
+};
+
+TotalExtracted.Skeleton = TotalExtractedSkeleton;
+
+export default TotalExtracted;
