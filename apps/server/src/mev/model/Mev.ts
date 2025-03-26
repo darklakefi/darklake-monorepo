@@ -9,6 +9,7 @@ export class GetMevTotalExtractedQuery {
 
 export interface MevTotalExtracted {
   totalSolExtracted: number;
+  totalUsdExtracted?: number;
 }
 
 export interface GetMevTotalExtractedResponse {

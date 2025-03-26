@@ -15,6 +15,8 @@ import { SolanaService } from "../solana/SolanaService";
 import { PrismaService } from "../prisma/PrismaService";
 import { formatSolAmount } from "../utils/blockchain";
 import { PaginatedResponse, PaginatedResponseDataLimit } from "../types/Pagination";
+import { PriceService } from "../price/PriceService";
+import { TokenPriceId } from "../price/model/Price";
 
 enum CacheKey {
   MEV_EVENTS_TOTAL_EXTRACTED = "MEV_EVENTS_TOTAL_EXTRACTED",
@@ -30,6 +32,7 @@ export class MevService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly solanaService: SolanaService,
     private readonly prismaService: PrismaService,
+    private readonly priceService: PriceService,
   ) {}
 
   async getTotalExtracted(query: GetMevTotalExtractedQuery): Promise<GetMevTotalExtractedResponse> {
@@ -65,11 +68,19 @@ export class MevService {
       },
     });
 
-    const data: MevTotalExtracted = {
+    let data: MevTotalExtracted = {
       totalSolExtracted: totalSolExtracted._sum.sol_amount_drained
         ? formatSolAmount(totalSolExtracted._sum.sol_amount_drained)
         : 0,
     };
+
+    if (data.totalSolExtracted > 0) {
+      const solUsdPrice = await this.priceService.getTokenPriceUsd(TokenPriceId.SOLANA);
+      data = {
+        ...data,
+        totalUsdExtracted: solUsdPrice ? data.totalSolExtracted * solUsdPrice : undefined,
+      };
+    }
 
     await this.cacheManager.set(cacheKey, data, CacheTime.ONE_SECOND);
 

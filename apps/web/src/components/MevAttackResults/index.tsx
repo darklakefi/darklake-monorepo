@@ -12,7 +12,7 @@ export default function MevAttackResults({ address }: { address: string }) {
         <div className="lg:w-[400px] max-lg:mb-20">
           <TotalExtracted
             solAmount={data?.data?.totalSolExtracted ?? 0}
-            usdAmount={0}
+            usdAmount={data?.data?.totalUsdExtracted}
             address={address}
             processingBlocks={data?.processingBlocks}
           />

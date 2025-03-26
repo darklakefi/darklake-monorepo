@@ -13,11 +13,11 @@ export default function TotalExtracted({
   processingBlocks,
 }: {
   solAmount: number;
-  usdAmount: number;
+  usdAmount?: number;
   address: string;
   processingBlocks?: { total: number; completed: number };
 }) {
-  const solAmountFormatted = formatMoney(solAmount);
+  const solAmountFormatted = formatMoney(solAmount, 5);
   const solAmountParts = solAmountFormatted.split(".");
 
   const siteUrl = (getSiteUrl() || "darklake.fi").replaceAll("http://", "").replaceAll("https://", "");
@@ -38,7 +38,7 @@ export default function TotalExtracted({
           {!!solAmountParts[1] && `.${solAmountParts[1]}`} SOL
         </p>
       </div>
-      <p>{formatMoney(usdAmount)} USDC</p>
+      {usdAmount && <p>{formatMoney(usdAmount)} USDC</p>}
       {!processingBlocks && (
         <Button className="w-full mt-8" disabled>
           / Analyzing blockchain evidence

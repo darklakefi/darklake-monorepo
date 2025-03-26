@@ -25,6 +25,7 @@ export interface MevAttack {
 
 export interface MevTotalExtracted {
   totalSolExtracted: number;
+  totalUsdExtracted?: number;
 }
 
 export interface GetMevTotalExtractedResponse {

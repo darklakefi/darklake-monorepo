@@ -32,7 +32,7 @@ const useGetTotalExtracted = (address: string): UseGetTotalExtractedReturn => {
   return {
     isLoading,
     isFetching,
-    data: data?.d || null,
+    data: data || null,
     error,
     refetch,
   };
