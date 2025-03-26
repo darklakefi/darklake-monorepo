@@ -6,9 +6,9 @@ export const formatPercentage = (value: number, decimals = 2) => {
   return removeTrailingZeros(value.toFixed(decimals));
 };
 
-export const formatMoney = (value: number) => {
+export const formatMoney = (value: number, maximumFractionDigits = 2) => {
   return Intl.NumberFormat("en-US", {
     style: "decimal",
-    maximumFractionDigits: 2,
+    maximumFractionDigits,
   }).format(value);
 };

@@ -13,6 +13,7 @@ import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
 import ToastIcon from "@/components/Toast/ToastIcon";
 import ToastCloseButton from "@/components/Toast/ToastCloseButton";
 import { cn } from "@/utils/common";
+import QueryProvider from "@/providers/QueryProvider";
 
 const fontBitsumishi = localFont({
   src: "../../public/fonts/bitsumishi.ttf",
@@ -52,14 +53,16 @@ export default function RootLayout({
           closeButton={ToastCloseButton}
           icon={ToastIcon}
         />
-        <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
+        <div className="max-w-6xl w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
           <AnalyticsProvider>
             <SupabaseAuthProvider>
-              <GlobalModalProvider>
-                <Header />
-                <MainWrapper>{children}</MainWrapper>
-                <Footer />
-              </GlobalModalProvider>
+              <QueryProvider>
+                <GlobalModalProvider>
+                  <Header />
+                  <MainWrapper>{children}</MainWrapper>
+                  <Footer />
+                </GlobalModalProvider>
+              </QueryProvider>
             </SupabaseAuthProvider>
           </AnalyticsProvider>
         </div>
