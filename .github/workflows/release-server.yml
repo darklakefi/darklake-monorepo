@@ -2,7 +2,6 @@ name: Release API Server
 
 # TODO: replace to production branch once we ready
 on:
-  pull_request_target:
   push:
     branches: ["develop"]
 
