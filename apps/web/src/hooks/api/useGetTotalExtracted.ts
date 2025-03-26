@@ -1,5 +1,6 @@
 import { QueryOptions, useQuery } from "@tanstack/react-query";
 import axiosClient from "@/services/axiosClient";
+import { GetMevTotalExtractedResponse } from "@/types/Mev";
 
 const getTotalExtracted = async ({ queryKey }: { queryKey: QueryOptions["queryKey"] }) => {
   const address = queryKey![1];
@@ -13,7 +14,15 @@ const getTotalExtracted = async ({ queryKey }: { queryKey: QueryOptions["queryKe
   return res.data;
 };
 
-const useGetTotalExtracted = (address: string) => {
+interface UseGetTotalExtractedReturn {
+  isLoading: boolean;
+  isFetching: boolean;
+  data: GetMevTotalExtractedResponse | null;
+  error: unknown;
+  refetch: () => void;
+}
+
+const useGetTotalExtracted = (address: string): UseGetTotalExtractedReturn => {
   const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ["getTotalExtracted", address],
     queryFn: getTotalExtracted,

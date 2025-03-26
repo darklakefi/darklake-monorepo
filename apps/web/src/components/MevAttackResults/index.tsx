@@ -11,7 +11,7 @@ export default function MevAttackResults({ address }: { address: string }) {
       <div className="lg:flex flex-row space-between items-center relative lg:pb-20 max-sm:mb-20">
         <div className="lg:w-[400px] max-lg:mb-20">
           {isLoading && <TotalExtracted.Skeleton />}
-          {!isLoading && (
+          {data?.data && (
             <TotalExtracted solAmount={data.data.totalSolExtracted} usdAmount={2700.69} address={address} />
           )}
         </div>
