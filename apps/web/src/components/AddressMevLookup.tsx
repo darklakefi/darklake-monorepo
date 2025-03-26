@@ -7,6 +7,7 @@ import { isValidSolanaAddress } from "@/utils/blockchain";
 import { cn } from "@/utils/common";
 import Button from "@/components/Button";
 import Link from "next/link";
+import DOMPurify from "dompurify";
 
 const AddressMevLookup = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
@@ -79,7 +80,7 @@ const AddressMevLookup = () => {
             "disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10",
             "active:ring-offset-2 active:ring-offset-black ml-3 flex-shrink-0",
           )}
-          href={`/results/${inputValue}`}
+          href={`/results/${DOMPurify.sanitize(inputValue)}`}
           title="Reveal Losses"
         >
           Reveal Losses
