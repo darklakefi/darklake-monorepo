@@ -38,7 +38,40 @@ export default function TotalExtracted({
           {!!solAmountParts[1] && `.${solAmountParts[1]}`} SOL
         </p>
       </div>
-      <p>{formatMoney(usdAmount)} USD</p>
+      <p>{formatMoney(usdAmount)} USDC</p>
+      {!processedBlocks && (
+        <Button className="w-full mt-8" disabled>
+          / Analyzing blockchain evidence
+        </Button>
+      )}
+      {!!processedBlocks && progress !== 100 && (
+        <div className="mt-8">
+          <div className="text-lg flex flex-row overflow-hidden select-none">
+            <div
+              className="overflow-hidden tracking-[1px]"
+              style={{
+                width: `${progress}%`,
+              }}
+            >
+              {"█".repeat(30)}
+            </div>
+            <div
+              className="overflow-hidden"
+              style={{
+                width: `${100 - progress}%`,
+              }}
+            >
+              {"░".repeat(30)}
+            </div>
+          </div>
+          <div className="mt-1 font-secondary text-lg flex flex-row justify-between">
+            <span>&gt; Analyzing blocks:</span>
+            <span>
+              {processedBlocks.completed}/{processedBlocks.total} ({Math.floor(progress)}%)
+            </span>
+          </div>
+        </div>
+      )}
       {progress > 50 && solAmount > 0 && (
         <Button
           className="w-full mt-8"
@@ -50,11 +83,6 @@ export default function TotalExtracted({
           }
         >
           Expose the truth on <i className="hn hn-x text-xl" />
-        </Button>
-      )}
-      {!processedBlocks && (
-        <Button className="w-full mt-8" disabled>
-          / Analyzing blockchain evidence
         </Button>
       )}
     </div>
