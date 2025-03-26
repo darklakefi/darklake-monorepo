@@ -4,6 +4,7 @@ import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
 import { ConfigService } from "@nestjs/config";
 import { AppConfig } from "../config";
 import { Connection, PublicKey } from "@solana/web3.js";
+import { uniq } from "lodash";
 
 @Injectable()
 export class SolanaService {
@@ -27,6 +28,6 @@ export class SolanaService {
       this.logger.error(`getLast1000ConfirmedSlotsByAddress() failed: ${e}`);
     }
 
-    return signatures.map((signature) => signature.slot);
+    return uniq(signatures.map((signature) => signature.slot));
   };
 }
