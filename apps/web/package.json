@@ -14,6 +14,7 @@
   "dependencies": {
     "@hackernoon/pixel-icon-library": "^1.0.4",
     "@headlessui/react": "^2.2.0",
+    "@sentry/nextjs": "^9.9.0",
     "@solana/web3.js": "1.95.4",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
@@ -25,7 +26,7 @@
     "date-fns": "^4.1.0",
     "isomorphic-dompurify": "^2.22.0",
     "lodash": "^4.17.21",
-    "next": "15.2.3",
+    "next": "15.3.0-canary.24",
     "posthog-js": "^1.174.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
