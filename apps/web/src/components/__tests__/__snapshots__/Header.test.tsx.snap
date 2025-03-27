@@ -15,7 +15,7 @@ exports[`<Header /> renders successfully 1`] = `
           title="Darklake.fi"
         >
           <img
-            alt="darklage logo"
+            alt="darklake logo"
             data-nimg="1"
             decoding="async"
             height="24"
