@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> renders successfully 1`] = `
+<body>
+  <div>
+    <header
+      class="flex flex-row justify-between items-center pb-[64px]"
+    >
+      <div
+        class="flex items-center justify-between gap-x-[11px]"
+      >
+        <a
+          class="active:opacity-80"
+          href="/"
+          title="Darklake.fi"
+        >
+          <img
+            alt="darklage logo"
+            data-nimg="1"
+            decoding="async"
+            height="24"
+            loading="lazy"
+            src="/_next/image?url=%2Fimages%2Flogo-h-darklake.png&w=384&q=75"
+            srcset="/_next/image?url=%2Fimages%2Flogo-h-darklake.png&w=256&q=75 1x, /_next/image?url=%2Fimages%2Flogo-h-darklake.png&w=384&q=75 2x"
+            style="color: transparent;"
+            width="147"
+          />
+        </a>
+        <p
+          class="font-primary text-lg text-brand-30 select-none"
+        >
+          BETA
+        </p>
+      </div>
+    </header>
+  </div>
+</body>
+`;

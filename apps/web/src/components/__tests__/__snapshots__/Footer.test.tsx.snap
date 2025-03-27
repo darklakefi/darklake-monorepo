@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Footer /> renders successfully 1`] = `
+<body>
+  <div>
+    <footer
+      class="flex flex-col sm:flex-row justify-between items-center pb-[80px]"
+    >
+      <div
+        class="flex items-center justify-between gap-x-10 max-sm:mb-10"
+      >
+        <button
+          class="uppercase underline text-brand-30 text-lg leading-6 hover-with-active"
+        >
+          What is MEV?
+        </button>
+        <a
+          class="uppercase underline text-brand-30 text-lg leading-6 hover-with-active"
+          href="https://x.com/pyvitor"
+          target="_blank"
+          title="Report a bug"
+        >
+          Report a bug
+        </a>
+      </div>
+      <div
+        class="flex flex-row items-center gap-x-[40px]"
+      >
+        <a
+          class="hover-with-active"
+          href="https://x.com/darklakefi"
+          rel="noreferrer"
+          target="_blank"
+        >
+          <i
+            class="hn hn-x text-brand-30 text-xl"
+          />
+        </a>
+        <a
+          class="hover-with-active"
+          href="https://github.com/darklakefi"
+          rel="noreferrer"
+          target="_blank"
+        >
+          <i
+            class="hn hn-github text-brand-30 text-xl"
+          />
+        </a>
+        <a
+          class="hover-with-active"
+          href="https://t.me/darklakeficonvo"
+          rel="noreferrer"
+          target="_blank"
+        >
+          <i
+            class="hn hn-telegram size-5"
+          />
+        </a>
+      </div>
+    </footer>
+  </div>
+</body>
+`;

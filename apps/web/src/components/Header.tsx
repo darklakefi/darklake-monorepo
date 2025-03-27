@@ -7,9 +7,12 @@ const Header = () => {
   const currentWalletAddress = null;
   return (
     <header className="flex flex-row justify-between items-center pb-[64px]">
-      <Link href="/" title="Darklake.fi" className="active:opacity-80">
-        <Image src="/images/logo-h-darklake.png" alt="darklage logo" height={24} width={147} />
-      </Link>
+      <div className="flex items-center justify-between gap-x-[11px]">
+        <Link href="/" title="Darklake.fi" className="active:opacity-80">
+          <Image src="/images/logo-h-darklake.png" alt="darklage logo" height={24} width={147} />
+        </Link>
+        <p className="font-primary text-lg text-brand-30 select-none">BETA</p>
+      </div>
       {currentWalletAddress ? <ConnectedWalletDropdown currentWalletAddress={currentWalletAddress} /> : null}
     </header>
   );
