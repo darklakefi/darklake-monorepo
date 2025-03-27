@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import { useRouter } from "next/navigation";
 
 import { pasteFromClipboard } from "@/utils/browser";
