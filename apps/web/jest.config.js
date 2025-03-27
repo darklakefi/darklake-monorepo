@@ -18,6 +18,9 @@ const config = {
   coverageProvider: "v8",
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  moduleNameMapper: {
+    uuid: require.resolve("uuid"),
+  },
 };
 
 module.exports = createJestConfig(config);

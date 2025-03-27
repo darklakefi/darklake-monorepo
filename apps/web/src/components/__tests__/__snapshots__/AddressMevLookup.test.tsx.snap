@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddressMevLookup /> renders successfully 1`] = `
+<body>
+  <div>
+    <div
+      class="h-12 p-2 mb-6 md:max-w-2xl w-full border border-brand-40 bg-brand-60 flex flex-row items-center justify-between"
+    >
+      <div
+        class="flex items-center flex-grow"
+      >
+        <span
+          class="font-secondary text-lg leading-6 text-brand-30 select-none mr-3"
+        >
+          &gt;
+        </span>
+        <div
+          class="font-secondary text-lg leading-6 w-full text-brand-30 uppercase cursor-text"
+        >
+          Enter or
+           
+          <button
+            class="uppercase font-secondary text-lg leading-6 button underline bg-brand-50 text-brand-20 hover:bg-brand-50 focus:outline-none active:ring-[1px] active:bg-brand-50 active:ring-brand-20 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-50 px-3 py-1"
+          >
+            Paste
+          </button>
+           
+          Solana address...
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

@@ -1,18 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import DOMPurify from "dompurify";
+import { useRouter } from "next/navigation";
 
 import { pasteFromClipboard } from "@/utils/browser";
 import { isValidSolanaAddress } from "@/utils/blockchain";
 import { cn } from "@/utils/common";
 import Button from "@/components/Button";
-import Link from "next/link";
-import DOMPurify from "dompurify";
 
 const AddressMevLookup = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const resetInput = () => {
     setInputValue("");
@@ -29,6 +31,10 @@ const AddressMevLookup = () => {
     pasteFromClipboard((pasted) => setInputValue(pasted.trim()));
     setIsInputVisible(true);
   };
+
+  const isSubmitDisabled = !inputValue?.length || !isValidSolanaAddress(inputValue);
+
+  const resultsLink = `/results/${DOMPurify.sanitize(inputValue ?? "")}`;
 
   const wrapperFlexClassName = "flex flex-row items-center justify-between";
   return (
@@ -65,6 +71,13 @@ const AddressMevLookup = () => {
               setIsInputVisible(false);
             }}
             onChange={(e) => setInputValue(e?.target?.value ?? "")}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !isSubmitDisabled) {
+                e.preventDefault();
+                e.stopPropagation();
+                router.push(resultsLink);
+              }
+            }}
           />
         )}
       </div>
@@ -73,14 +86,14 @@ const AddressMevLookup = () => {
           <i className="hn hn-times-circle-solid text-brand-30 text-lg leading-5" />
         </button>
       )}
-      {isValidSolanaAddress(inputValue) && (
+      {!isSubmitDisabled && (
         <Link
           className={cn(
             "font-secondary text-lg leading-6 uppercase bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20",
             "disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10",
             "active:ring-offset-2 active:ring-offset-black ml-3 flex-shrink-0",
           )}
-          href={`/results/${DOMPurify.sanitize(inputValue)}`}
+          href={resultsLink}
           title="Reveal Losses"
         >
           Reveal Losses
