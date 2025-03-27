@@ -40,7 +40,22 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
         <div
           class="text-body-2"
         >
-          ██████████████████░░░░░░░░░░░░░
+          <div
+            class="text-lg flex flex-row overflow-hidden select-none"
+          >
+            <div
+              class="overflow-hidden tracking-[1px]"
+              style="width: 30%;"
+            >
+              ██████████████████████████████
+            </div>
+            <div
+              class="overflow-hidden"
+              style="width: 70%;"
+            >
+              ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+            </div>
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -102,7 +117,22 @@ exports[`<AttackDetailCard /> displays attack detail 1`] = `
         <div
           class="text-body-2"
         >
-          ██████████████████░░░░░░░░░░░░░
+          <div
+            class="text-lg flex flex-row overflow-hidden select-none"
+          >
+            <div
+              class="overflow-hidden tracking-[1px]"
+              style="width: 30%;"
+            >
+              ██████████████████████████████
+            </div>
+            <div
+              class="overflow-hidden"
+              style="width: 70%;"
+            >
+              ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+            </div>
+          </div>
         </div>
         <div
           class="flex flex-col"

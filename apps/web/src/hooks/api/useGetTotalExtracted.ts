@@ -27,6 +27,7 @@ const useGetTotalExtracted = (address: string): UseGetTotalExtractedReturn => {
     queryKey: ["getTotalExtracted", address],
     queryFn: getTotalExtracted,
     enabled: !!address,
+    refetchInterval: 10_000,
   });
 
   return {
