@@ -1,3 +1,4 @@
+import ProgressBar from "@/components/ProgressBar";
 import { MevAttack } from "@/types/Mev";
 import { format } from "date-fns";
 
@@ -21,7 +22,9 @@ const AttackDetailCard = ({ mevAttack, index, onOpenModal }: AttackDetailCardPro
       </div>
       <div className="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40">
         <div className="text-body">{mevAttack.solAmount.lost} SOL LOST</div>
-        <div className="text-body-2">██████████████████░░░░░░░░░░░░░</div>
+        <div className="text-body-2">
+          <ProgressBar progress={(mevAttack.solAmount.lost / mevAttack.solAmount.sent) * 100} />
+        </div>
         <div className="flex flex-col">
           <div className="text-body-2 text-brand-20">64% EXTRACTED</div>
           <div className="text-body-2 text-brand-30">FROM A {mevAttack.solAmount.sent} SOL TRANSACTION</div>

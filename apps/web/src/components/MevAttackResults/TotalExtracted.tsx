@@ -5,6 +5,7 @@ import { cn } from "@/utils/common";
 import Button from "@/components/Button";
 import { shareOnTwitter } from "@/utils/browser";
 import { getSiteUrl } from "@/utils/env";
+import ProgressBar from "@/components/ProgressBar";
 
 export default function TotalExtracted({
   solAmount,
@@ -46,24 +47,7 @@ export default function TotalExtracted({
       )}
       {!!processingBlocks && progress !== 100 && (
         <div className="mt-8">
-          <div className="text-lg flex flex-row overflow-hidden select-none">
-            <div
-              className="overflow-hidden tracking-[1px]"
-              style={{
-                width: `${progress}%`,
-              }}
-            >
-              {"█".repeat(30)}
-            </div>
-            <div
-              className="overflow-hidden"
-              style={{
-                width: `${100 - progress}%`,
-              }}
-            >
-              {"░".repeat(30)}
-            </div>
-          </div>
+          <ProgressBar progress={progress} />
           <div className="mt-1 font-secondary text-lg flex flex-row justify-between">
             <span>&gt; Analyzing blocks:</span>
             <span>

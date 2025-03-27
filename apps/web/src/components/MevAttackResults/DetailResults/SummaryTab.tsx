@@ -47,7 +47,7 @@ const SummaryTab = ({ mevAttacks }: SummaryTabProps) => {
           />
         </div>
       </div>
-      <div className="flex flex-row flex-wrap gap-[16px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[16px]">
         {mevAttacks.slice(0, 3).map((attack, index) => (
           <div className="flex-1" key={index}>
             <AttackDetailCard mevAttack={attack} index={index + 1} onOpenModal={() => openModal(attack)} />
