@@ -1,14 +1,17 @@
-import { MevAttack } from "@/types/Mev";
+import { MevAttack, MevTotalExtracted } from "@/types/Mev";
 import AttackDetailCard from "./AttackDetailCard";
 import SummaryCard from "./SummaryCard";
 import { useState } from "react";
 import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
+import { formatMoney } from "@/utils/number";
 
 type SummaryTabProps = {
   mevAttacks: MevAttack[];
+  totalAttacks: number;
+  totalExtracted?: MevTotalExtracted;
 };
 
-const SummaryTab = ({ mevAttacks }: SummaryTabProps) => {
+const SummaryTab = ({ mevAttacks, totalAttacks, totalExtracted }: SummaryTabProps) => {
   const [isOpenBreakdownModal, setIsOpenBreakdownModal] = useState(false);
   const [selectedMevAttack, setSelectedMevAttack] = useState<MevAttack | undefined>(undefined);
 
@@ -22,6 +25,9 @@ const SummaryTab = ({ mevAttacks }: SummaryTabProps) => {
     setIsOpenBreakdownModal(false);
   };
 
+  const solAmountFormatted = formatMoney(totalExtracted?.totalSolExtracted ?? 0, 5);
+  const solAmountParts = solAmountFormatted.split(".");
+
   return (
     <div className="flex flex-col gap-[16px]">
       <div className="flex flex-row gap-[16px]">
@@ -30,8 +36,14 @@ const SummaryTab = ({ mevAttacks }: SummaryTabProps) => {
             title="Total Extracted"
             content={
               <div className="flex flex-col gap-[2px] py-[1px]">
-                <div className="text-body text-brand-20">16.32 SOL</div>
-                <div className="text-body-2 text-brand-30">2,774.32 USDC</div>
+                <div className="text-body text-brand-20">
+                  {solAmountParts[0]}
+                  {!!solAmountParts[1] && `.${solAmountParts[1]}`}
+                  SOL
+                </div>
+                {totalExtracted?.totalUsdExtracted && (
+                  <div className="text-body-2 text-brand-30">{formatMoney(totalExtracted?.totalUsdExtracted)} USDC</div>
+                )}
               </div>
             }
           />
@@ -41,7 +53,7 @@ const SummaryTab = ({ mevAttacks }: SummaryTabProps) => {
             title="Confirmed Attack"
             content={
               <div className="flex flex-col gap-[2px] py-[1px]">
-                <div className="text-body text-brand-20">47</div>
+                <div className="text-body text-brand-20">{totalAttacks}</div>
               </div>
             }
           />

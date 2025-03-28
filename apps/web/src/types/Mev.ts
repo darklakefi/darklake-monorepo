@@ -35,3 +35,8 @@ export interface GetMevTotalExtractedResponse {
     total: number;
   };
 }
+
+export enum MevAttacksOrderBy {
+  "DATE" = "date",
+  "AMOUNT_DRAINED" = "amountDrained",
+}
