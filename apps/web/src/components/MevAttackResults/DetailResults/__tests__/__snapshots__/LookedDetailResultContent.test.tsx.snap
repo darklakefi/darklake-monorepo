@@ -13,13 +13,13 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
           class="flex flex-row items-center py-[16px] gap-[24px]"
         >
           <button
-            class="p-[8px] cursor-pointer select-none bg-brand-60 text-brand-20"
+            class="text-lg p-[8px] cursor-pointer select-none bg-brand-60 text-brand-20"
             type="button"
           >
             [SUMMARY]
           </button>
           <button
-            class="p-[8px] cursor-pointer select-none text-brand-30"
+            class="text-lg p-[8px] cursor-pointer select-none text-brand-30"
             type="button"
           >
             [ATTACKS]
@@ -297,17 +297,17 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
             </div>
           </div>
           <button
-            class="bg-brand-10 px-[12px] py-[5px]"
+            class="uppercase font-secondary text-lg leading-6 button bg-brand-10 text-brand-70 px-[12px] py-[5px] hover:bg-brand-20 focus:outline-none active:ring-[1px] active:bg-brand-10 active:ring-brand-10 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-10"
           >
-            <div
-              class="flex flex-row items-center gap-[8px] text-[#041C0F] max-md:text-[16px] uppercase"
+            <span
+              class="flex flex-row justify-center items-center"
             >
               Connect 
               <i
-                class="hn hn-x text-brand-30"
+                class="hn hn-x text-brand-30 mx-2"
               />
                to access complete case file
-            </div>
+            </span>
           </button>
         </div>
       </div>

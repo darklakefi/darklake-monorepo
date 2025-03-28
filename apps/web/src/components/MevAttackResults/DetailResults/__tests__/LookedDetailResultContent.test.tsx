@@ -6,7 +6,7 @@ describe("<LookedDetailResultContent />", () => {
     let baseElement: RenderResult["baseElement"] | undefined;
 
     await act(async () => {
-      ({ baseElement } = render(<LookedDetailResultContent onConnect={() => {}} />));
+      ({ baseElement } = render(<LookedDetailResultContent onConnect={() => {}} connectWithTwitterDisabled={false} />));
     });
 
     expect(baseElement).toMatchSnapshot();
