@@ -70,7 +70,7 @@ export interface MevTransaction {
   signature: string;
 }
 
-export class MevAttackResponse {
+export class MevAttack {
   swapType: MevAttackSwapType;
   tokenName: string;
   timestamp: number;
@@ -94,16 +94,16 @@ export class MevAttackResponse {
     this.timestamp = +props.occurred_at;
     this.transactions = {
       frontRun: {
-        address: "0x0", // TODO: add address
-        signature: "0x0",
+        address: props.attacker_address,
+        signature: props.tx_hash_attacker_buy,
       },
       victim: {
-        address: "0x0",
+        address: props.victim_address,
         signature: props.tx_hash_victim_swap,
       },
       backRun: {
-        address: "0x0",
-        signature: "0x0",
+        address: props.attacker_address,
+        signature: props.tx_hash_attacker_sell,
       },
     };
   }

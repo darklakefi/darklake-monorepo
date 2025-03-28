@@ -6,7 +6,7 @@ import {
   GetMevAttacksQuery,
   GetMevTotalExtractedQuery,
   GetMevTotalExtractedResponse,
-  MevAttackResponse,
+  MevAttack,
   MevAttacksOrderBy,
   MevTotalExtracted,
 } from "./model/Mev";
@@ -142,7 +142,7 @@ export class MevService {
     return slots;
   }
 
-  async getMevAttacks(query: GetMevAttacksQuery): Promise<PaginatedResponse<MevAttackResponse[]>> {
+  async getMevAttacks(query: GetMevAttacksQuery): Promise<PaginatedResponse<MevAttack[]>> {
     const limit = Math.min(
       query.limit || PaginatedResponseDataLimit.MEV_EVENTS_LIST,
       PaginatedResponseDataLimit.MEV_EVENTS_LIST,
@@ -175,7 +175,7 @@ export class MevService {
       where: whereQuery,
     });
 
-    const data = mevAttacks.map((event) => new MevAttackResponse(event));
+    const data = mevAttacks.map((event) => new MevAttack(event));
 
     return {
       limit,
