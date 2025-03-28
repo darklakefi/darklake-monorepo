@@ -1,6 +1,8 @@
 import { IsEnum, IsIn, IsInt, IsOptional, Max, Min, Validate } from "class-validator";
 import { IsValidSolanaAddress } from "../../validator/IsValidSolanaAddress";
 import { Type } from "class-transformer";
+import { SandwichEvent } from "@prisma/client";
+import { formatSolAmount } from "src/utils/blockchain";
 
 export class GetMevTotalExtractedQuery {
   @Validate(IsValidSolanaAddress)
@@ -56,4 +58,53 @@ export interface Mev {
   solAmountSent: number;
   solAmountDrained: number;
   transactionHash: string;
+}
+
+export enum MevAttackSwapType {
+  BUY = "BUY",
+  SELL = "SELL",
+}
+
+export interface MevTransaction {
+  address: string;
+  signature: string;
+}
+
+export class MevAttack {
+  swapType: MevAttackSwapType;
+  tokenName: string;
+  timestamp: number;
+  solAmount: {
+    sent: number;
+    lost: number;
+  };
+  transactions: {
+    frontRun: MevTransaction;
+    victim: MevTransaction;
+    backRun: MevTransaction;
+  };
+
+  constructor(props: SandwichEvent) {
+    this.solAmount = {
+      sent: formatSolAmount(props.sol_amount_swap),
+      lost: formatSolAmount(props.sol_amount_drained),
+    };
+
+    this.tokenName = "UNKNOWN"; // TODO: add token metadata service & get token name
+    this.timestamp = +props.occurred_at;
+    this.transactions = {
+      frontRun: {
+        address: props.attacker_address,
+        signature: props.tx_hash_attacker_buy,
+      },
+      victim: {
+        address: props.victim_address,
+        signature: props.tx_hash_victim_swap,
+      },
+      backRun: {
+        address: props.attacker_address,
+        signature: props.tx_hash_attacker_sell,
+      },
+    };
+  }
 }

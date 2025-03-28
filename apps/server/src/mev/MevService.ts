@@ -6,7 +6,7 @@ import {
   GetMevAttacksQuery,
   GetMevTotalExtractedQuery,
   GetMevTotalExtractedResponse,
-  Mev,
+  MevAttack,
   MevAttacksOrderBy,
   MevTotalExtracted,
 } from "./model/Mev";
@@ -142,7 +142,7 @@ export class MevService {
     return slots;
   }
 
-  async getMevAttacks(query: GetMevAttacksQuery): Promise<PaginatedResponse<Mev[]>> {
+  async getMevAttacks(query: GetMevAttacksQuery): Promise<PaginatedResponse<MevAttack[]>> {
     const limit = Math.min(
       query.limit || PaginatedResponseDataLimit.MEV_EVENTS_LIST,
       PaginatedResponseDataLimit.MEV_EVENTS_LIST,
@@ -175,13 +175,7 @@ export class MevService {
       where: whereQuery,
     });
 
-    const data = mevAttacks.map((event) => ({
-      solAmountDrained: formatSolAmount(event.sol_amount_drained),
-      solAmountSent: formatSolAmount(event.sol_amount_swap),
-      tokenName: "UNKNOWN", // TODO: add token metadata service & get token name
-      timestamp: +event.occurred_at,
-      transactionHash: event.tx_hash_victim_swap,
-    }));
+    const data = mevAttacks.map((event) => new MevAttack(event));
 
     return {
       limit,

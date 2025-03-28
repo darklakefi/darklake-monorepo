@@ -12,7 +12,7 @@ export default function DetailResults({ address }: { address: string }) {
       {/* TODO: unhide when ready, hidden temporary while twitter login and API wiring wip */}
       <div className="hidden">
         {!isSignedWithTwitter && <LookedDetailResultContent onConnect={() => setIsSignedWithTwitter(true)} />}
-        {isSignedWithTwitter && <DetailResultContent />}
+        {isSignedWithTwitter && <DetailResultContent address={address} />}
       </div>
     </div>
   );
