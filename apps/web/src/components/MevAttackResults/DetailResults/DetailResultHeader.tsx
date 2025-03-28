@@ -2,6 +2,8 @@ import { truncate } from "@/utils/common";
 import { format } from "date-fns";
 import Image from "next/image";
 import { cn } from "@/utils/common";
+import { signOut } from "@/services/supabase";
+import Button from "@/components/Button";
 
 interface DetailResultHeaderProps {
   address: string;
@@ -27,6 +29,13 @@ export default function DetailResultHeader({ address, processedTime, isSignedWit
           <div>CASE PROCESSED:&nbsp;</div>
           <div>{format(processedTime, "yyyy-MM-dd HH:mm 'UTC'")}</div>
         </div>
+        {isSignedWithTwitter && (
+          <div>
+            <Button onClick={signOut} intent="tertiary" className="text-left no-underline">
+              &gt;&gt;&gt; Sign Out &lt;&lt;&lt;
+            </Button>
+          </div>
+        )}
       </div>
       {!isSignedWithTwitter && <i className="relative hn hn-lock-alt-solid text-[64px] text-brand-50" />}
       {isSignedWithTwitter && (

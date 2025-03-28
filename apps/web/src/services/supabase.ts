@@ -23,3 +23,14 @@ export const signInWithTwitter = async () => {
     console.error(e);
   }
 };
+
+export const signOut = async () => {
+  try {
+    await supabase.auth.signOut();
+  } catch (e) {
+    console.error(e);
+  }
+
+  localStorage.removeItem(LocalStorage.SIGN_IN_INITIATED);
+  localStorage.removeItem(LocalStorage.LOOKUP_ADDRESS);
+};

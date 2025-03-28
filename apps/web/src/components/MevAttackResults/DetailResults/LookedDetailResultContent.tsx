@@ -1,6 +1,6 @@
 import Tabs from "@/components/Tabs";
 import SummaryTab from "./SummaryTab";
-import { cn } from "@/utils/common";
+import Button from "@/components/Button";
 
 const TAB_NAMES = [
   {
@@ -13,10 +13,14 @@ const TAB_NAMES = [
 
 interface LookedDetailResultContentProps {
   onConnect: () => void;
+  connectWithTwitterDisabled: boolean;
 }
 
 export default function LookedDetailResultContent(props: LookedDetailResultContentProps) {
   const handleConnect = () => {
+    if (props.connectWithTwitterDisabled) {
+      return;
+    }
     props?.onConnect();
   };
 
@@ -36,16 +40,9 @@ export default function LookedDetailResultContent(props: LookedDetailResultConte
             <div className="uppercase"> * ACCESS DENIED * </div>
             <div> ******************************** </div>
           </div>
-          <button className="bg-brand-10 px-[12px] py-[5px]" onClick={handleConnect}>
-            <div
-              className={cn(
-                "flex flex-row items-center gap-[8px]",
-                "text-body-2 text-[#041C0F] max-md:text-[16px] uppercase",
-              )}
-            >
-              Connect <i className="hn hn-x text-brand-30" /> to access complete case file
-            </div>
-          </button>
+          <Button intent="primary-light" onClick={handleConnect} disabled={props.connectWithTwitterDisabled}>
+            Connect <i className="hn hn-x text-brand-30 mx-2" /> to access complete case file
+          </Button>
         </div>
       </div>
     </div>

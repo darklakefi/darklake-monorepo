@@ -38,8 +38,7 @@ const SummaryTab = ({ mevAttacks, totalAttacks, totalExtracted }: SummaryTabProp
               <div className="flex flex-col gap-[2px] py-[1px]">
                 <div className="text-body text-brand-20">
                   {solAmountParts[0]}
-                  {!!solAmountParts[1] && `.${solAmountParts[1]}`}
-                  SOL
+                  {!!solAmountParts[1] && `.${solAmountParts[1]}`} SOL
                 </div>
                 {totalExtracted?.totalUsdExtracted && (
                   <div className="text-body-2 text-brand-30">{formatMoney(totalExtracted?.totalUsdExtracted)} USDC</div>

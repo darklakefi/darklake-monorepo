@@ -3,6 +3,7 @@ import axiosClient from "@/services/axiosClient";
 import { MevAttack, MevAttacksOrderBy } from "@/types/Mev";
 import { PaginatedResponse, SortDirection } from "@/types/Pagination";
 import { useState } from "react";
+import useSupabaseSession from "@/hooks/useSupabaseSession";
 
 const getAttackList = async ({
   queryKey,
@@ -11,7 +12,7 @@ const getAttackList = async ({
   queryKey: QueryOptions["queryKey"];
   pageParam?: number;
 }): Promise<PaginatedResponse<MevAttack>> => {
-  const [, address, orderBy, direction, limit] = queryKey!;
+  const [, address, orderBy, direction, limit, accessToken] = queryKey!;
 
   const res = await axiosClient.get("v1/mev/attacks", {
     params: {
@@ -20,6 +21,9 @@ const getAttackList = async ({
       offset: pageParam,
       orderBy,
       direction,
+    },
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
@@ -31,8 +35,10 @@ const useGetAttackList = (address: string) => {
   const [direction, setDirection] = useState<SortDirection>(SortDirection.DESC);
   const [limit, setLimit] = useState<number>(3);
 
+  const supabaseSession = useSupabaseSession();
+
   const { data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["getAttackList", address, orderBy, direction, limit],
+    queryKey: ["getAttackList", address, orderBy, direction, limit, supabaseSession?.access_token],
     queryFn: getAttackList,
     initialPageParam: 0,
     getNextPageParam: (lastPage) =>

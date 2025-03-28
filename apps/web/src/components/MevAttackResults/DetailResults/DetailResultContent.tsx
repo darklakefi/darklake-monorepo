@@ -66,7 +66,7 @@ export default function DetailResultContent({ address }: { address: string }) {
           <Popover className="">
             {({ open }) => (
               <>
-                <PopoverButton className={cn(open ? "opacity-70" : "opacity-100")}>
+                <PopoverButton as="div" className={cn(open ? "opacity-70" : "opacity-100")}>
                   <div className="flex flex-row items-center gap-[8px] text-[#1A9A56] p-[8px]">
                     <button className="text-[18px] uppercase">sort by: {activeSortOption?.title}</button>
                     {activeSortOption?.direction === SortDirection.ASC ? (

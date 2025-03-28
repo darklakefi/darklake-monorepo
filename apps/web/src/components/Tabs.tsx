@@ -34,7 +34,7 @@ export default function Tabs({ tabs, onChange, wrapperClassName, tabClassName, a
             key={tabTitle}
             onClick={() => onTabClick(index)}
             className={cn(
-              "text-body-2 p-[8px]",
+              "text-lg p-[8px]",
               "cursor-pointer select-none",
               !isActiveTab && "text-brand-30",
               isActiveTab && "bg-brand-60 text-brand-20",
