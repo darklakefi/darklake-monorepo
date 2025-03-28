@@ -7,14 +7,14 @@ export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
 );
 
-export const signInWithTwitter = async () => {
+export const signInWithTwitter = async (redirectPath: string = "/") => {
   localStorage.removeItem(LocalStorage.SIGN_IN_INITIATED);
 
   try {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "twitter",
       options: {
-        redirectTo: getSiteUrl(),
+        redirectTo: `${getSiteUrl()}${redirectPath}`,
       },
     });
 
