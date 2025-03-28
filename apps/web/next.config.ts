@@ -19,14 +19,12 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(
-  withSentryConfig(nextConfig, {
-    org: "darklake",
-    project: "darklake",
-    silent: !process.env.CI,
-    widenClientFileUpload: true,
-    tunnelRoute: "/monitoring",
-    disableLogger: true,
-    automaticVercelMonitors: true,
-  }),
-);
+export default withSentryConfig(nextConfig, {
+  org: "darklake",
+  project: "darklake",
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  tunnelRoute: "/monitoring",
+  disableLogger: true,
+  automaticVercelMonitors: true,
+});
