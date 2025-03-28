@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
   const fontBitsumishi = await loadFont("bitsumishi.ttf");
   const fontClassicConsoleNeue = await loadFont("classic-console-neue.ttf");
 
-  const solAmountFormatted = formatMoney(data.totalSolExtracted);
+  const solAmountFormatted = formatMoney(data.totalSolExtracted, 5);
   const solAmountParts = solAmountFormatted.split(".");
   return new ImageResponse(
     (
