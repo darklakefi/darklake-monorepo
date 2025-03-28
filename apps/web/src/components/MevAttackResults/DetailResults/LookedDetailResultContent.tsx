@@ -41,7 +41,9 @@ export default function LookedDetailResultContent(props: LookedDetailResultConte
             <div> ******************************** </div>
           </div>
           <Button intent="primary-light" onClick={handleConnect} disabled={props.connectWithTwitterDisabled}>
-            Connect <i className="hn hn-x text-brand-30 mx-2" /> to access complete case file
+            <span className="flex flex-row justify-center items-center">
+              Connect <i className="hn hn-x text-brand-30 mx-2" /> to access complete case file
+            </span>
           </Button>
         </div>
       </div>

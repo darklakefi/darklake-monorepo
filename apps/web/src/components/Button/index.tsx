@@ -49,10 +49,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<
 export default function Button({ className, intent, disabled, ...props }: React.PropsWithChildren<ButtonProps>) {
   return (
     <button
-      className={cn(
-        "uppercase font-secondary text-lg leading-6 flex flex-row justify-center items-center",
-        buttonStyle({ intent, disabled, className }),
-      )}
+      className={cn("uppercase font-secondary text-lg leading-6", buttonStyle({ intent, disabled, className }))}
       disabled={disabled}
       {...props}
     />
