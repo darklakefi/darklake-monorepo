@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { LocalStorage } from "@/constants/storage";
+import { getSiteUrl } from "@/utils/env";
 
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -12,6 +13,9 @@ export const signInWithTwitter = async () => {
   try {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "twitter",
+      options: {
+        redirectTo: getSiteUrl(),
+      },
     });
 
     if (error) {
