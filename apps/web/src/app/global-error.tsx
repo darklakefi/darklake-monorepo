@@ -2,9 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
+import * as Sentry from "@sentry/nextjs";
+import Error from "next/error";
+import { useEffect } from "react";
 
-export default function GlobalError() {
+export default function GlobalError({ error }: { error: Error }) {
   const router = useRouter();
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
 
   return (
     <main className="flex flex-col items-center text-center justify-center h-full space-y-8">
