@@ -64,16 +64,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.nextUrl));
   }
 
+  const response = await fetch(new URL(`/v1/mev/total-extracted?address=${address}`, process.env.NEXT_PUBLIC_API_URL));
+  const { data } = await response.json();
+
   const fontBitsumishi = await loadFont("bitsumishi.ttf");
   const fontClassicConsoleNeue = await loadFont("classic-console-neue.ttf");
 
-  // TODO: this to be replaced with actual data from API
-  const data = {
-    solAmount: 17.69,
-    usdAmount: 2774.32,
-  };
-
-  const solAmountFormatted = formatMoney(data.solAmount);
+  const solAmountFormatted = formatMoney(data.totalSolExtracted);
   const solAmountParts = solAmountFormatted.split(".");
   return new ImageResponse(
     (
@@ -96,7 +93,7 @@ export async function GET(request: NextRequest) {
               <span tw="text-[125px] leading-[93px]">{solAmountParts[0]}</span>
               {!!solAmountParts[1] && `.${solAmountParts[1]}`} SOL
             </p>
-            <p tw="m-0">{formatMoney(data.usdAmount)} USD</p>
+            {!!data.totalUsdExtracted && <p tw="m-0">{formatMoney(data.totalUsdExtracted)} USD</p>}
           </div>
           <p
             tw="bg-[#35D688] absolute bottom-0 w-[1080px] text-[32px] p-[18.5px] m-0 flex flex-row justify-center"
