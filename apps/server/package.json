@@ -39,7 +39,7 @@
     "class-validator": "^0.14.1",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.5",
