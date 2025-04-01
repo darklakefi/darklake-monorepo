@@ -9,7 +9,7 @@ const Footer = () => {
   const { openModal } = useGlobalModal();
 
   return (
-    <footer className="flex flex-col sm:flex-row justify-between items-center pb-[80px]">
+    <footer className="flex flex-col sm:flex-row justify-between items-center z-20">
       <div className="flex items-center justify-between gap-x-10 max-sm:mb-10">
         <button
           className="uppercase underline text-brand-30 text-lg leading-6 hover-with-active"

@@ -1,8 +1,5 @@
 "use client";
 
-import Footer from "@/components/Footer";
-import MainWrapper from "@/components/MainWrapper";
-import Header from "@/components/Header";
 import { useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
@@ -39,7 +36,7 @@ function BackgroundRevealElement() {
 }
 
 const className = twMerge(
-  "w-screen h-screen bg-[url(/images/bg-body.png)] bg-cover",
+  "bg-[url(/images/bg-body.png)] bg-cover",
   "bg-no-repeat bg-fixed relative top-0 left-0 bg-brand-80 text-brand-20",
 );
 
@@ -50,10 +47,10 @@ export default function RootLayout({
 }>) {
   return (
     <div className={className}>
-      <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-16 px-6 z-20 relative">
+      <div className="xl:container w-full mx-auto flex flex-col justify-between z-20 relative">
         <BackgroundRevealElement />
 
-        <MainWrapper>{children}</MainWrapper>
+        {children}
       </div>
     </div>
   );

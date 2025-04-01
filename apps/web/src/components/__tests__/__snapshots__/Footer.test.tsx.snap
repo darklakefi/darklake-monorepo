@@ -4,7 +4,7 @@ exports[`<Footer /> renders successfully 1`] = `
 <body>
   <div>
     <footer
-      class="flex flex-col sm:flex-row justify-between items-center pb-[80px]"
+      class="flex flex-col sm:flex-row justify-between items-center"
     >
       <div
         class="flex items-center justify-between gap-x-10 max-sm:mb-10"
