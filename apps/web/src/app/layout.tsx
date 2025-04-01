@@ -58,9 +58,7 @@ export default function RootLayout({
             <SupabaseAuthProvider>
               <QueryProvider>
                 <GlobalModalProvider>
-                  <Header />
                   <MainWrapper>{children}</MainWrapper>
-                  <Footer />
                 </GlobalModalProvider>
               </QueryProvider>
             </SupabaseAuthProvider>
