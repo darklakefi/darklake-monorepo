@@ -27,12 +27,14 @@ function BackgroundRevealElement() {
     "bg-[url(/images/bg-masked.png)] mouse-tracker fixed w-screen",
     "h-screen z-10 top-0 left-0 opacity-90 bg-cover bg-no-repeat bg-fixed invisible",
   );
-  return createPortal(
-    <>
-      <div className={className} ref={element} />
-    </>,
-    document.body,
-  );
+  if (typeof window === "object") {
+    return createPortal(
+      <>
+        <div className={className} ref={element} />
+      </>,
+      document.body,
+    );
+  }
 }
 
 const className = twMerge(
