@@ -53,9 +53,7 @@ export default function RootLayout({
       <div className="xl:container w-full mx-auto min-h-screen flex flex-col justify-between pt-16 px-6 z-20 relative">
         <BackgroundRevealElement />
 
-        <Header />
         <MainWrapper>{children}</MainWrapper>
-        <Footer />
       </div>
     </div>
   );
