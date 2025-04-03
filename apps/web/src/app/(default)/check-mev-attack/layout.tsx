@@ -1,8 +1,8 @@
 "use client";
 
+import { cn } from "@/utils/common";
 import { useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { twMerge } from "tailwind-merge";
 
 function BackgroundRevealElement() {
   const element = useRef<HTMLDivElement | null>(null);
@@ -23,7 +23,7 @@ function BackgroundRevealElement() {
     document.addEventListener("mousemove", handler);
     return () => document.removeEventListener("mousemove", handler);
   }, []);
-  const className = twMerge(
+  const className = cn(
     "bg-[url(/images/bg-masked.png)] mouse-tracker fixed w-screen",
     "h-screen z-10 top-0 left-0 opacity-90 bg-cover bg-no-repeat bg-fixed invisible",
   );
@@ -37,7 +37,7 @@ function BackgroundRevealElement() {
   }
 }
 
-const className = twMerge(
+const className = cn(
   "bg-[url(/images/bg-body.png)] bg-cover",
   "bg-no-repeat bg-fixed relative top-0 left-0 bg-brand-80 text-brand-20",
 );
