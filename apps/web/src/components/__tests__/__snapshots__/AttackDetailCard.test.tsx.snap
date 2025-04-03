@@ -10,13 +10,6 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
         class="flex flex-col"
       >
         <div
-          class="text-body-2 text-brand-20"
-        >
-          #
-          1
-           LARGEST EXTRACTION EVENT
-        </div>
-        <div
           class="text-body-2 text-brand-30"
         >
           TOKEN: 

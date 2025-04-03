@@ -1,7 +1,6 @@
 import { MevAttack } from "@/types/Mev";
-import AttackDetailCard from "./AttackDetailCard";
-import { useState } from "react";
-import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
+import AttackDetailCard from "@/components/AttackDetailCard";
+import { useAttackBreakdownModal } from "@/providers/AttackBreakdownModalProvider";
 
 type AttackDetailsTabProps = {
   mevAttacks: MevAttack[];
@@ -11,18 +10,7 @@ type AttackDetailsTabProps = {
 };
 
 const AttackDetailsTab = ({ mevAttacks, hasMore, onLoadMore, isLoadingMore }: AttackDetailsTabProps) => {
-  const [isOpenBreakdownModal, setIsOpenBreakdownModal] = useState(false);
-  const [selectedMevAttack, setSelectedMevAttack] = useState<MevAttack | undefined>(undefined);
-
-  const openModal = (attack: MevAttack) => {
-    setSelectedMevAttack(attack);
-    setIsOpenBreakdownModal(true);
-  };
-
-  const closeModal = () => {
-    setSelectedMevAttack(undefined);
-    setIsOpenBreakdownModal(false);
-  };
+  const { openModal } = useAttackBreakdownModal();
 
   return (
     <div className="flex flex-col gap-[16px]">
@@ -48,8 +36,6 @@ const AttackDetailsTab = ({ mevAttacks, hasMore, onLoadMore, isLoadingMore }: At
           </div>
         </div>
       )}
-
-      <AttackBreakdownModal mevAttack={selectedMevAttack} isOpen={isOpenBreakdownModal} onClose={closeModal} />
     </div>
   );
 };

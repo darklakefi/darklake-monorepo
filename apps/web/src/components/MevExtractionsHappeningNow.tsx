@@ -1,4 +1,7 @@
-import MevExtractionCard from "./MevExtractionCard";
+import { formatMoney } from "@/utils/number";
+import SummaryCard from "./SummaryCard";
+import { useMemo } from "react";
+
 interface MevExtractionsHappeningNowProps {
   drainToday: {
     amountSol: number;
@@ -16,39 +19,84 @@ interface MevExtractionsHappeningNowProps {
 
 export default function MevExtractionsHappeningNow(props: MevExtractionsHappeningNowProps) {
   const { drainToday, weekTotal, attacksToday } = props;
+
+  const formattedDrainToday = useMemo(() => {
+    const solAmountFormatted = formatMoney(drainToday?.amountSol ?? 0, 5);
+    const solAmountParts = solAmountFormatted.split(".");
+
+    return {
+      solAmount: {
+        wholePart: solAmountParts[0],
+        fractionalPart: solAmountParts[1] ? solAmountParts[1] : "",
+      },
+      usdAmount: formatMoney(drainToday?.amountUsd ?? 0),
+    };
+  }, [drainToday]);
+
+  const formattedWeekTotal = useMemo(() => {
+    const solAmountFormatted = formatMoney(weekTotal?.amountSol ?? 0, 5);
+    const solAmountParts = solAmountFormatted.split(".");
+
+    return {
+      solAmount: {
+        wholePart: solAmountParts[0],
+        fractionalPart: solAmountParts[1] ? solAmountParts[1] : "",
+      },
+      usdAmount: formatMoney(weekTotal?.amountUsd ?? 0),
+    };
+  }, [weekTotal]);
+
   return (
     <div>
       <h2 className="text-3xl uppercase text-brand-30 font-primary mb-4">
         Mev Extraction <span className="text-brand-20">Happening Now</span>
       </h2>
       <div className="flex gap-4 flex-col md:flex-row">
-        <MevExtractionCard>
-          <h3 className="mb-4 text-lg text-brand-30">Today&apos;s Drain</h3>
-          <span className="text-3xl">{drainToday.amountSol} SOL</span>
-          <span className="text-lg text-brand-30">
-            {drainToday.amountUsd.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-            })}{" "}
-            extracted
-          </span>
-        </MevExtractionCard>
-        <MevExtractionCard>
-          <h3 className="mb-4 text-lg text-brand-30">7D Total MEV</h3>
-          <span className="text-3xl">{weekTotal.amountSol} SOL</span>
-          <span className="text-lg text-brand-30">
-            {weekTotal.amountUsd.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-            })}{" "}
-            extracted
-          </span>
-        </MevExtractionCard>
-        <MevExtractionCard>
-          <h3 className="mb-4 text-lg text-brand-30">Attacks Today</h3>
-          <span className="text-3xl">{attacksToday.attacksTodayCount}</span>
-          <span className="text-lg text-brand-30">{attacksToday.attacksWeekCount} this week</span>
-        </MevExtractionCard>
+        <div className="flex-1">
+          <SummaryCard
+            title="Today's Drain"
+            content={
+              <div className="flex flex-col gap-[2px] py-[1px]">
+                <div className="text-body text-brand-20">
+                  {formattedDrainToday.solAmount.wholePart}
+                  {!!formattedDrainToday.solAmount.fractionalPart &&
+                    `.${formattedDrainToday.solAmount.fractionalPart}`}{" "}
+                  SOL
+                </div>
+                <div className="text-body-2 text-brand-30">{formattedDrainToday.usdAmount} USDC</div>
+              </div>
+            }
+          />
+        </div>
+
+        <div className="flex-1">
+          <SummaryCard
+            title="7D Total MEV"
+            content={
+              <div className="flex flex-col gap-[2px] py-[1px]">
+                <div className="text-body text-brand-20">
+                  {formattedWeekTotal.solAmount.wholePart}
+                  {!!formattedWeekTotal.solAmount.fractionalPart &&
+                    `.${formattedWeekTotal.solAmount.fractionalPart}`}{" "}
+                  SOL
+                </div>
+                <div className="text-body-2 text-brand-30">{formattedWeekTotal.usdAmount} USDC</div>
+              </div>
+            }
+          />
+        </div>
+
+        <div className="flex-1">
+          <SummaryCard
+            title="Attacks Today"
+            content={
+              <div className="flex flex-col gap-[2px] py-[1px]">
+                <div className="text-body text-brand-20">{attacksToday.attacksTodayCount}</div>
+                <div className="text-body-2 text-brand-30">{attacksToday.attacksWeekCount} this week</div>
+              </div>
+            }
+          />
+        </div>
       </div>
     </div>
   );

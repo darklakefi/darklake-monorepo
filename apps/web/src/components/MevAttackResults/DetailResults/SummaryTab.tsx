@@ -1,9 +1,9 @@
 import { MevAttack, MevTotalExtracted } from "@/types/Mev";
-import AttackDetailCard from "./AttackDetailCard";
-import SummaryCard from "./SummaryCard";
 import { useState } from "react";
 import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
 import { formatMoney } from "@/utils/number";
+import SummaryCard from "@/components/SummaryCard";
+import AttackDetailCard from "@/components/AttackDetailCard";
 
 type SummaryTabProps = {
   mevAttacks: MevAttack[];
@@ -58,10 +58,14 @@ const SummaryTab = ({ mevAttacks, totalAttacks, totalExtracted }: SummaryTabProp
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[16px]">
+      <div className="flex flex-col md:flex-row gap-[16px]">
         {mevAttacks.slice(0, 3).map((attack, index) => (
-          <div className="flex-1" key={index}>
-            <AttackDetailCard mevAttack={attack} index={index + 1} onOpenModal={() => openModal(attack)} />
+          <div className="flex-1 overflow-hidden" key={index}>
+            <AttackDetailCard
+              cardTitle={`#${index + 1} LARGEST EXTRACTION EVENT`}
+              mevAttack={attack}
+              onOpenModal={() => openModal(attack)}
+            />
           </div>
         ))}
       </div>

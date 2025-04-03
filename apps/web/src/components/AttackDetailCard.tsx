@@ -1,10 +1,11 @@
 import ProgressBar from "@/components/ProgressBar";
 import { MevAttack } from "@/types/Mev";
 import { format } from "date-fns";
+import { ReactNode } from "react";
 
-type AttackDetailCardProps = { mevAttack: MevAttack; index?: number; onOpenModal?: () => void };
+type AttackDetailCardProps = { mevAttack: MevAttack; cardTitle?: string | ReactNode; onOpenModal?: () => void };
 
-const AttackDetailCard = ({ mevAttack, index, onOpenModal }: AttackDetailCardProps) => {
+const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCardProps) => {
   const handleOpenBreakdownModal = () => {
     if (onOpenModal) {
       onOpenModal();
@@ -14,7 +15,7 @@ const AttackDetailCard = ({ mevAttack, index, onOpenModal }: AttackDetailCardPro
   return (
     <div className="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full">
       <div className="flex flex-col">
-        {index && <div className="text-body-2 text-brand-20">#{index} LARGEST EXTRACTION EVENT</div>}
+        {cardTitle && <div className="text-body-2 text-brand-20">{cardTitle}</div>}
         <div className="text-body-2 text-brand-30">TOKEN: {mevAttack.tokenName}</div>
         <div className="text-body-2 text-brand-30">
           {format(mevAttack.timestamp || new Date(), "yyyy-MM-dd HH:mm 'UTC'")}

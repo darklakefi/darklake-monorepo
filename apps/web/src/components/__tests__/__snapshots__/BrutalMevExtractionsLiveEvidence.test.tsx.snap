@@ -18,142 +18,172 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
         class="flex flex-col md:flex-row gap-4"
       >
         <div
-          class="flex-1 flex overflow-hidden flex-col p-4 uppercase leading-none bg-brand-60"
+          class="flex-1 overflow-hidden"
         >
-          <h3
-            class="text-lg text-brand-30"
-          >
-            Case 
-            1
-          </h3>
-          <span
-            class="text-lg text-brand-30"
-          >
-            Token: 
-            TRUMP
-          </span>
-          <span
-            class="text-lg text-brand-30 mb-4"
-          >
-            Date: 
-            2024-03-26 12:00 GMT+0
-          </span>
-          <hr
-            class="border-brand-40 mb-4"
-          />
-          <span
-            class="text-3xl mb-2"
-          >
-            50
-             SOL Lost
-          </span>
           <div
-            class="text-lg flex min-w-0 flex-grow-0 overflow-hidden mb-2"
+            class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
           >
             <div
-              class="overflow-hidden"
-              style="width: 50%;"
+              class="flex flex-col"
             >
-              ██████████████████████████████
+              <div
+                class="text-body-2 text-brand-20"
+              >
+                <span
+                  class="uppercase"
+                >
+                  Case #
+                  1
+                </span>
+              </div>
+              <div
+                class="text-body-2 text-brand-30"
+              >
+                TOKEN: 
+                TRUMP
+              </div>
+              <div
+                class="text-body-2 text-brand-30"
+              >
+                2024-03-26 00:00 UTC
+              </div>
             </div>
             <div
-              class="overflow-hidden"
-              style="width: 50%;"
+              class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
             >
-              ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+              <div
+                class="text-body"
+              >
+                50
+                 SOL LOST
+              </div>
+              <div
+                class="text-body-2"
+              >
+                <div
+                  class="text-lg flex flex-row overflow-hidden select-none"
+                >
+                  <div
+                    class="overflow-hidden tracking-[1px]"
+                    style="width: 50%;"
+                  >
+                    ██████████████████████████████
+                  </div>
+                  <div
+                    class="overflow-hidden"
+                    style="width: 50%;"
+                  >
+                    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex flex-col"
+              >
+                <div
+                  class="text-body-2 text-brand-20"
+                >
+                  64% EXTRACTED
+                </div>
+                <div
+                  class="text-body-2 text-brand-30"
+                >
+                  FROM A 
+                  100
+                   SOL TRANSACTION
+                </div>
+              </div>
             </div>
+            <button
+              class="text-link text-brand-30 w-fit"
+            >
+              View attack breakdown
+            </button>
           </div>
-          <span
-            class="text-lg text-brand-20"
-          >
-            50
-            % Extracted
-          </span>
-          <span
-            class="text-lg text-brand-30 mb-4"
-          >
-            From a 
-            100
-             SOL Transaction
-          </span>
-          <hr
-            class="border-brand-40 mb-4"
-          />
-          <a
-            class="text-lg text-brand-30 underline"
-            href="#"
-          >
-            View Attack Breakdown
-          </a>
         </div>
         <div
-          class="flex-1 flex overflow-hidden flex-col p-4 uppercase leading-none bg-brand-60"
+          class="flex-1 overflow-hidden"
         >
-          <h3
-            class="text-lg text-brand-30"
-          >
-            Case 
-            2
-          </h3>
-          <span
-            class="text-lg text-brand-30"
-          >
-            Token: 
-            TRUMP
-          </span>
-          <span
-            class="text-lg text-brand-30 mb-4"
-          >
-            Date: 
-            2024-03-28 12:00 GMT+0
-          </span>
-          <hr
-            class="border-brand-40 mb-4"
-          />
-          <span
-            class="text-3xl mb-2"
-          >
-            10
-             SOL Lost
-          </span>
           <div
-            class="text-lg flex min-w-0 flex-grow-0 overflow-hidden mb-2"
+            class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
           >
             <div
-              class="overflow-hidden"
-              style="width: 5%;"
+              class="flex flex-col"
             >
-              ██████████████████████████████
+              <div
+                class="text-body-2 text-brand-20"
+              >
+                <span
+                  class="uppercase"
+                >
+                  Case #
+                  2
+                </span>
+              </div>
+              <div
+                class="text-body-2 text-brand-30"
+              >
+                TOKEN: 
+                TRUMP
+              </div>
+              <div
+                class="text-body-2 text-brand-30"
+              >
+                2024-03-28 00:00 UTC
+              </div>
             </div>
             <div
-              class="overflow-hidden"
-              style="width: 95%;"
+              class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
             >
-              ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+              <div
+                class="text-body"
+              >
+                10
+                 SOL LOST
+              </div>
+              <div
+                class="text-body-2"
+              >
+                <div
+                  class="text-lg flex flex-row overflow-hidden select-none"
+                >
+                  <div
+                    class="overflow-hidden tracking-[1px]"
+                    style="width: 5%;"
+                  >
+                    ██████████████████████████████
+                  </div>
+                  <div
+                    class="overflow-hidden"
+                    style="width: 95%;"
+                  >
+                    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex flex-col"
+              >
+                <div
+                  class="text-body-2 text-brand-20"
+                >
+                  64% EXTRACTED
+                </div>
+                <div
+                  class="text-body-2 text-brand-30"
+                >
+                  FROM A 
+                  200
+                   SOL TRANSACTION
+                </div>
+              </div>
             </div>
+            <button
+              class="text-link text-brand-30 w-fit"
+            >
+              View attack breakdown
+            </button>
           </div>
-          <span
-            class="text-lg text-brand-20"
-          >
-            5
-            % Extracted
-          </span>
-          <span
-            class="text-lg text-brand-30 mb-4"
-          >
-            From a 
-            200
-             SOL Transaction
-          </span>
-          <hr
-            class="border-brand-40 mb-4"
-          />
-          <a
-            class="text-lg text-brand-30 underline"
-            href="#"
-          >
-            View Attack Breakdown
-          </a>
         </div>
       </div>
     </div>
