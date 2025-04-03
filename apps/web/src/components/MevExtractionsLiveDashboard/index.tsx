@@ -1,7 +1,7 @@
 import { MevTransaction, MevAttack, MevAttackSwapType } from "@/types/Mev";
-import BrutalMevExtractionsLiveEvidence from "../BrutalMevExtractionsLiveEvidence";
-import MevExtractionsHappeningNow from "../MevExtractionsHappeningNow";
-import MevExtractionsWrapper from "../MevExtractionsWrapper";
+import BrutalMevExtractionsLiveEvidence from "./BrutalMevExtractionsLiveEvidence";
+import MevExtractionsHappeningNow from "./MevExtractionsHappeningNow";
+import MevExtractionsWrapper from "./MevExtractionsWrapper";
 
 const mockMevAttackTransaction: MevTransaction = {
   address: "someAddress",

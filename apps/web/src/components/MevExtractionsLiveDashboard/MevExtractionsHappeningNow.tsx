@@ -1,6 +1,6 @@
 import { formatMoney } from "@/utils/number";
-import SummaryCard from "./SummaryCard";
 import { useMemo } from "react";
+import SummaryCard from "../SummaryCard";
 
 interface MevExtractionsHappeningNowProps {
   drainToday: {
