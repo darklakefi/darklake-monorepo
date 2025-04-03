@@ -1,7 +1,7 @@
 import Image from "next/image";
 export default function MEVCheckerAnalyzingPage() {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between select-none">
       <div className="flex-1">
         <h1 className="font-primary text-3xl leading-7 text-brand-30 mb-8">
           Analyzing The Blocks
