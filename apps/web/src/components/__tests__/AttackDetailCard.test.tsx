@@ -37,7 +37,7 @@ describe("<AttackDetailCard />", () => {
     let baseElement: RenderResult["baseElement"] | undefined;
 
     await act(async () => {
-      ({ baseElement } = render(<AttackDetailCard mevAttack={mockMevAttack} index={1} />));
+      ({ baseElement } = render(<AttackDetailCard mevAttack={mockMevAttack} />));
     });
 
     expect(baseElement).toMatchSnapshot();
