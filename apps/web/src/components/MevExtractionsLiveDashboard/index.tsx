@@ -27,7 +27,7 @@ export default function MevExtractionsLiveDashboard() {
   return (
     <div className="">
       <MevExtractionsWrapper>
-        <div className="flex flex-col gap-[80px]">
+        <div className="flex flex-col gap-20">
           <MevExtractionsHappeningNow
             drainToday={{
               amountSol: 1,

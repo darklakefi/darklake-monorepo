@@ -56,7 +56,7 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
           <SummaryCard
             title="Today's Drain"
             content={
-              <div className="flex flex-col gap-[2px] py-[1px]">
+              <div className="flex flex-col gap-1 py-0.5">
                 <div className="text-body text-brand-20">
                   {formattedDrainToday.solAmount.wholePart}
                   {!!formattedDrainToday.solAmount.fractionalPart &&
@@ -73,7 +73,7 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
           <SummaryCard
             title="7D Total MEV"
             content={
-              <div className="flex flex-col gap-[2px] py-[1px]">
+              <div className="flex flex-col gap-1 py-0.5">
                 <div className="text-body text-brand-20">
                   {formattedWeekTotal.solAmount.wholePart}
                   {!!formattedWeekTotal.solAmount.fractionalPart &&
@@ -90,7 +90,7 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
           <SummaryCard
             title="Attacks Today"
             content={
-              <div className="flex flex-col gap-[2px] py-[1px]">
+              <div className="flex flex-col gap-1 py-0.5">
                 <div className="text-body text-brand-20">{attacksToday.attacksTodayCount}</div>
                 <div className="text-body-2 text-brand-30">{attacksToday.attacksWeekCount} this week</div>
               </div>
