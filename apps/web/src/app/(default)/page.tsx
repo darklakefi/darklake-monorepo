@@ -1,11 +1,12 @@
 import AddressMevLookup from "@/components/AddressMevLookup";
+import AddressMevLookupWrapper from "@/components/AddressMevLookupWrapper";
 import WhatIsMevInlineButton from "@/components/Button/WhatIsMevInlineButton";
 import MevExtractionsLiveDashboard from "@/components/MevExtractionsLiveDashboard";
 
 export default function Home() {
   return (
     <div>
-      <div className="pt-[64px]">
+      <AddressMevLookupWrapper>
         <h1 className="font-primary text-3xl leading-7 text-brand-30 mb-8">
           Your wallet is bleeding. I can prove it.
           <br />
@@ -15,9 +16,9 @@ export default function Home() {
         </h1>
 
         <AddressMevLookup />
-      </div>
+      </AddressMevLookupWrapper>
 
-      <div className="pt-[128px]">
+      <div className="pt-[128px] md:pt-[70px] max-md:pt-[40px]">
         <MevExtractionsLiveDashboard />
       </div>
     </div>
