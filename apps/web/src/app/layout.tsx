@@ -4,9 +4,6 @@ import { Bounce, ToastContainer } from "react-toastify";
 
 import "./globals.css";
 
-import Footer from "@/components/Footer";
-import MainWrapper from "@/components/MainWrapper";
-import Header from "@/components/Header";
 import GlobalModalProvider from "@/providers/GlobalModalProvider";
 import SupabaseAuthProvider from "@/providers/SupabaseAuthProvider";
 import { AnalyticsProvider } from "@/providers/AnalyticsProvider";
@@ -53,15 +50,11 @@ export default function RootLayout({
           closeButton={ToastCloseButton}
           icon={ToastIcon}
         />
-        <div className="max-w-6xl w-full mx-auto min-h-screen flex flex-col justify-between pt-[64px] px-[25px]">
+        <div className="max-w-6xl min-h-screen w-full mx-auto flex flex-col justify-between">
           <AnalyticsProvider>
             <SupabaseAuthProvider>
               <QueryProvider>
-                <GlobalModalProvider>
-                  <Header />
-                  <MainWrapper>{children}</MainWrapper>
-                  <Footer />
-                </GlobalModalProvider>
+                <GlobalModalProvider>{children}</GlobalModalProvider>
               </QueryProvider>
             </SupabaseAuthProvider>
           </AnalyticsProvider>

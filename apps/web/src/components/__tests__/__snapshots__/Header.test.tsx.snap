@@ -4,7 +4,7 @@ exports[`<Header /> renders successfully 1`] = `
 <body>
   <div>
     <header
-      class="flex flex-row justify-between items-center pb-[64px]"
+      class="flex flex-row justify-between items-center z-20"
     >
       <div
         class="flex items-center justify-between gap-x-[11px]"
