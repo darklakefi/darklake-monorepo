@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="xl:container min-h-screen w-full mx-auto flex flex-col justify-between py-16 px-6">
+    <div className="xl:container min-h-screen w-full mx-auto flex flex-col gap-5 justify-between py-16 px-6">
       <Header />
       {children}
       <Footer />
