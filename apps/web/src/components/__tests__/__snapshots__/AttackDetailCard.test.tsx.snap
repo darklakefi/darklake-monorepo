@@ -4,7 +4,7 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
 <body>
   <div>
     <div
-      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+      class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
     >
       <div
         class="flex flex-col"
@@ -22,7 +22,7 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+        class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
       >
         <div
           class="text-body"
@@ -81,7 +81,7 @@ exports[`<AttackDetailCard /> displays attack detail 1`] = `
 <body>
   <div>
     <div
-      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+      class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
     >
       <div
         class="flex flex-col"
@@ -99,7 +99,7 @@ exports[`<AttackDetailCard /> displays attack detail 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+        class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
       >
         <div
           class="text-body"
@@ -158,7 +158,7 @@ exports[`<AttackDetailCard /> displays blurred attack detail 1`] = `
 <body>
   <div>
     <div
-      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+      class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
     >
       <div
         class="flex flex-col"
@@ -182,7 +182,7 @@ exports[`<AttackDetailCard /> displays blurred attack detail 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+        class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
       >
         <div
           class="text-body"

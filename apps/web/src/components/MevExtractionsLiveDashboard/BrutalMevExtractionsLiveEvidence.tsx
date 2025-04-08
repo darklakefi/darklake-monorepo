@@ -1,9 +1,9 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useState } from "react";
 import { MevAttack } from "@/types/Mev";
 import AttackDetailCard from "@/components/AttackDetailCard";
-import { useAttackBreakdownModal } from "@/providers/AttackBreakdownModalProvider";
+import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
 
 interface BrutalMevExtractionsLiveEvidenceProps {
   attacks: MevAttack[];
@@ -12,7 +12,19 @@ interface BrutalMevExtractionsLiveEvidenceProps {
 export default function BrutalMevExtractionsLiveEvidence(props: BrutalMevExtractionsLiveEvidenceProps) {
   const { attacks } = props;
   const key = useId();
-  const { openModal } = useAttackBreakdownModal();
+
+  const [isOpenBreakdownModal, setIsOpenBreakdownModal] = useState(false);
+  const [selectedMevAttack, setSelectedMevAttack] = useState<MevAttack | undefined>(undefined);
+
+  const openModal = (attack: MevAttack) => {
+    setSelectedMevAttack(attack);
+    setIsOpenBreakdownModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedMevAttack(undefined);
+    setIsOpenBreakdownModal(false);
+  };
 
   return (
     <div>
@@ -30,6 +42,8 @@ export default function BrutalMevExtractionsLiveEvidence(props: BrutalMevExtract
           </div>
         ))}
       </div>
+
+      <AttackBreakdownModal mevAttack={selectedMevAttack} isOpen={isOpenBreakdownModal} onClose={closeModal} />
     </div>
   );
 }

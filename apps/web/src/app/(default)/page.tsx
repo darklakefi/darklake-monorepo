@@ -18,7 +18,7 @@ export default function Home() {
         <AddressMevLookup />
       </AddressMevLookupWrapper>
 
-      <div className="pt-[128px] md:pt-[70px] max-md:pt-[40px]">
+      <div className="pt-32 md:pt-20 max-md:pt-10">
         <MevExtractionsLiveDashboard />
       </div>
     </div>

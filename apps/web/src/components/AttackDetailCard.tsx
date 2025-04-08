@@ -3,7 +3,11 @@ import { MevAttack } from "@/types/Mev";
 import { format } from "date-fns";
 import { ReactNode } from "react";
 
-type AttackDetailCardProps = { mevAttack: MevAttack; cardTitle?: string | ReactNode; onOpenModal?: () => void };
+export interface AttackDetailCardProps {
+  mevAttack: MevAttack;
+  cardTitle?: string | ReactNode;
+  onOpenModal?: () => void;
+}
 
 const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCardProps) => {
   const handleOpenBreakdownModal = () => {
@@ -13,7 +17,7 @@ const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCar
   };
 
   return (
-    <div className="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full">
+    <div className="flex flex-col bg-brand-60 gap-4 p-4 h-full">
       <div className="flex flex-col">
         {cardTitle && <div className="text-body-2 text-brand-20">{cardTitle}</div>}
         <div className="text-body-2 text-brand-30">TOKEN: {mevAttack.tokenName}</div>
@@ -21,7 +25,7 @@ const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCar
           {format(mevAttack.timestamp || new Date(), "yyyy-MM-dd HH:mm 'UTC'")}
         </div>
       </div>
-      <div className="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40">
+      <div className="flex flex-col gap-3 py-4 border-t border-b border-brand-40">
         <div className="text-body">{mevAttack.solAmount.lost} SOL LOST</div>
         <div className="text-body-2">
           <ProgressBar progress={(mevAttack.solAmount.lost / mevAttack.solAmount.sent) * 100} />
@@ -40,13 +44,13 @@ const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCar
 
 const BlurredMode = ({ index }: { index: number }) => {
   return (
-    <div className="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full">
+    <div className="flex flex-col bg-brand-60 gap-4 p-4 h-full">
       <div className="flex flex-col">
         <div className="text-body-2 text-brand-20">#{index} LARGEST EXTRACTION EVENT</div>
         <div className="text-body-2 text-brand-30">TOKEN: █████</div>
         <div className="text-body-2 text-brand-30">████-██-██ ██:██ UTC</div>
       </div>
-      <div className="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40">
+      <div className="flex flex-col gap-3 py-4 border-t border-b border-brand-40">
         <div className="text-body">██.██ SOL LOST</div>
         <div className="text-body-2">░░░░░░░░░░░░░░░░░░░░░░░░░░</div>
         <div className="flex flex-col">
@@ -54,9 +58,7 @@ const BlurredMode = ({ index }: { index: number }) => {
           <div className="text-body-2 text-brand-30">FROM A ██.██ SOL TRANSACTION</div>
         </div>
       </div>
-      <button className="text-link text-brand-30 w-fit" onClick={() => {}}>
-        View attack breakdown
-      </button>
+      <button className="text-link text-brand-30 w-fit">View attack breakdown</button>
     </div>
   );
 };

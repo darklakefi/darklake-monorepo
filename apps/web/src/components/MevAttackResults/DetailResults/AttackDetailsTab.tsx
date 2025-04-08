@@ -1,6 +1,9 @@
+"use client";
+
 import { MevAttack } from "@/types/Mev";
 import AttackDetailCard from "@/components/AttackDetailCard";
-import { useAttackBreakdownModal } from "@/providers/AttackBreakdownModalProvider";
+import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
+import { useState } from "react";
 
 type AttackDetailsTabProps = {
   mevAttacks: MevAttack[];
@@ -10,32 +13,42 @@ type AttackDetailsTabProps = {
 };
 
 const AttackDetailsTab = ({ mevAttacks, hasMore, onLoadMore, isLoadingMore }: AttackDetailsTabProps) => {
-  const { openModal } = useAttackBreakdownModal();
+  const [isOpenBreakdownModal, setIsOpenBreakdownModal] = useState(false);
+  const [selectedMevAttack, setSelectedMevAttack] = useState<MevAttack | undefined>(undefined);
+
+  const openModal = (attack: MevAttack) => {
+    setSelectedMevAttack(attack);
+    setIsOpenBreakdownModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedMevAttack(undefined);
+    setIsOpenBreakdownModal(false);
+  };
 
   return (
-    <div className="flex flex-col gap-[16px]">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[16px]">
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {mevAttacks?.map((attack, index) => (
           <AttackDetailCard key={index} mevAttack={attack} onOpenModal={() => openModal(attack)} />
         ))}
       </div>
 
       {hasMore && !isLoadingMore && (
-        <button
-          className="w-fit text-center bg-brand-60 px-[12px] py-[5px] hover-with-active mx-auto"
-          onClick={onLoadMore}
-        >
+        <button className="w-fit text-center bg-brand-60 px-3 py-1 hover-with-active mx-auto" onClick={onLoadMore}>
           <div className="text-body-2 text-brand-20">Load More</div>
         </button>
       )}
 
       {isLoadingMore && (
         <div className="text-brand-20 w-fit text-center mx-auto">
-          <div className="animate-spin p-0 w-[20px] h-[20px] text-[20px]">
+          <div className="animate-spin p-0 w-5 h-5 text-[20px]">
             <i className="hn hn-spinner-solid" />
           </div>
         </div>
       )}
+
+      <AttackBreakdownModal mevAttack={selectedMevAttack} isOpen={isOpenBreakdownModal} onClose={closeModal} />
     </div>
   );
 };

@@ -59,7 +59,7 @@ export default function DetailResultContent({ address }: { address: string }) {
         <Tabs
           tabs={TAB_NAMES.map((tab) => tab.text)}
           onChange={setActiveTab}
-          wrapperClassName="py-[16px] gap-[24px]"
+          wrapperClassName="py-4 gap-6"
           activeTab={activeTab}
         />
         {activeTab === 1 && (
@@ -67,21 +67,18 @@ export default function DetailResultContent({ address }: { address: string }) {
             {({ open }) => (
               <>
                 <PopoverButton as="div" className={cn(open ? "opacity-70" : "opacity-100")}>
-                  <div className="flex flex-row items-center gap-[8px] text-[#1A9A56] p-[8px]">
+                  <div className="flex flex-row items-center gap-2 text-[#1A9A56] p-2">
                     <button className="text-[18px] uppercase">sort by: {activeSortOption?.title}</button>
                     {activeSortOption?.direction === SortDirection.ASC ? (
-                      <i className="hn hn-angle-up text-[16px]"></i>
+                      <i className="hn hn-angle-up text-4"></i>
                     ) : (
-                      <i className="hn hn-angle-down text-[16px]"></i>
+                      <i className="hn hn-angle-down text-4"></i>
                     )}
                   </div>
                 </PopoverButton>
-                <PopoverPanel
-                  anchor="bottom"
-                  className="z-[1] bg-brand-70 p-[8px] shadow-[12px_12px_0px_0px] shadow-brand-80"
-                >
+                <PopoverPanel anchor="bottom" className="z-[1] bg-brand-70 p-2 app-box-shadow">
                   {({ close }) => (
-                    <div className="flex flex-col p-[8px]">
+                    <div className="flex flex-col p-2">
                       {sortOptions.map((option) => (
                         <div
                           key={`list-sort-${option.direction}-${option.orderBy}`}
@@ -91,7 +88,7 @@ export default function DetailResultContent({ address }: { address: string }) {
                           }}
                           className={cn(
                             "flex justify-center items-center",
-                            "text-[18px] uppercase gap-[8px] cursor-pointer px-[8px]",
+                            "text-[18px] uppercase gap-2 cursor-pointer px-2",
                             "hover:bg-brand-50",
                             option.orderBy === activeSortOption?.orderBy &&
                               option.direction === activeSortOption?.direction
@@ -101,9 +98,9 @@ export default function DetailResultContent({ address }: { address: string }) {
                         >
                           <p>{option.title}</p>
                           {option.direction === SortDirection.ASC ? (
-                            <i className="hn hn-angle-up text-[16px]"></i>
+                            <i className="hn hn-angle-up text-4"></i>
                           ) : (
-                            <i className="hn hn-angle-down text-[16px]"></i>
+                            <i className="hn hn-angle-down text-4"></i>
                           )}
                         </div>
                       ))}

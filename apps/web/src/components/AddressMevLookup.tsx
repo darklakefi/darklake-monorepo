@@ -32,6 +32,18 @@ const AddressMevLookup = () => {
     setIsInputVisible(true);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e?.target?.value ?? "");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !isSubmitDisabled) {
+      e.preventDefault();
+      e.stopPropagation();
+      router.push(resultsLink);
+    }
+  };
+
   const isSubmitDisabled = !inputValue?.length || !isValidSolanaAddress(inputValue);
 
   const resultsLink = `/results/${DOMPurify.sanitize(inputValue ?? "")}`;
@@ -71,14 +83,8 @@ const AddressMevLookup = () => {
                 if (inputValue?.length) return;
                 setIsInputVisible(false);
               }}
-              onChange={(e) => setInputValue(e?.target?.value ?? "")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !isSubmitDisabled) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  router.push(resultsLink);
-                }
-              }}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
             />
           )}
         </div>

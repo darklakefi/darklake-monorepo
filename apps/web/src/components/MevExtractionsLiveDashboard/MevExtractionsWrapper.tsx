@@ -7,7 +7,7 @@ interface MevExtractionsWrapperProps {
 export default function MevExtractionsWrapper(props: MevExtractionsWrapperProps) {
   const { children } = props;
   return (
-    <div className="bg-brand-70 p-6 shadow-[12px_12px_0px_0px] shadow-brand-80 relative">
+    <div className="bg-brand-70 p-6 app-box-shadow relative">
       <Image
         src="/images/waddles-mev-today.png"
         alt="Waddles"

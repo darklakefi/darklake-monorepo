@@ -35,7 +35,6 @@ exports[`<MevExtractionsHappeningNow /> renders successfully 1`] = `
                 class="text-body text-brand-20"
               >
                 1
-                 
                 SOL
               </div>
               <div
@@ -65,7 +64,6 @@ exports[`<MevExtractionsHappeningNow /> renders successfully 1`] = `
                 class="text-body text-brand-20"
               >
                 1
-                 
                 SOL
               </div>
               <div

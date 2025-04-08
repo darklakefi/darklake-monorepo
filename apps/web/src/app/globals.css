@@ -48,6 +48,10 @@
     opacity: 0.5;
     transition: all 0.3s ease;
   }
+
+  .app-box-shadow {
+    @apply shadow-[12px_12px_0px_0px] shadow-brand-80;
+  }
 }
 
 .hover-with-active:hover {

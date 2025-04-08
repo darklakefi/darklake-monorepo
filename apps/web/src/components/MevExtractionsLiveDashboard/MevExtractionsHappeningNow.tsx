@@ -60,7 +60,7 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
                 <div className="text-body text-brand-20">
                   {formattedDrainToday.solAmount.wholePart}
                   {!!formattedDrainToday.solAmount.fractionalPart &&
-                    `.${formattedDrainToday.solAmount.fractionalPart}`}{" "}
+                    `.${formattedDrainToday.solAmount.fractionalPart} `}
                   SOL
                 </div>
                 <div className="text-body-2 text-brand-30">{formattedDrainToday.usdAmount} USDC</div>
@@ -76,8 +76,7 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
               <div className="flex flex-col gap-1 py-0.5">
                 <div className="text-body text-brand-20">
                   {formattedWeekTotal.solAmount.wholePart}
-                  {!!formattedWeekTotal.solAmount.fractionalPart &&
-                    `.${formattedWeekTotal.solAmount.fractionalPart}`}{" "}
+                  {!!formattedWeekTotal.solAmount.fractionalPart && `.${formattedWeekTotal.solAmount.fractionalPart} `}
                   SOL
                 </div>
                 <div className="text-body-2 text-brand-30">{formattedWeekTotal.usdAmount} USDC</div>

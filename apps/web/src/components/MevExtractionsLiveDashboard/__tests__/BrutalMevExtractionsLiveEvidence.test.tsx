@@ -1,6 +1,5 @@
 import { act, render, RenderResult } from "@testing-library/react";
 import { MevAttack, MevAttackSwapType, MevTransaction } from "@/types/Mev";
-import { AttackBreakdownModalProvider } from "@/providers/AttackBreakdownModalProvider";
 import BrutalMevExtractionsLiveEvidence from "../BrutalMevExtractionsLiveEvidence";
 
 const mockMevAttackTransaction: MevTransaction = {
@@ -44,11 +43,7 @@ describe("<BrutalMevExtractionsLiveEvidence />", () => {
     let baseElement: RenderResult["baseElement"] | undefined;
 
     await act(async () => {
-      ({ baseElement } = render(
-        <AttackBreakdownModalProvider>
-          <BrutalMevExtractionsLiveEvidence attacks={mockMevAttacks} />
-        </AttackBreakdownModalProvider>,
-      ));
+      ({ baseElement } = render(<BrutalMevExtractionsLiveEvidence attacks={mockMevAttacks} />));
     });
 
     expect(baseElement).toMatchSnapshot();
