@@ -8,7 +8,7 @@ interface AddressMevLookupWrapperProps {
 export default function AddressMevLookupWrapper(props: AddressMevLookupWrapperProps) {
   const { children } = props;
   return (
-    <div className="pt-16 md:pt-64 max-md:pt-32">
+    <div className="pt-16 md:pt-64 max-md:pt-40">
       <div className={cn("max-xl:bg-brand-70", "max-xl:app-box-shadow", "max-xl:p-6 relative")}>
         <Image
           src="/images/waddles-mev-today.png"
