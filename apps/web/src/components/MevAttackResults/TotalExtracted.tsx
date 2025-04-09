@@ -26,7 +26,7 @@ export default function TotalExtracted({
   const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
 
   return (
-    <div className={cn("bg-brand-10 p-6 app-box-shadow", "text-brand-30 uppercase font-primary text-3xl")}>
+    <div className={cn("bg-brand-10 p-6 shadow-3xl shadow-brand-80", "text-brand-30 uppercase font-primary text-3xl")}>
       <p>Total Extracted</p>
       <div className="text-brand-70 h-[88px] flex flex-col justify-end">
         <p>

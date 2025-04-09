@@ -39,7 +39,7 @@ export default function Modal({
               className={cn(
                 "max-h-[80vh] lg:max-h-none overflow-auto",
                 "p-4 md:p-10 bg-brand-70",
-                "app-box-shadow relative",
+                "shadow-3xl shadow-brand-80 relative",
                 contentWrapperClassName,
               )}
             >

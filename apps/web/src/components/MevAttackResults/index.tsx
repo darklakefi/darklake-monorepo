@@ -19,7 +19,7 @@ export default function MevAttackResults({ address }: { address: string }) {
         </div>
         <WaddlesWithMessage solAmount={data?.data?.totalSolExtracted ?? 0} />
       </div>
-      <div className="bg-brand-70 p-6 app-box-shadow">
+      <div className="bg-brand-70 p-6 shadow-3xl shadow-brand-80">
         <DetailResults address={address} />
       </div>
     </div>

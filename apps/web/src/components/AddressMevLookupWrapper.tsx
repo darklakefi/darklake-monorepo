@@ -9,7 +9,7 @@ export default function AddressMevLookupWrapper(props: AddressMevLookupWrapperPr
   const { children } = props;
   return (
     <div className="pt-16 md:pt-64 max-md:pt-40">
-      <div className={cn("max-xl:bg-brand-70", "max-xl:app-box-shadow", "max-xl:p-6 relative")}>
+      <div className={cn("max-xl:bg-brand-70", "max-xl:shadow-3xl", "max-xl:p-6 relative", "max-xl:shadow-brand-80")}>
         <Image
           src="/images/waddles-mev-today.png"
           alt="Waddles"

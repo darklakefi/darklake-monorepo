@@ -76,7 +76,7 @@ export default function DetailResultContent({ address }: { address: string }) {
                     )}
                   </div>
                 </PopoverButton>
-                <PopoverPanel anchor="bottom" className="z-[1] bg-brand-70 p-2 app-box-shadow">
+                <PopoverPanel anchor="bottom" className="z-[1] bg-brand-70 p-2 shadow-3xl shadow-brand-80">
                   {({ close }) => (
                     <div className="flex flex-col p-2">
                       {sortOptions.map((option) => (
