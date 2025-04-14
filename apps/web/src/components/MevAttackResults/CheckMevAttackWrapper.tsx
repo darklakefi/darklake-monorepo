@@ -1,12 +1,14 @@
 "use client";
 
 import { cn } from "@/utils/common";
-import { useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 function BackgroundRevealElement() {
+  const [isMounted, setIsMounted] = useState(false);
   const element = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
+    setIsMounted(true);
     function handler(e: MouseEvent) {
       if (element.current) {
         const x = e.clientX,
@@ -27,14 +29,13 @@ function BackgroundRevealElement() {
     "bg-[url(/images/bg-masked.png)] mouse-tracker fixed w-screen",
     "h-screen z-10 top-0 left-0 opacity-90 bg-cover bg-no-repeat bg-fixed invisible",
   );
-  if (typeof document === "object") {
-    return createPortal(
-      <>
-        <div className={className} ref={element} />
-      </>,
-      document.body,
-    );
-  }
+  return isMounted ? createPortal(
+    <>
+      <div className={className} ref={element} />
+    </>,
+    document.body,
+  ) : null;
+
 }
 
 const className = cn(
@@ -42,7 +43,7 @@ const className = cn(
   "bg-no-repeat bg-fixed relative top-0 left-0 bg-brand-80 text-brand-20",
 );
 
-export default function RootLayout({
+export default function CheckMevAttackWrapper({
   children,
 }: Readonly<{
   children: React.ReactNode;
