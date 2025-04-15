@@ -29,13 +29,14 @@ function BackgroundRevealElement() {
     "bg-[url(/images/bg-masked.png)] mouse-tracker fixed w-screen",
     "h-screen z-10 top-0 left-0 opacity-90 bg-cover bg-no-repeat bg-fixed invisible",
   );
-  return isMounted ? createPortal(
-    <>
-      <div className={className} ref={element} />
-    </>,
-    document.body,
-  ) : null;
-
+  return isMounted
+    ? createPortal(
+        <>
+          <div className={className} ref={element} />
+        </>,
+        document.body,
+      )
+    : null;
 }
 
 const className = cn(
