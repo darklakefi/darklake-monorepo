@@ -8,7 +8,7 @@ import DetailResults from "./DetailResults";
 
 import { useState } from "react";
 export default function MevAttackResults({ address }: { address: string }) {
-  const { data, isLoading } = useGetTotalExtracted(address);
+  const { data } = useGetTotalExtracted(address);
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
 
   const accountHasNoTransactions = data?.processingBlocks.total === 0;
@@ -17,7 +17,11 @@ export default function MevAttackResults({ address }: { address: string }) {
     return <NoTransactionWaddle />;
   }
 
-  if (!isLoading) {
+  if (
+    data?.processingBlocks?.total &&
+    data?.processingBlocks?.total > 0 &&
+    data?.processingBlocks?.total === data?.processingBlocks?.completed
+  ) {
     setTimeout(() => {
       setShowLoadingScreen(false);
     }, 2000);
