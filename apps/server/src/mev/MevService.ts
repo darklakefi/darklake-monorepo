@@ -234,7 +234,7 @@ export class MevService {
     `;
 
     if (onlyCount) {
-      return `SELECT COUNT(*) AS total_count FROM (${sqlQuery})`;
+      return `SELECT COUNT(*) AS total_count FROM (${sqlQuery}) AS subquery`;
     }
 
     return sqlQuery;
