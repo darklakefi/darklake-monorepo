@@ -239,7 +239,7 @@ export class MevService {
     `;
 
     if (onlyCount) {
-      return `SELECT COUNT(*) AS total_count FROM (${sqlQuery}) AS subquery`;
+      return `SELECT CAST(COUNT(*) AS INTEGER) AS total_count FROM (${sqlQuery}) AS subquery`;
     }
 
     return sqlQuery;
