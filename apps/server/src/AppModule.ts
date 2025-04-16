@@ -7,6 +7,7 @@ import { PrismaModule } from "./prisma/PrismaModule";
 import { ThrottlerModule } from "@nestjs/throttler";
 import { MevModule } from "./mev/MevModule";
 import { HealthModule } from "./health/HealthModule";
+import { TokenMetadataModule } from "./token-metadata/TokenMetadataModule";
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { HealthModule } from "./health/HealthModule";
     PrismaModule,
     MevModule,
     HealthModule,
+    TokenMetadataModule,
   ],
   controllers: [],
   providers: [],
