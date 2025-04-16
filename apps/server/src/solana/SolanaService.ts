@@ -41,7 +41,10 @@ export class SolanaService {
 
   async fetchTokenMetadataFromChain(tokenAddress: string[]): Promise<TokenMetadataDto[]> {
     try {
-      const digitalAsset = await fetchAllDigitalAsset(this.umi, tokenAddress.map((address) => publicKey(address)));
+      const digitalAsset = await fetchAllDigitalAsset(
+        this.umi,
+        tokenAddress.map((address) => publicKey(address)),
+      );
       return digitalAsset.map((asset) => ({
         tokenAddress: asset.mint.publicKey,
         name: asset.metadata.name,

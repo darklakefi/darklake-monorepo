@@ -168,7 +168,12 @@ export class MevService {
     }
 
     const mevAttacks: SandwichEventExtended[] = await this.prismaService.$queryRawUnsafe(
-      this.getSqlSandwichEventsWithTokenMetadata({ where: whereQuery, orderBy: orderByQuery, take: limit, skip: offset }),
+      this.getSqlSandwichEventsWithTokenMetadata({
+        where: whereQuery,
+        orderBy: orderByQuery,
+        take: limit,
+        skip: offset,
+      }),
     );
 
     const total = await this.prismaService.$queryRawUnsafe<{ total_count: number }[]>(
