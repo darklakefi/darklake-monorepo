@@ -17,11 +17,16 @@ export default function MevAttackResults({ address }: { address: string }) {
             processingBlocks={data?.processingBlocks}
           />
         </div>
-        <WaddlesWithMessage solAmount={data?.data?.totalSolExtracted ?? 0} />
+        <WaddlesWithMessage
+          solAmount={data?.data?.totalSolExtracted ?? 0}
+          noTransactions={data?.processingBlocks.total === 0}
+        />
       </div>
-      <div className="bg-brand-70 p-6 shadow-[12px_12px_0px_0px] shadow-brand-80">
-        <DetailResults address={address} />
-      </div>
+      {data?.processingBlocks.total !== 0 && (
+        <div className="bg-brand-70 p-6 shadow-[12px_12px_0px_0px] shadow-brand-80">
+          <DetailResults address={address} />
+        </div>
+      )}
     </div>
   );
 }
