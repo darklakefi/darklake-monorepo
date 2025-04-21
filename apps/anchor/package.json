@@ -7,7 +7,7 @@
     "@coral-xyz/anchor-cli": "^0.31.2",
     "@solana-developers/preset-next": "3.1.0",
     "@solana/spl-token": "0.4.6",
-    "@solana/wallet-adapter-base": "^0.9.23",
+    "@solana/wallet-adapter-base": "^0.9.25",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/web3.js": "1.95.4",
