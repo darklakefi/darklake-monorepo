@@ -2,9 +2,19 @@ import TotalExtracted from "@/components/MevAttackResults/TotalExtracted";
 import WaddlesWithMessage from "@/components/MevAttackResults/WaddlesWithMessage";
 import DetailResults from "./DetailResults";
 import useGetTotalExtracted from "@/hooks/api/useGetTotalExtracted";
+import { useMemo } from "react";
+import NoTransactionWaddle from "./NoTransactionWaddle";
 
 export default function MevAttackResults({ address }: { address: string }) {
   const { data } = useGetTotalExtracted(address);
+
+  const accountHasNoTransactions = useMemo(() => {
+    return data?.processingBlocks.total === 0;
+  }, [data]);
+
+  if (accountHasNoTransactions) {
+    return <NoTransactionWaddle />;
+  }
 
   return (
     <div className="relative">
@@ -17,16 +27,11 @@ export default function MevAttackResults({ address }: { address: string }) {
             processingBlocks={data?.processingBlocks}
           />
         </div>
-        <WaddlesWithMessage
-          solAmount={data?.data?.totalSolExtracted ?? 0}
-          noTransactions={data?.processingBlocks.total === 0}
-        />
+        <WaddlesWithMessage solAmount={data?.data?.totalSolExtracted ?? 0} />
       </div>
-      {data?.processingBlocks.total !== 0 && (
-        <div className="bg-brand-70 p-6 shadow-[12px_12px_0px_0px] shadow-brand-80">
-          <DetailResults address={address} />
-        </div>
-      )}
+      <div className="bg-brand-70 p-6 shadow-[12px_12px_0px_0px] shadow-brand-80">
+        <DetailResults address={address} />
+      </div>
     </div>
   );
 }

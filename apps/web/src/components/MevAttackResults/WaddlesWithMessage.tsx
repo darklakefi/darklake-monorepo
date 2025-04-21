@@ -5,35 +5,14 @@ import { cn } from "@/utils/common";
 
 type WaddlesWithMessageProps = {
   solAmount: number;
-  noTransactions?: boolean;
 };
 
-export default function WaddlesWithMessage({ solAmount, noTransactions }: WaddlesWithMessageProps) {
+export default function WaddlesWithMessage({ solAmount }: WaddlesWithMessageProps) {
   const className = {
     wrapper: "flex-1 sm:flex flex-row justify-center lg:justify-end max-lg:items-center max-lg:gap-x-10",
     message: "text-brand-30 uppercase font-primary text-2xl text-right max-sm:text-center [&>strong]:text-brand-20",
     image: "lg:absolute right-0 bottom-0 max-sm:hidden",
   };
-
-  if (noTransactions) {
-    return (
-      <div className={cn(className.wrapper, "lg:pr-[382px]")}>
-        <p className={cn(className.message, "sm:w-[274px]")}>
-          Try another one chief
-          <br />
-          <br />
-          You <strong>haven&apos;t made any transactions</strong> on Solana with this wallet.
-        </p>
-        <Image
-          className={cn(className.image)}
-          src="/images/image-waddles-4.png"
-          alt="Waddles"
-          width={349.18}
-          height={341}
-        />
-      </div>
-    );
-  }
 
   if (solAmount < 1) {
     return (
