@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckOtherAddressModal /> displays content successfully when open 1`] = `
+<body>
+  <div />
+  <div
+    id="headlessui-portal-root"
+  >
+    <div
+      data-headlessui-portal=""
+    >
+      <button
+        aria-hidden="true"
+        data-headlessui-focus-guard="true"
+        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+        type="button"
+      />
+      <div>
+        <div
+          aria-modal="true"
+          class="relative"
+          data-headlessui-state="open"
+          data-open=""
+          id="headlessui-dialog-:r0:"
+          role="dialog"
+          tabindex="-1"
+        >
+          <div
+            aria-hidden="true"
+            class="fixed inset-0 bg-modal-backdrop"
+            data-headlessui-state="open"
+            data-open=""
+          />
+          <div
+            class="flex flex-col fixed inset-0 w-screen items-center justify-center"
+          >
+            <div
+              data-headlessui-state="open"
+              data-open=""
+              id="headlessui-dialog-panel-:r7:"
+            >
+              <div
+                class="py-4 pl-4 pr-7"
+              >
+                <div
+                  class="max-h-[80vh] lg:max-h-none overflow-auto p-[16px] md:p-[40px] bg-brand-70 shadow-[12px_12px_0px_0px] shadow-brand-60 relative"
+                >
+                  <div
+                    class="flex flex-row items-center mb-4 border-b border-b-brand-50 pb-3 justify-between"
+                  >
+                    <p
+                      class="font-primary text-3xl leading-3xl text-brand-20"
+                    >
+                      Check other address
+                    </p>
+                    <button
+                      class="hover-with-active flex items-center"
+                      type="button"
+                    >
+                      <i
+                        class="hn hn-times text-brand-30 text-xl leading-5"
+                      />
+                    </button>
+                  </div>
+                  <div
+                    class="font-secondary text-lg leading-6 text-brand-30"
+                  >
+                    <div
+                      class="flex flex-col gap-8 lg:w-[720px]"
+                    >
+                      <div
+                        class="flex flex-col gap-2"
+                      >
+                        <div
+                          class="h-12 p-2 md:max-w-2xl w-full border border-brand-40 bg-brand-60 flex flex-row items-center justify-between"
+                        >
+                          <div
+                            class="flex items-center flex-grow"
+                          >
+                            <span
+                              class="font-secondary text-lg leading-6 text-brand-30 select-none mr-3"
+                            >
+                              &gt;
+                            </span>
+                            <div
+                              class="font-secondary text-lg max-md:text-xs leading-6 w-full text-brand-30 uppercase cursor-text"
+                            >
+                              Enter or
+                               
+                              <button
+                                class="uppercase font-secondary text-lg leading-6 button underline bg-brand-50 text-brand-20 hover:bg-brand-50 focus:outline-none active:ring-[1px] active:bg-brand-50 active:ring-brand-20 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-50 px-3 py-1 max-md:text-xs"
+                              >
+                                Paste
+                              </button>
+                               
+                              Solana address...
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="flex flex-col gap-1"
+                      >
+                        <div
+                          class="uppercase text-body-2 text-brand-30"
+                        >
+                          address currently added:
+                        </div>
+                        <div
+                          class="text-body-2 text-brand-20 break-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        aria-hidden="true"
+        data-headlessui-focus-guard="true"
+        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+        type="button"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<CheckOtherAddressModal /> does not display content when closed 1`] = `
+<body>
+  <div />
+</body>
+`;

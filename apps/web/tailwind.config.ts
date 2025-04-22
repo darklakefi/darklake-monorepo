@@ -61,6 +61,7 @@ export default {
       },
       boxShadow: {
         "3xl": "12px 12px 0px 0px",
+        md: "4px 4px 0px 0px",
       },
     },
   },
