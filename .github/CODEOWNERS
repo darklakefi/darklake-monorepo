@@ -1,25 +1,25 @@
 # Define individuals that are responsible for code in a repository.
 # More details are here: https://help.github.com/articles/about-codeowners/
 
-apps/web                             @lewisflude @poocart
-apps/anchor                          @jsonDoge   @vitorpy
-circuits/                            @jsonDoge   @vitorpy
-docs/                                @jsonDoge   @vitorpy
+apps/web                             @lewisflude @poocart @njordr
+apps/anchor                          @jsonDoge   @vitorpy @njordr
+circuits/                            @jsonDoge   @vitorpy @njordr
+docs/                                @jsonDoge   @vitorpy @njordr
 
-/.github/                            @lewisflude @poocart @vitorpy
-/.vscode/                            @lewisflude @poocart
+/.github/                            @lewisflude @poocart @vitorpy @njordr
+/.vscode/                            @lewisflude @poocart @njordr
 
-.editorconfig                        @lewisflude @poocart
-.eslintignore                        @lewisflude @poocart
-.eslintrc.json                       @lewisflude @poocart
-.gitignore                           @lewisflude @poocart @vitorpy @jsonDoge
-.gitmodules                          @lewisflude @poocart @vitorpy @jsonDoge
-.nvmrc                               @lewisflude @poocart @vitorpy @jsonDoge
-.prettierignore                      @lewisflude @poocart
-.prettierrc                          @lewisflude @poocart
-LICENSE                              @vitorpy
-package.json                         @lewisflude @poocart @vitorpy @jsonDoge
-pnpm-lock.yaml                       @lewisflude @poocart @vitorpy @jsonDoge
-pnpm-workspace.yaml                  @lewisflude @poocart @vitorpy @jsonDoge
-README.md                            @lewisflude @poocart @vitorpy @jsonDoge
-turbo.json                           @lewisflude @poocart @vitorpy @jsonDoge
+.editorconfig                        @lewisflude @poocart @njordr
+.eslintignore                        @lewisflude @poocart @njordr
+.eslintrc.json                       @lewisflude @poocart @njordr
+.gitignore                           @lewisflude @poocart @vitorpy @jsonDoge @njordr
+.gitmodules                          @lewisflude @poocart @vitorpy @jsonDoge @njordr
+.nvmrc                               @lewisflude @poocart @vitorpy @jsonDoge @njordr
+.prettierignore                      @lewisflude @poocart @njordr
+.prettierrc                          @lewisflude @poocart @njordr
+LICENSE                              @vitorpy @njordr
+package.json                         @lewisflude @poocart @vitorpy @jsonDoge @njordr
+pnpm-lock.yaml                       @lewisflude @poocart @vitorpy @jsonDoge @njordr
+pnpm-workspace.yaml                  @lewisflude @poocart @vitorpy @jsonDoge @njordr
+README.md                            @lewisflude @poocart @vitorpy @jsonDoge @njordr
+turbo.json                           @lewisflude @poocart @vitorpy @jsonDoge @njordr
