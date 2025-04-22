@@ -45,7 +45,7 @@ export default function TotalExtracted({
           / Analyzing blockchain evidence
         </Button>
       )}
-      {!!processingBlocks && progress !== 100 && (
+      {!!processingBlocks && progress !== 100 && processingBlocks.total > 0 && (
         <div className="mt-8">
           <ProgressBar progress={progress} />
           <div className="mt-1 font-secondary text-lg flex flex-row justify-between">

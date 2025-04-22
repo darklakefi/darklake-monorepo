@@ -3,7 +3,11 @@
 import Image from "next/image";
 import { cn } from "@/utils/common";
 
-export default function WaddlesWithMessage({ solAmount }: { solAmount: number }) {
+type WaddlesWithMessageProps = {
+  solAmount: number;
+};
+
+export default function WaddlesWithMessage({ solAmount }: WaddlesWithMessageProps) {
   const className = {
     wrapper: "flex-1 sm:flex flex-row justify-center lg:justify-end max-lg:items-center max-lg:gap-x-10",
     message: "text-brand-30 uppercase font-primary text-2xl text-right max-sm:text-center [&>strong]:text-brand-20",

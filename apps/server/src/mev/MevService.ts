@@ -38,7 +38,7 @@ export class MevService {
   async getTotalExtracted(query: GetMevTotalExtractedQuery): Promise<GetMevTotalExtractedResponse> {
     const lookupBlocks = await this.getLookupBlocks(query.address);
     const processedBlocks = await this.getProcessedBlocks(query.address, lookupBlocks);
-    if (processedBlocks.length === 0) {
+    if (processedBlocks.length === 0 && lookupBlocks.length === 0) {
       return {
         processingBlocks: {
           completed: 0,

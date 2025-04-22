@@ -2,9 +2,19 @@ import TotalExtracted from "@/components/MevAttackResults/TotalExtracted";
 import WaddlesWithMessage from "@/components/MevAttackResults/WaddlesWithMessage";
 import DetailResults from "./DetailResults";
 import useGetTotalExtracted from "@/hooks/api/useGetTotalExtracted";
+import { useMemo } from "react";
+import NoTransactionWaddle from "./NoTransactionWaddle";
 
 export default function MevAttackResults({ address }: { address: string }) {
   const { data } = useGetTotalExtracted(address);
+
+  const accountHasNoTransactions = useMemo(() => {
+    return data?.processingBlocks.total === 0;
+  }, [data]);
+
+  if (accountHasNoTransactions) {
+    return <NoTransactionWaddle />;
+  }
 
   return (
     <div className="relative">
