@@ -66,7 +66,7 @@ exports[`<CheckOtherAddressModal /> displays content successfully when open 1`] 
                     class="font-secondary text-lg leading-6 text-brand-30"
                   >
                     <div
-                      class="flex flex-col gap-8 lg:w-[720px]"
+                      class="flex flex-col gap-8 lg:min-w-3xl"
                     >
                       <div
                         class="flex flex-col gap-2"
