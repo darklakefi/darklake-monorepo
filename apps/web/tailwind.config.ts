@@ -59,6 +59,9 @@ export default {
       screens: {
         xs: "481px",
       },
+      boxShadow: {
+        "3xl": "12px 12px 0px 0px",
+      },
     },
   },
   plugins: [],

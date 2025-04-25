@@ -1,6 +1,6 @@
 import { act, render, RenderResult } from "@testing-library/react";
-import BrutalMevExtractionsLiveEvidence from "@/components/BrutalMevExtractionsLiveEvidence";
 import { MevAttack, MevAttackSwapType, MevTransaction } from "@/types/Mev";
+import BrutalMevExtractionsLiveEvidence from "../BrutalMevExtractionsLiveEvidence";
 
 const mockMevAttackTransaction: MevTransaction = {
   address: "someAddress",

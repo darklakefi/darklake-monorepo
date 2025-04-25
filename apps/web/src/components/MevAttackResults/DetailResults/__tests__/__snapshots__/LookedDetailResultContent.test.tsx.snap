@@ -27,10 +27,10 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
         </div>
         <div>
           <div
-            class="flex flex-col gap-[16px]"
+            class="flex flex-col gap-4"
           >
             <div
-              class="flex flex-row gap-[16px]"
+              class="flex flex-row gap-4"
             >
               <div
                 class="flex-1"
@@ -44,7 +44,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     Total Extracted
                   </div>
                   <div
-                    class="flex flex-col gap-[2px] py-[1px]"
+                    class="flex flex-col gap-1 py-0.5"
                   >
                     <div
                       class="text-body text-brand-20"
@@ -71,7 +71,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     Confirmed Attack
                   </div>
                   <div
-                    class="flex flex-col gap-[2px] py-[1px]"
+                    class="flex flex-col gap-1 py-0.5"
                   >
                     <div
                       class="text-body text-brand-20"
@@ -83,13 +83,13 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
               </div>
             </div>
             <div
-              class="flex flex-row flex-wrap gap-[16px]"
+              class="flex flex-row flex-wrap gap-4"
             >
               <div
                 class="flex-1"
               >
                 <div
-                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                  class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
                 >
                   <div
                     class="flex flex-col"
@@ -113,7 +113,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     </div>
                   </div>
                   <div
-                    class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+                    class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
                   >
                     <div
                       class="text-body"
@@ -151,7 +151,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                 class="flex-1 max-md:hidden"
               >
                 <div
-                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                  class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
                 >
                   <div
                     class="flex flex-col"
@@ -175,7 +175,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     </div>
                   </div>
                   <div
-                    class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+                    class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
                   >
                     <div
                       class="text-body"
@@ -213,7 +213,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                 class="flex-1 max-md:hidden"
               >
                 <div
-                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                  class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
                 >
                   <div
                     class="flex flex-col"
@@ -237,7 +237,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     </div>
                   </div>
                   <div
-                    class="flex flex-col gap-[12px] py-[16px] border-t border-b border-brand-40"
+                    class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
                   >
                     <div
                       class="text-body"
