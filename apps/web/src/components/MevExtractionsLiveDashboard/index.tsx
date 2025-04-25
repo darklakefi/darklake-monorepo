@@ -1,49 +1,33 @@
-import { MevTransaction, MevAttack, MevAttackSwapType } from "@/types/Mev";
+"use client";
+
 import BrutalMevExtractionsLiveEvidence from "./BrutalMevExtractionsLiveEvidence";
 import MevExtractionsHappeningNow from "./MevExtractionsHappeningNow";
 import MevExtractionsWrapper from "./MevExtractionsWrapper";
-
-const mockMevAttackTransaction: MevTransaction = {
-  address: "someAddress",
-  signature: "someSignature",
-};
-
-const mockMevAttack: MevAttack = {
-  swapType: MevAttackSwapType.BUY,
-  timestamp: +new Date("2024-03-26"),
-  tokenName: "TRUMP",
-  solAmount: {
-    sent: 100,
-    lost: 30,
-  },
-  transactions: {
-    frontRun: mockMevAttackTransaction,
-    victim: mockMevAttackTransaction,
-    backRun: mockMevAttackTransaction,
-  },
-};
+import useGetMevSummary from "@/hooks/api/useGetMevSummary";
 
 export default function MevExtractionsLiveDashboard() {
+  const { data } = useGetMevSummary();
+
   return (
     <div className="">
       <MevExtractionsWrapper>
         <div className="flex flex-col gap-20">
           <MevExtractionsHappeningNow
             drainToday={{
-              amountSol: 1,
-              amountUsd: 11,
+              amountSol: data?.extracted24h.totalSolExtracted || 0,
+              amountUsd: data?.extracted24h.totalUsdExtracted || 0,
             }}
             weekTotal={{
-              amountSol: 1,
-              amountUsd: 1,
+              amountSol: data?.extracted7days.totalSolExtracted || 0,
+              amountUsd: data?.extracted7days.totalUsdExtracted || 0,
             }}
             attacksToday={{
-              attacksTodayCount: 1,
-              attacksWeekCount: 1,
+              attacksTodayCount: data?.extracted24h.totalAttacks || 0,
+              attacksWeekCount: data?.extracted7days.totalAttacks || 0,
             }}
           />
 
-          <BrutalMevExtractionsLiveEvidence attacks={[mockMevAttack, mockMevAttack, mockMevAttack]} />
+          <BrutalMevExtractionsLiveEvidence attacks={data?.mevAttacks || []} />
         </div>
       </MevExtractionsWrapper>
     </div>
