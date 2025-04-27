@@ -2,7 +2,6 @@ import { ShareMevImage } from "@/components/ShareMev/ShareMevImage";
 import { getSiteUrl } from "@/utils/env";
 import { ImageResponse } from "@vercel/og";
 
-
 export const alt = "Check how much you got MEV'd at darklake.fi";
 export const size = {
   width: 1080,
