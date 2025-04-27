@@ -6,17 +6,16 @@ import { ShareMevHeader } from "@/components/ShareMev/ShareMevHeader";
 import { ShareMevHighlight } from "@/components/ShareMev/ShareMevHighlight";
 import { ShareMevWaddlesImage } from "@/components/ShareMev/ShareMevWaddlesImage";
 
-export const alt = "Check how much you got MEV'd at darklake.fi";
-export const size = {
-  width: 1080,
-  height: 1080,
-};
-export const contentType = "image/png";
+
+
 export async function GET(request: Request) {
+
+
   const { searchParams } = new URL(request.url);
 
   const address = searchParams.get("address");
   const siteUrl = getSiteUrl();
+
 
   if (!address || !siteUrl) {
     return NextResponse.redirect(new URL("/"));
@@ -92,7 +91,7 @@ export async function GET(request: Request) {
               fontFamily: "ClassicConsoleNeue",
             }}
           >
-            Check how much you got MEV'd at darklake.fi/mev
+            Check how much you got MEV&apos;d at darklake.fi/mev
           </div>
         </div>
       </div>
