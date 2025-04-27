@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: "Check how much you got MEV'd at darklake.fi",
       description: "Check how much you got MEV'd at darklake.fi",
       siteName: "darklake.fi",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/mev?address=${address}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/mev/${address}`,
       images: [{ url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/mev/${address}/opengraph-image` }],
     },
     twitter: {

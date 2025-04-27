@@ -7,8 +7,8 @@ export const size = {
   height: 1080,
 };
 export const contentType = "image/png";
-export default async function Image({ params }: { params: Promise<{ address: string }> }) {
-  const address = (await params).address;
+export default async function Image({ params }: { params: { address: string } }) {
+  const address = params.address;
   const siteUrl = getSiteUrl();
 
   if (!address || !siteUrl) {
