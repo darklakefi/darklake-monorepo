@@ -2,12 +2,10 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 type Props = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export async function generateMetadata(
-  { searchParams }: Props,
-): Promise<Metadata> {
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const address = (await searchParams).address;
 
   return {
@@ -18,9 +16,7 @@ export async function generateMetadata(
       description: "Check how much you got MEV'd at darklake.fi",
       siteName: "darklake.fi",
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/mev?address=${address}`,
-      images: [
-        { url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/mev/image?address=${address}` },
-      ],
+      images: [{ url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/mev/image?address=${address}` }],
     },
     twitter: {
       card: "summary_large_image",
@@ -31,6 +27,6 @@ export async function generateMetadata(
   };
 }
 
-export default function Page({ }: Props) {
+export default function Page({}: Props) {
   return redirect("/");
 }

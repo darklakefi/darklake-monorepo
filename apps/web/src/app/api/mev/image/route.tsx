@@ -6,16 +6,11 @@ import { ShareMevHeader } from "@/components/ShareMev/ShareMevHeader";
 import { ShareMevHighlight } from "@/components/ShareMev/ShareMevHighlight";
 import { ShareMevWaddlesImage } from "@/components/ShareMev/ShareMevWaddlesImage";
 
-
-
 export async function GET(request: Request) {
-
-
   const { searchParams } = new URL(request.url);
 
   const address = searchParams.get("address");
   const siteUrl = getSiteUrl();
-
 
   if (!address || !siteUrl) {
     return NextResponse.redirect(new URL("/"));
