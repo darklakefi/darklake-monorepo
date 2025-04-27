@@ -12,7 +12,7 @@ export function ShareMevText({ solAmount }: { solAmount: number }) {
   };
   const textStyle = {
     margin: 0,
-    color: "#1A9A56", // brand-30
+    color: "#1A9A56",
   };
 
   if (solAmount < 1) {
