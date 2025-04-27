@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: Promise<{ address: string }>;
@@ -28,6 +28,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Page({}: Props) {
-  // return redirect("/");
-  return <div>MevPage</div>;
+  return redirect("/");
 }

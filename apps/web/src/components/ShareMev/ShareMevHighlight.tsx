@@ -4,7 +4,6 @@ interface ShareMevHighlightProps {
   totalUsdExtracted?: number;
 }
 export function ShareMevHighlight({ totalSolExtracted, totalUsdExtracted }: ShareMevHighlightProps) {
-  totalUsdExtracted = 100;
   const solAmountFormatted = formatMoney(totalSolExtracted, 5);
   const solAmountParts = solAmountFormatted.toString().split(".");
   return (
