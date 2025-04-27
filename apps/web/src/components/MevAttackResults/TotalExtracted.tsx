@@ -57,7 +57,7 @@ export default function TotalExtracted({
           onClick={() =>
             shareOnTwitter(
               `I lost ${solAmountFormatted} SOL to MEV` +
-                `\n\nCheck how much you got MEV'd at ${siteUrl}/mev?address=${address}`,
+                `\n\nCheck how much you got MEV'd at ${siteUrl}/mev/${address}`,
             )
           }
         >
