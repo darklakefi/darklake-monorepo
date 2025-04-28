@@ -4,7 +4,7 @@ import { ShareMevHeader } from "@/components/ShareMev/ShareMevHeader";
 import { ShareMevHighlight } from "@/components/ShareMev/ShareMevHighlight";
 import { ShareMevWaddlesImage } from "@/components/ShareMev/ShareMevWaddlesImage";
 
-export async function ShareMevImage({
+export function ShareMevImage({
   totalSolExtracted = 0,
   totalUsdExtracted = 0,
   solAmount = 0,
