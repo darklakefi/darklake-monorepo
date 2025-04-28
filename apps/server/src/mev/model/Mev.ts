@@ -30,7 +30,7 @@ export enum MevAttacksOrderBy {
 
 export class GetMevAttacksQuery {
   @Validate(IsValidSolanaAddress)
-  address: string;
+  address?: string;
 
   @IsOptional()
   @IsInt()
@@ -113,3 +113,13 @@ export class MevAttack {
 export type SandwichEventExtended = SandwichEvent & {
   token_symbol: string;
 };
+
+export interface MevAttacksSummary extends MevTotalExtracted {
+  totalAttacks: number;
+}
+
+export interface GetMevSummaryResponse {
+  extracted24h: MevAttacksSummary;
+  extracted7days: MevAttacksSummary;
+  mevAttacks: MevAttack[];
+}

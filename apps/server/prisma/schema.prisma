@@ -57,6 +57,8 @@ model SandwichEvent {
   @@id([tx_hash_victim_swap, token_address, attacker_address, victim_address])
   @@index(victim_address)
   @@index([token_address])
+  @@index(occurred_at)
+  @@index([victim_address, occurred_at])
   @@map("sandwich_events")
 }
 

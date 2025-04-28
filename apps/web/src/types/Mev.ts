@@ -40,3 +40,13 @@ export enum MevAttacksOrderBy {
   "DATE" = "date",
   "AMOUNT_DRAINED" = "amountDrained",
 }
+
+export interface MevAttacksSummary extends MevTotalExtracted {
+  totalAttacks: number;
+}
+
+export interface GetMevSummaryResponse {
+  extracted24h: MevAttacksSummary;
+  extracted7days: MevAttacksSummary;
+  mevAttacks: MevAttack[];
+}

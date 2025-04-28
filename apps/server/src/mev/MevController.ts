@@ -19,4 +19,9 @@ export class MevController {
   getTotalExtracted(@Query() query: GetMevTotalExtractedQuery) {
     return this.mevService.getTotalExtracted(query);
   }
+
+  @Get("/summary")
+  getMevSummary() {
+    return this.mevService.getMevSummary();
+  }
 }

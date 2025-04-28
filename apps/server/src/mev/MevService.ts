@@ -4,10 +4,12 @@ import { BlockQueueStatus, Prisma } from "@prisma/client";
 import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
 import {
   GetMevAttacksQuery,
+  GetMevSummaryResponse,
   GetMevTotalExtractedQuery,
   GetMevTotalExtractedResponse,
   MevAttack,
   MevAttacksOrderBy,
+  MevAttacksSummary,
   MevTotalExtracted,
   SandwichEventExtended,
 } from "./model/Mev";
@@ -19,11 +21,13 @@ import { PaginatedResponse, PaginatedResponseDataLimit } from "../types/Paginati
 import { PriceService } from "../price/PriceService";
 import { TokenPriceId } from "../price/model/Price";
 import { TokenMetadataService } from "src/token-metadata/TokenMetadataService";
+import * as dayjs from "dayjs";
 
 enum CacheKey {
   MEV_EVENTS_TOTAL_EXTRACTED = "MEV_EVENTS_TOTAL_EXTRACTED",
   MEV_EVENTS_PROCESSED_BLOCKS = "MEV_EVENTS_PROCESSED_BLOCKS",
   MEV_EVENTS_LOOKUP_BLOCKS = "MEV_EVENTS_LOOKUP_BLOCKS",
+  MEV_EVENTS_SUMMARY = "MEV_EVENTS_SUMMARY",
 }
 
 @Injectable()
@@ -37,6 +41,65 @@ export class MevService {
     private readonly priceService: PriceService,
     private readonly tokenMetadataService: TokenMetadataService,
   ) {}
+
+  async getMevSummary(): Promise<GetMevSummaryResponse> {
+    const cacheKey = getCacheKeyWithParams(CacheKey.MEV_EVENTS_SUMMARY, []);
+    const cached = await this.cacheManager.get<GetMevSummaryResponse>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    const now = dayjs();
+    const start24h = now.subtract(24, "hour").toDate();
+    const start7days = now.subtract(7, "day").toDate();
+
+    const solUsdPrice = await this.priceService.getTokenPriceUsd(TokenPriceId.SOLANA);
+
+    const extracted24h = await this.getMevAttacksSummary(start24h, solUsdPrice);
+    const extracted7days = await this.getMevAttacksSummary(start7days, solUsdPrice);
+    const mevAttacks = await this.getMevAttacks({ limit: 3, offset: 0 });
+
+    const data: GetMevSummaryResponse = {
+      extracted24h,
+      extracted7days,
+      mevAttacks: mevAttacks.result,
+    };
+
+    await this.cacheManager.set(cacheKey, data, CacheTime.TEN_SECONDS);
+
+    return data;
+  }
+
+  private async getMevAttacksSummary(timestampLimit: Date, solUsdPrice?: number): Promise<MevAttacksSummary> {
+    const totalAttacks = await this.prismaService.sandwichEvent.count({
+      where: {
+        occurred_at: {
+          gte: timestampLimit,
+        },
+      },
+    });
+
+    const totalSolExtracted = await this.prismaService.sandwichEvent.aggregate({
+      _sum: {
+        sol_amount_drained: true,
+      },
+      where: {
+        occurred_at: {
+          gte: timestampLimit,
+        },
+      },
+    });
+
+    const totalSol = totalSolExtracted._sum.sol_amount_drained
+      ? formatSolAmount(totalSolExtracted._sum.sol_amount_drained)
+      : 0;
+
+    return {
+      totalAttacks,
+      totalSolExtracted: totalSol,
+      totalUsdExtracted: solUsdPrice ? totalSol * solUsdPrice : undefined,
+    };
+  }
 
   async getTotalExtracted(query: GetMevTotalExtractedQuery): Promise<GetMevTotalExtractedResponse> {
     const lookupBlocks = await this.getLookupBlocks(query.address);
@@ -153,7 +216,7 @@ export class MevService {
     const offset = query.offset || 0;
 
     const whereQuery: Prisma.SandwichEventWhereInput = {
-      victim_address: query.address,
+      ...(query.address && { victim_address: query.address }),
     };
 
     let orderByQuery: Prisma.SandwichEventOrderByWithRelationInput;
@@ -195,8 +258,8 @@ export class MevService {
   }
 
   getSqlSandwichEventsWithTokenMetadata(options?: {
-    where?: any;
-    orderBy?: any;
+    where?: Prisma.SandwichEventWhereInput;
+    orderBy?: Prisma.SandwichEventOrderByWithRelationInput;
     take?: number;
     skip?: number;
     onlyCount?: boolean;
@@ -204,7 +267,7 @@ export class MevService {
     const { where, orderBy, take, skip, onlyCount } = options || {};
 
     let whereClause = "";
-    if (where) {
+    if (where && Object.keys(where).length > 0) {
       whereClause =
         "WHERE " +
         Object.entries(where)
