@@ -10,7 +10,11 @@ import { isValidSolanaAddress } from "@/utils/blockchain";
 import { cn } from "@/utils/common";
 import Button from "@/components/Button";
 
-const AddressMevLookup = () => {
+type AddressMevLookupProps = {
+  onSubmit?: (address: string) => void;
+};
+
+const AddressMevLookup = (props: AddressMevLookupProps) => {
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -40,6 +44,7 @@ const AddressMevLookup = () => {
     if (e.key === "Enter" && !isSubmitDisabled) {
       e.preventDefault();
       e.stopPropagation();
+      props.onSubmit?.(inputValue);
       router.push(resultsLink);
     }
   };
@@ -103,6 +108,10 @@ const AddressMevLookup = () => {
             )}
             href={resultsLink}
             title="Reveal Losses"
+            onClick={() => {
+              props.onSubmit?.(inputValue);
+              router.push(resultsLink);
+            }}
           >
             Reveal Losses
           </Link>
@@ -119,6 +128,10 @@ const AddressMevLookup = () => {
           )}
           href={resultsLink}
           title="Reveal Losses"
+          onClick={() => {
+            props.onSubmit?.(inputValue);
+            router.push(resultsLink);
+          }}
         >
           Reveal Losses
         </Link>
