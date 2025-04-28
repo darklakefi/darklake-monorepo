@@ -17,7 +17,7 @@ export function ShareMevText({ solAmount }: { solAmount: number }) {
 
   if (solAmount < 1) {
     return (
-      <div style={{ ...wrapperStyle, marginTop: "15rem" }}>
+      <div style={{ ...wrapperStyle }}>
         <p style={{ ...textStyle, marginBottom: "1.5rem" }}>Well Played!</p>
         <p style={{ ...textStyle, marginBottom: "1.5rem" }}>Your wallet has managed to dodge most MEV attacks.</p>
         <p style={textStyle}>
@@ -41,7 +41,7 @@ export function ShareMevText({ solAmount }: { solAmount: number }) {
 
   return (
     <div style={wrapperStyle}>
-      <p style={{ ...textStyle, marginBottom: "2.5rem" }}>You&#39;ve lost some value to MEV -</p>
+      <p style={{ ...textStyle }}>You&#39;ve lost some value to MEV -</p>
       <p style={textStyle}>not getting rekt,</p>
       <p style={textStyle}>
         but still <span style={{ color: "#35D688", marginLeft: "1.5rem" }}>leaving</span>
