@@ -55,6 +55,9 @@ export default {
       lineHeight: {
         "3xl": "30px",
       },
+      borderRadius: {
+        "4xl": "2.5rem",
+      },
       colors,
       screens: {
         xs: "481px",
