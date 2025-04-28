@@ -33,7 +33,7 @@
     "@nestjs/terminus": "^11.0.0",
     "@nestjs/throttler": "^6.4.0",
     "@prisma/client": "6.5.0",
-    "@solana/web3.js": "1.95.4",
+    "@solana/web3.js": "1.98.2",
     "@supabase/supabase-js": "^2.49.1",
     "axios": "^1.8.3",
     "bignumber.js": "^9.1.2",
