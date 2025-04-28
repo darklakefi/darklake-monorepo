@@ -1,5 +1,5 @@
+import MevAttackResults from "@/components/MevAttackResults";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 type Props = {
   params: Promise<{ address: string }>;
@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function Page({}: Props) {
-  return redirect("/");
+export default async function Page({ params }: Props) {
+  const address = (await params).address;
+  return <MevAttackResults address={address} />;
 }

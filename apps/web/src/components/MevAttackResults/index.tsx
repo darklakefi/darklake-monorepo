@@ -1,3 +1,5 @@
+"use client";
+
 import CheckMevAttackWrapper from "@/components/MevAttackResults/CheckMevAttackWrapper";
 import TotalExtracted from "@/components/MevAttackResults/TotalExtracted";
 import WaddlesWithMessage from "@/components/MevAttackResults/WaddlesWithMessage";
