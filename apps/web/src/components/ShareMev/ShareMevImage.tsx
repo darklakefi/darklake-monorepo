@@ -15,7 +15,6 @@ export async function ShareMevImage({
 }) {
   const siteUrl = getSiteUrl();
 
-
   return (
     <div
       style={{
