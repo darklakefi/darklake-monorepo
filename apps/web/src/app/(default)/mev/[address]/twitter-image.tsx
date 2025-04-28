@@ -23,10 +23,15 @@ export default async function Image({ params }: { params: { address: string } })
   const apiUrl = new URL(`/v1/mev/total-extracted?address=${address}`, process.env.NEXT_PUBLIC_API_URL);
   const response = await fetch(apiUrl);
   const { data } = await response.json();
-  const { totalSolExtracted, totalUsdExtracted, solAmount } = data;
 
   return new ImageResponse(
-    <ShareMevImage totalSolExtracted={totalSolExtracted} totalUsdExtracted={totalUsdExtracted} solAmount={solAmount} />,
+    (
+      <ShareMevImage
+        totalSolExtracted={data.totalSolExtracted}
+        totalUsdExtracted={data.totalUsdExtracted}
+        solAmount={data.solAmount}
+      />
+    ),
     {
       width: 1080,
       height: 1080,

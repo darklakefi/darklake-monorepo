@@ -5,15 +5,16 @@ import { ShareMevHighlight } from "@/components/ShareMev/ShareMevHighlight";
 import { ShareMevWaddlesImage } from "@/components/ShareMev/ShareMevWaddlesImage";
 
 export async function ShareMevImage({
-  totalSolExtracted,
-  totalUsdExtracted,
-  solAmount,
+  totalSolExtracted = 0,
+  totalUsdExtracted = 0,
+  solAmount = 0,
 }: {
-  totalSolExtracted: number;
-  totalUsdExtracted: number;
-  solAmount: number;
+  totalSolExtracted?: number;
+  totalUsdExtracted?: number;
+  solAmount?: number;
 }) {
   const siteUrl = getSiteUrl();
+
 
   return (
     <div
