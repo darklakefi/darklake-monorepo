@@ -27,9 +27,9 @@ export default async function Image({ params }: { params: { address: string } })
   return new ImageResponse(
     (
       <ShareMevImage
-        totalSolExtracted={data.totalSolExtracted}
-        totalUsdExtracted={data.totalUsdExtracted}
-        solAmount={data.solAmount}
+        totalSolExtracted={data?.totalSolExtracted}
+        totalUsdExtracted={data?.totalUsdExtracted}
+        solAmount={data?.solAmount}
       />
     ),
     {
