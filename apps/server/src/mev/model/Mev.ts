@@ -3,6 +3,7 @@ import { IsValidSolanaAddress } from "../../validator/IsValidSolanaAddress";
 import { Type } from "class-transformer";
 import { SandwichEvent } from "@prisma/client";
 import { formatSolAmount } from "src/utils/blockchain";
+import { TokenMetadataDto } from "src/token-metadata/model/TokenMetadata";
 
 export class GetMevTotalExtractedQuery {
   @Validate(IsValidSolanaAddress)
@@ -84,13 +85,13 @@ export class MevAttack {
     backRun: MevTransaction;
   };
 
-  constructor(props: SandwichEvent) {
+  constructor(props: SandwichEventExtended, tokenMetadata?: TokenMetadataDto) {
     this.solAmount = {
       sent: formatSolAmount(props.sol_amount_swap),
       lost: formatSolAmount(props.sol_amount_drained),
     };
 
-    this.tokenName = "UNKNOWN"; // TODO: add token metadata service & get token name
+    this.tokenName = props.token_symbol ?? tokenMetadata?.symbol ?? "UNKNOWN";
     this.timestamp = +props.occurred_at;
     this.transactions = {
       frontRun: {
@@ -108,3 +109,7 @@ export class MevAttack {
     };
   }
 }
+
+export type SandwichEventExtended = SandwichEvent & {
+  token_symbol: string;
+};

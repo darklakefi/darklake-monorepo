@@ -56,5 +56,18 @@ model SandwichEvent {
 
   @@id([tx_hash_victim_swap, token_address, attacker_address, victim_address])
   @@index(victim_address)
+  @@index([token_address])
   @@map("sandwich_events")
+}
+
+model TokenMetadata {
+  token_address   String   @id
+  name            String
+  symbol          String
+  decimals        Int
+  uri             String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@map("token_metadata")
 }

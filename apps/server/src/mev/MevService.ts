@@ -9,6 +9,7 @@ import {
   MevAttack,
   MevAttacksOrderBy,
   MevTotalExtracted,
+  SandwichEventExtended,
 } from "./model/Mev";
 import { CacheTime, getCacheKeyWithParams } from "../utils/cache";
 import { SolanaService } from "../solana/SolanaService";
@@ -17,6 +18,7 @@ import { formatSolAmount } from "../utils/blockchain";
 import { PaginatedResponse, PaginatedResponseDataLimit } from "../types/Pagination";
 import { PriceService } from "../price/PriceService";
 import { TokenPriceId } from "../price/model/Price";
+import { TokenMetadataService } from "src/token-metadata/TokenMetadataService";
 
 enum CacheKey {
   MEV_EVENTS_TOTAL_EXTRACTED = "MEV_EVENTS_TOTAL_EXTRACTED",
@@ -33,6 +35,7 @@ export class MevService {
     private readonly solanaService: SolanaService,
     private readonly prismaService: PrismaService,
     private readonly priceService: PriceService,
+    private readonly tokenMetadataService: TokenMetadataService,
   ) {}
 
   async getTotalExtracted(query: GetMevTotalExtractedQuery): Promise<GetMevTotalExtractedResponse> {
@@ -164,24 +167,81 @@ export class MevService {
       orderByQuery = { [orderByMap[query?.orderBy]]: query?.direction ?? "desc" };
     }
 
-    const mevAttacks = await this.prismaService.sandwichEvent.findMany({
-      where: whereQuery,
-      orderBy: orderByQuery ?? { occurred_at: "desc" },
-      take: limit,
-      skip: offset,
-    });
+    const mevAttacks: SandwichEventExtended[] = await this.prismaService.$queryRawUnsafe(
+      this.getSqlSandwichEventsWithTokenMetadata({
+        where: whereQuery,
+        orderBy: orderByQuery,
+        take: limit,
+        skip: offset,
+      }),
+    );
 
-    const total = await this.prismaService.sandwichEvent.count({
-      where: whereQuery,
-    });
+    const total = await this.prismaService.$queryRawUnsafe<{ total_count: number }[]>(
+      this.getSqlSandwichEventsWithTokenMetadata({ where: whereQuery, onlyCount: true }),
+    );
 
-    const data = mevAttacks.map((event) => new MevAttack(event));
+    const tokenMetadata = await this.tokenMetadataService.getTokenMetadataFromChain(
+      mevAttacks.filter((event) => !event.token_symbol).map((event) => event.token_address),
+    );
+
+    const data = mevAttacks.map((event) => new MevAttack(event, tokenMetadata[event.token_address]));
 
     return {
       limit,
       offset,
-      total,
+      total: total[0].total_count,
       result: data,
     };
+  }
+
+  getSqlSandwichEventsWithTokenMetadata(options?: {
+    where?: any;
+    orderBy?: any;
+    take?: number;
+    skip?: number;
+    onlyCount?: boolean;
+  }): string {
+    const { where, orderBy, take, skip, onlyCount } = options || {};
+
+    let whereClause = "";
+    if (where) {
+      whereClause =
+        "WHERE " +
+        Object.entries(where)
+          .map(([key, value]) => `${key} = ${typeof value === "string" ? `'${value}'` : value}`)
+          .join(" AND ");
+    }
+
+    let orderByClause = "";
+    if (orderBy) {
+      orderByClause =
+        "ORDER BY " +
+        Object.entries(orderBy)
+          .map(([key, value]) => `${key} ${value}`)
+          .join(", ");
+    }
+
+    const limitClause = take && !onlyCount ? `LIMIT ${take}` : "";
+    const offsetClause = skip && !onlyCount ? `OFFSET ${skip}` : "";
+
+    const sqlQuery = `
+      SELECT 
+        se.*,
+        tm.symbol as token_symbol
+      FROM 
+        sandwich_events se
+      LEFT JOIN 
+        token_metadata tm ON se.token_address = tm.token_address
+      ${whereClause}
+      ${orderByClause ? orderByClause : "ORDER BY occurred_at DESC"}
+      ${limitClause}
+      ${offsetClause}
+    `;
+
+    if (onlyCount) {
+      return `SELECT CAST(COUNT(*) AS INTEGER) AS total_count FROM (${sqlQuery}) AS subquery`;
+    }
+
+    return sqlQuery;
   }
 }
