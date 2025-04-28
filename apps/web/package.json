@@ -18,7 +18,7 @@
     "@solana/web3.js": "1.95.4",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
-    "@supabase/supabase-js": "^2.49.1",
+    "@supabase/supabase-js": "^2.49.4",
     "@tanstack/react-query": "^5.69.0",
     "@vercel/og": "^0.6.8",
     "axios": "^1.8.3",
