@@ -258,8 +258,8 @@ export class MevService {
   }
 
   getSqlSandwichEventsWithTokenMetadata(options?: {
-    where?: any;
-    orderBy?: any;
+    where?: Prisma.SandwichEventWhereInput;
+    orderBy?: Prisma.SandwichEventOrderByWithRelationInput;
     take?: number;
     skip?: number;
     onlyCount?: boolean;
@@ -267,7 +267,7 @@ export class MevService {
     const { where, orderBy, take, skip, onlyCount } = options || {};
 
     let whereClause = "";
-    if (where) {
+    if (where && Object.keys(where).length > 0) {
       whereClause =
         "WHERE " +
         Object.entries(where)
