@@ -40,7 +40,7 @@ export class MevService {
     private readonly prismaService: PrismaService,
     private readonly priceService: PriceService,
     private readonly tokenMetadataService: TokenMetadataService,
-  ) { }
+  ) {}
 
   async getMevSummary(): Promise<GetMevSummaryResponse> {
     const cacheKey = getCacheKeyWithParams(CacheKey.MEV_EVENTS_SUMMARY, []);
