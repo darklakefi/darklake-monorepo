@@ -40,7 +40,7 @@ export class MevService {
     private readonly prismaService: PrismaService,
     private readonly priceService: PriceService,
     private readonly tokenMetadataService: TokenMetadataService,
-  ) {}
+  ) { }
 
   async getMevSummary(): Promise<GetMevSummaryResponse> {
     const cacheKey = getCacheKeyWithParams(CacheKey.MEV_EVENTS_SUMMARY, []);
@@ -104,7 +104,6 @@ export class MevService {
   async getTotalExtracted(query: GetMevTotalExtractedQuery): Promise<GetMevTotalExtractedResponse> {
     const lookupBlocks = await this.getLookupBlocks(query.address);
     const processedBlocks = await this.getProcessedBlocks(query.address, lookupBlocks);
-    console.log({ lookupBlocks, processedBlocks });
     if (processedBlocks.length === 0 && lookupBlocks.length === 0) {
       return {
         processingBlocks: {
