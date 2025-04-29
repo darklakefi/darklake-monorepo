@@ -21,3 +21,55 @@ model Config {
 
   @@map("config")
 }
+
+enum BlockQueueStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model BlockQueue {
+  slot       BigInt           @id @unique
+  status     BlockQueueStatus
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
+
+  @@map("block_queue")
+}
+
+model SandwichEvent {
+  slot                  BigInt
+  sol_amount_drained    BigInt
+  sol_amount_swap       BigInt
+  tx_hash_victim_swap   String
+  tx_hash_attacker_buy  String
+  tx_hash_attacker_sell String
+  token_address         String
+  attacker_address      String
+  victim_address        String
+  lp_address            String
+  dex_name              String
+  occurred_at           DateTime
+  added_at              DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  @@id([tx_hash_victim_swap, token_address, attacker_address, victim_address])
+  @@index(victim_address)
+  @@index([token_address])
+  @@index(occurred_at)
+  @@index([victim_address, occurred_at])
+  @@map("sandwich_events")
+}
+
+model TokenMetadata {
+  token_address   String   @id
+  name            String
+  symbol          String
+  decimals        Int
+  uri             String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@map("token_metadata")
+}

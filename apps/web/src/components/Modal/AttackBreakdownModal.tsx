@@ -5,11 +5,21 @@ import { formatPercentage } from "@/utils/number";
 import { cn, truncate } from "@/utils/common";
 
 interface AttackBreakdownModalProps extends ModalProps {
-  mevAttack: MevAttack;
+  mevAttack?: MevAttack;
 }
 
 export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
   const { mevAttack } = props;
+
+  if (!mevAttack?.transactions || !mevAttack?.solAmount) {
+    return (
+      <Modal title="Attack breakdown" {...props}>
+        <div className="lg:w-[960px] p-5 text-brand-30">
+          <p>Unable to load attack details. Please try again later.</p>
+        </div>
+      </Modal>
+    );
+  }
 
   const isVictimBuy = mevAttack.swapType === MevAttackSwapType.BUY;
 

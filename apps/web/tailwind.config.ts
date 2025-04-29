@@ -55,9 +55,19 @@ export default {
       lineHeight: {
         "3xl": "30px",
       },
+      borderRadius: {
+        "4xl": "2.5rem",
+      },
       colors,
       screens: {
         xs: "481px",
+      },
+      boxShadow: {
+        "3xl": "12px 12px 0px 0px",
+        md: "4px 4px 0px 0px",
+      },
+      minWidth: {
+        "3xl": "720px",
       },
     },
   },

@@ -22,3 +22,31 @@ export interface MevAttack {
     backRun: MevTransaction;
   };
 }
+
+export interface MevTotalExtracted {
+  totalSolExtracted: number;
+  totalUsdExtracted?: number;
+}
+
+export interface GetMevTotalExtractedResponse {
+  data?: MevTotalExtracted;
+  processingBlocks: {
+    completed: number;
+    total: number;
+  };
+}
+
+export enum MevAttacksOrderBy {
+  "DATE" = "date",
+  "AMOUNT_DRAINED" = "amountDrained",
+}
+
+export interface MevAttacksSummary extends MevTotalExtracted {
+  totalAttacks: number;
+}
+
+export interface GetMevSummaryResponse {
+  extracted24h: MevAttacksSummary;
+  extracted7days: MevAttacksSummary;
+  mevAttacks: MevAttack[];
+}

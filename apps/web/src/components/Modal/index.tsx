@@ -38,8 +38,8 @@ export default function Modal({
             <div
               className={cn(
                 "max-h-[80vh] lg:max-h-none overflow-auto",
-                "p-[16px] md:p-[40px] bg-brand-70",
-                "shadow-[12px_12px_0px_0px] shadow-brand-60 relative",
+                "p-4 md:p-10 bg-brand-70",
+                "shadow-3xl shadow-brand-80 relative",
                 contentWrapperClassName,
               )}
             >
