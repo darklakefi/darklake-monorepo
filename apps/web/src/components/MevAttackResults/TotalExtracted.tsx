@@ -1,11 +1,12 @@
 "use client";
 
-import { formatMoney } from "@/utils/number";
-import { cn } from "@/utils/common";
 import Button from "@/components/Button";
-import { shareOnTwitter } from "@/utils/browser";
-import { getSiteUrl } from "@/utils/env";
 import ProgressBar from "@/components/ProgressBar";
+import { shareOnTwitter } from "@/utils/browser";
+import { cn } from "@/utils/common";
+import { getSiteUrl } from "@/utils/env";
+import { formatMoney } from "@/utils/number";
+import { useRouter } from "next/navigation";
 
 export default function TotalExtracted({
   solAmount,
@@ -24,6 +25,9 @@ export default function TotalExtracted({
   const siteUrl = (getSiteUrl() || "darklake.fi").replaceAll("http://", "").replaceAll("https://", "");
 
   const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
+
+  const router = useRouter();
+  router.prefetch(`/mev/${address}`);
 
   return (
     <div className={cn("bg-brand-10 p-6 shadow-3xl shadow-brand-80", "text-brand-30 uppercase font-primary text-3xl")}>
