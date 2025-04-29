@@ -4,9 +4,9 @@ import CheckMevAttackWrapper from "@/components/MevAttackResults/CheckMevAttackW
 import TotalExtracted from "@/components/MevAttackResults/TotalExtracted";
 import WaddlesWithMessage from "@/components/MevAttackResults/WaddlesWithMessage";
 import useGetTotalExtracted from "@/hooks/api/useGetTotalExtracted";
-import NoTransactionWaddle from "./NoTransactionWaddle";
 import Image from "next/image";
 import DetailResults from "./DetailResults";
+import NoTransactionWaddle from "./NoTransactionWaddle";
 
 import { useState } from "react";
 export default function MevAttackResults({ address }: { address: string }) {
@@ -19,15 +19,9 @@ export default function MevAttackResults({ address }: { address: string }) {
     return <NoTransactionWaddle />;
   }
 
-  if (
-    data?.processingBlocks?.total &&
-    data?.processingBlocks?.total > 0 &&
-    data?.processingBlocks?.total === data?.processingBlocks?.completed
-  ) {
-    setTimeout(() => {
-      setShowLoadingScreen(false);
-    }, 2000);
-  }
+  setTimeout(() => {
+    setShowLoadingScreen(false);
+  }, 5000);
 
   return showLoadingScreen ? (
     <CheckMevAttackWrapper>

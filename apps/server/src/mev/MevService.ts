@@ -2,6 +2,15 @@ import { Inject, Injectable, Logger } from "@nestjs/common";
 import { BlockQueueStatus, Prisma } from "@prisma/client";
 
 import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
+import * as dayjs from "dayjs";
+import { TokenMetadataService } from "src/token-metadata/TokenMetadataService";
+import { PriceService } from "../price/PriceService";
+import { TokenPriceId } from "../price/model/Price";
+import { PrismaService } from "../prisma/PrismaService";
+import { SolanaService } from "../solana/SolanaService";
+import { PaginatedResponse, PaginatedResponseDataLimit } from "../types/Pagination";
+import { formatSolAmount } from "../utils/blockchain";
+import { CacheTime, getCacheKeyWithParams } from "../utils/cache";
 import {
   GetMevAttacksQuery,
   GetMevSummaryResponse,
@@ -13,15 +22,6 @@ import {
   MevTotalExtracted,
   SandwichEventExtended,
 } from "./model/Mev";
-import { CacheTime, getCacheKeyWithParams } from "../utils/cache";
-import { SolanaService } from "../solana/SolanaService";
-import { PrismaService } from "../prisma/PrismaService";
-import { formatSolAmount } from "../utils/blockchain";
-import { PaginatedResponse, PaginatedResponseDataLimit } from "../types/Pagination";
-import { PriceService } from "../price/PriceService";
-import { TokenPriceId } from "../price/model/Price";
-import { TokenMetadataService } from "src/token-metadata/TokenMetadataService";
-import * as dayjs from "dayjs";
 
 enum CacheKey {
   MEV_EVENTS_TOTAL_EXTRACTED = "MEV_EVENTS_TOTAL_EXTRACTED",
@@ -104,6 +104,7 @@ export class MevService {
   async getTotalExtracted(query: GetMevTotalExtractedQuery): Promise<GetMevTotalExtractedResponse> {
     const lookupBlocks = await this.getLookupBlocks(query.address);
     const processedBlocks = await this.getProcessedBlocks(query.address, lookupBlocks);
+    console.log({ lookupBlocks, processedBlocks });
     if (processedBlocks.length === 0 && lookupBlocks.length === 0) {
       return {
         processingBlocks: {
@@ -288,12 +289,12 @@ export class MevService {
     const offsetClause = skip && !onlyCount ? `OFFSET ${skip}` : "";
 
     const sqlQuery = `
-      SELECT 
+      SELECT
         se.*,
         tm.symbol as token_symbol
-      FROM 
+      FROM
         sandwich_events se
-      LEFT JOIN 
+      LEFT JOIN
         token_metadata tm ON se.token_address = tm.token_address
       ${whereClause}
       ${orderByClause ? orderByClause : "ORDER BY occurred_at DESC"}
