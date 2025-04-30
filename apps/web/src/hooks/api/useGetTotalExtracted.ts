@@ -1,6 +1,8 @@
-import { QueryOptions, useQuery } from "@tanstack/react-query";
+"use client";
+
 import axiosClient from "@/services/axiosClient";
 import { GetMevTotalExtractedResponse } from "@/types/Mev";
+import { QueryOptions, useQuery } from "@tanstack/react-query";
 
 const getTotalExtracted = async ({
   queryKey,
