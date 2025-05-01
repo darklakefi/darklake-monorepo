@@ -72,10 +72,10 @@ exports[`<CheckOtherAddressModal /> displays content successfully when open 1`] 
                         class="flex flex-col gap-2"
                       >
                         <div
-                          class="h-12 p-2 md:max-w-2xl w-full border border-brand-40 bg-brand-60 flex flex-row items-center justify-between"
+                          class="h-12 p-2 md:max-w-2xl w-full bg-brand-60 border border-brand-40 hover:border-brand-30 flex flex-row items-center"
                         >
                           <div
-                            class="flex items-center flex-grow"
+                            class="flex items-center w-full"
                           >
                             <span
                               class="font-secondary text-lg leading-6 text-brand-30 select-none mr-3"

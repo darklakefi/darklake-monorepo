@@ -68,16 +68,18 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
   const wrapperFlexClassName = "flex flex-row items-center";
   return (
     <div className="flex flex-col gap-2">
-      <div className={cn(
-        "h-12 p-2 md:max-w-2xl w-full bg-brand-60",
-        "border",
-        isInputFocusAndEmpty ? "border-brand-20" : "border-brand-40 hover:border-brand-30",
-        wrapperFlexClassName,
-      )}
+      <div
+        className={cn(
+          "h-12 p-2 md:max-w-2xl w-full bg-brand-60",
+          "border",
+          isInputFocusAndEmpty ? "border-brand-20" : "border-brand-40 hover:border-brand-30",
+          wrapperFlexClassName,
+        )}
       >
-        {!isInputVisible && (<div className="flex items-center w-full">
-          <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">&gt;</span>
-          <div
+        {!isInputVisible && (
+          <div className="flex items-center w-full">
+            <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">&gt;</span>
+            <div
               className="font-secondary text-lg max-md:text-xs leading-6 w-full text-brand-30 uppercase cursor-text"
               onClick={(ref) => {
                 if (ref.currentTarget === ref.target) {
@@ -91,26 +93,27 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
               </Button>{" "}
               Solana address...
             </div>
-        </div>
+          </div>
         )}
-        {isInputVisible && (<div className="flex items-center">
-          <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">&gt;</span>
+        {isInputVisible && (
+          <div className="flex items-center">
+            <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">&gt;</span>
 
-          <div
-            contentEditable={true}
-            ref={inputRef}
-            className={cn(
-              "w-full bg-transparent min-w-0 max-w-full border-none break-all",
-              "focus:outline-none font-secondary text-lg leading-6 text-brand-20",
-            )}
-            onInput={(e) => handleInputChange(e)}
-            onBlur={() => {
-              if (inputValue?.length) return;
-              setIsInputVisible(false);
-            }}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
+            <div
+              contentEditable={true}
+              ref={inputRef}
+              className={cn(
+                "w-full bg-transparent min-w-0 max-w-full border-none break-all",
+                "focus:outline-none font-secondary text-lg leading-6 text-brand-20",
+              )}
+              onInput={(e) => handleInputChange(e)}
+              onBlur={() => {
+                if (inputValue?.length) return;
+                setIsInputVisible(false);
+              }}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
         )}
 
         {!isInputEmpty && (
@@ -140,11 +143,9 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
       {isSubmitDisabled && !isInputEmpty && (
         <div className="flex flex-row gap-2 items-center">
           <i className="hn hn-exclamation-triangle-solid text-brand-30 text-xl" />
-          <span className="text-body-2 uppercase text-brand-30 select-none">
-            that’s not a valid Solana address
-          </span>
+          <span className="text-body-2 uppercase text-brand-30 select-none">that’s not a valid Solana address</span>
         </div>
-      )} 
+      )}
 
       {!isSubmitDisabled && (
         <Link

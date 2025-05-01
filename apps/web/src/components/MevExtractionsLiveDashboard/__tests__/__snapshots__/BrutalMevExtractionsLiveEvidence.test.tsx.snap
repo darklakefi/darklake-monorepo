@@ -83,7 +83,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 <div
                   class="text-lg leading-6 text-brand-20"
                 >
-                  64% EXTRACTED
+                  50% EXTRACTED
                 </div>
                 <div
                   class="text-lg leading-6 text-brand-30"
@@ -167,7 +167,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 <div
                   class="text-lg leading-6 text-brand-20"
                 >
-                  64% EXTRACTED
+                  5% EXTRACTED
                 </div>
                 <div
                   class="text-lg leading-6 text-brand-30"

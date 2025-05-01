@@ -13,7 +13,6 @@ export default function WhatIsMevModal(props: ModalProps) {
           RIGHT BEFORE AND AFTER A USER&#39;S TRADE TO MANIPULATE THE PRICE, EXTRACTING PROFIT IN THE PROCESS.
           <br />
           <br />
-          
           In this tool, we calculate the MEV loss specifically from Sandwich Attacks on Raydium and Pump.fun.
         </p>
       </div>

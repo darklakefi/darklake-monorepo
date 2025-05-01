@@ -32,7 +32,7 @@ const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCar
           <ProgressBar progress={extractedPercentageRounded} />
         </div>
         <div className="flex flex-col">
-          <div className="text-lg leading-6 text-brand-20">{`${extractedPercentageRounded}% EXTRACTED`}</div>
+          <div className="text-lg leading-6 text-brand-20 uppercase">{`${extractedPercentageRounded}% EXTRACTED`}</div>
           <div className="text-lg leading-6 text-brand-30">FROM A {mevAttack.solAmount.sent} SOL TRANSACTION</div>
         </div>
       </div>

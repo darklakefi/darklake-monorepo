@@ -56,7 +56,7 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
           <div
             class="text-lg leading-6 text-brand-20"
           >
-            64% EXTRACTED
+            30% EXTRACTED
           </div>
           <div
             class="text-lg leading-6 text-brand-30"
@@ -133,7 +133,7 @@ exports[`<AttackDetailCard /> displays attack detail 1`] = `
           <div
             class="text-lg leading-6 text-brand-20"
           >
-            64% EXTRACTED
+            30% EXTRACTED
           </div>
           <div
             class="text-lg leading-6 text-brand-30"
