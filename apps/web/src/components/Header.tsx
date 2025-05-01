@@ -18,7 +18,7 @@ const Header = () => {
   const [isOpenCheckOtherAddressModal, setIsOpenCheckOtherAddressModal] = useState(false);
 
   return (
-    <header className="flex flex-row justify-between items-center z-20 mb-20">
+    <header className="flex flex-row justify-between items-center z-20 py-16">
       <div className="flex items-center justify-between gap-x-[11px]">
         <Link href="/" title="Darklake.fi" className="active:opacity-80">
           <Image src="/images/logo-h-darklake.png" alt="darklake logo" height={24} width={147} />

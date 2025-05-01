@@ -97,7 +97,9 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
               <div className="flex flex-col gap-1 py-0.5">
                 <div className="text-3xl leading-8 text-brand-20">{attacksToday.attacksTodayCount}</div>
                 {attacksToday.attacksWeekCount > 0 && (
-                  <div className="text-lg leading-6 text-brand-30">{attacksToday.attacksWeekCount} this week</div>
+                  <div className="text-lg leading-6 text-brand-30 uppercase">
+                    {attacksToday.attacksWeekCount} this week
+                  </div>
                 )}
               </div>
             }

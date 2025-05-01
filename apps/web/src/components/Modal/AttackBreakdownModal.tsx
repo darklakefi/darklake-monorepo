@@ -78,7 +78,7 @@ export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
             <div
               key={`${row.title}-${row.transaction.address}${row.transaction.address}-${row.transaction.signature}`}
               className={cn(
-                "md:flex flex-row items-center w-full gap-x-[7px] md:mb-6 relative",
+                "md:flex flex-row items-center w-full gap-x-2 md:mb-6 relative",
                 "uppercase text-lg leading-5",
                 "group",
               )}
@@ -88,17 +88,22 @@ export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
               <div
                 className={cn(
                   "text-brand-20 md:w-[264px]",
-                  "flex flex-row items-center justify-center py-[18px] bg-brand-70 relative",
+                  "flex flex-row items-center justify-center py-5 bg-brand-70 relative",
                 )}
               >
                 <i className={cn("text-[22px] hn mr-4", row.iconClassName)} />
                 <p>{row.title}</p>
-                <span className="max-md:hidden ml-[5px] h-px w-[74px] bg-brand-50 flex-1" />
+                <span className="max-md:hidden ml-1 h-px w-20 bg-brand-50 flex-1" />
               </div>
               <div className=" text-brand-30 border border-brand-60 p-5 flex-1 relative">
                 <p className="text-brand-20">{row.details}</p>
                 <p>{truncate(row.transaction.signature)}</p>
-                <a href="#" className="underline" title="View Transaction" target="_blank">
+                <a
+                  href={`${process.env.NEXT_PUBLIC_EXPLORER_URL}/tx/${row.transaction.signature}`}
+                  className="underline"
+                  title="View Transaction"
+                  target="_blank"
+                >
                   View TX
                 </a>
               </div>

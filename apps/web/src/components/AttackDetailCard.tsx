@@ -16,11 +16,12 @@ const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCar
     }
   };
 
+  const extractedPercentageRounded = Number(((mevAttack.solAmount.lost / mevAttack.solAmount.sent) * 100).toFixed(2));
   return (
     <div className="flex flex-col bg-brand-60 gap-4 p-4 h-full">
       <div className="flex flex-col">
         {cardTitle && <div className="text-lg leading-6 text-brand-20">{cardTitle}</div>}
-        <div className="text-lg leading-6 text-brand-30">TOKEN: {mevAttack.tokenName}</div>
+        <div className="text-lg leading-6 text-brand-30 uppercase">TOKEN: {mevAttack.tokenName}</div>
         <div className="text-lg leading-6 text-brand-30">
           {format(mevAttack.timestamp || new Date(), "yyyy-MM-dd HH:mm 'UTC'")}
         </div>
@@ -28,10 +29,10 @@ const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCar
       <div className="flex flex-col gap-3 py-4 border-t border-b border-brand-40">
         <div className="text-3xl leading-8">{mevAttack.solAmount.lost} SOL LOST</div>
         <div className="text-lg leading-6">
-          <ProgressBar progress={(mevAttack.solAmount.lost / mevAttack.solAmount.sent) * 100} />
+          <ProgressBar progress={extractedPercentageRounded} />
         </div>
         <div className="flex flex-col">
-          <div className="text-lg leading-6 text-brand-20">64% EXTRACTED</div>
+          <div className="text-lg leading-6 text-brand-20">{`${extractedPercentageRounded}% EXTRACTED`}</div>
           <div className="text-lg leading-6 text-brand-30">FROM A {mevAttack.solAmount.sent} SOL TRANSACTION</div>
         </div>
       </div>

@@ -69,6 +69,9 @@ export default {
       minWidth: {
         "3xl": "720px",
       },
+      maxWidth: {
+        "2xl": "38.5rem",
+      },
     },
   },
   plugins: [],
