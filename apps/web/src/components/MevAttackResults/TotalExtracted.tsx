@@ -2,11 +2,30 @@
 
 import Button from "@/components/Button";
 import ProgressBar from "@/components/ProgressBar";
-import { shareOnTwitter } from "@/utils/browser";
 import { cn } from "@/utils/common";
-import { getSiteUrl } from "@/utils/env";
 import { formatMoney } from "@/utils/number";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+enum ImageSaveStatus {
+  IDLE = "IDLE",
+  SAVING = "SAVING",
+  SAVED = "SAVED",
+  ERROR = "ERROR",
+}
+
+const saveImageButtonText = (imageSaveStatus: ImageSaveStatus) => {
+  switch (imageSaveStatus) {
+    case ImageSaveStatus.SAVING:
+      return "Saving Image...";
+    case ImageSaveStatus.SAVED:
+      return "Image Saved";
+    case ImageSaveStatus.ERROR:
+      return "Error";
+    default:
+      return "Share your MEV loss";
+  }
+}
 
 export default function TotalExtracted({
   solAmount,
@@ -19,15 +38,26 @@ export default function TotalExtracted({
   address: string;
   processingBlocks?: { total: number; completed: number };
 }) {
+  const [imageSaveStatus, setImageSaveStatus] = useState<ImageSaveStatus>(ImageSaveStatus.IDLE);
   const solAmountFormatted = formatMoney(solAmount, 5);
   const solAmountParts = solAmountFormatted.split(".");
-
-  const siteUrl = (getSiteUrl() || "darklake.fi").replaceAll("http://", "").replaceAll("https://", "");
-
   const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
 
   const router = useRouter();
   router.prefetch(`/mev/${address}`);
+  async function copyImageToClipboard(address: string) {
+    setImageSaveStatus(ImageSaveStatus.SAVING);
+    const response = await fetch(`/api/generate-mev-share-image?address=${address}`);
+    console.log({ response });
+    const blob = await response.blob();
+    console.log({ blob })
+    const clipboardItem = new ClipboardItem({ [blob.type]: blob });
+    await navigator.clipboard.write([clipboardItem]);
+    setImageSaveStatus(ImageSaveStatus.SAVED);
+  }
+
+
+
 
   return (
     <div className={cn("bg-brand-10 p-6 shadow-3xl shadow-brand-80", "text-brand-30 uppercase font-primary text-3xl")}>
@@ -58,14 +88,13 @@ export default function TotalExtracted({
       {progress > 50 && solAmount > 0 && (
         <Button
           className="w-full mt-8"
-          onClick={() =>
-            shareOnTwitter(
-              `I lost ${solAmountFormatted} SOL to MEV` +
-                `\n\nCheck how much you got MEV'd at ${siteUrl}/mev/${address}`,
+          onClick={async () =>
+            await copyImageToClipboard(
+              address
             )
           }
         >
-          Expose the truth on <i className="hn hn-x text-xl" />
+          {saveImageButtonText(imageSaveStatus)}
         </Button>
       )}
     </div>

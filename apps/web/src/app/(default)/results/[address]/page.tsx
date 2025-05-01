@@ -1,10 +1,10 @@
 "use client";
 
-import { notFound, useParams } from "next/navigation";
 import MevAttackResults from "@/components/MevAttackResults";
-import { isValidSolanaAddress } from "@/utils/blockchain";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import { LocalStorage } from "@/constants/storage";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { isValidSolanaAddress } from "@/utils/blockchain";
+import { notFound, useParams } from "next/navigation";
 
 export default function Page() {
   const params = useParams<{ address: string }>();
