@@ -6,7 +6,7 @@ import { cn } from "@/utils/common";
 import { formatMoney } from "@/utils/number";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import { toast } from "react-toastify";
 enum ImageSaveStatus {
   IDLE = "IDLE",
   SAVING = "SAVING",
@@ -19,13 +19,13 @@ const saveImageButtonText = (imageSaveStatus: ImageSaveStatus) => {
     case ImageSaveStatus.SAVING:
       return "Saving Image...";
     case ImageSaveStatus.SAVED:
-      return "Image Saved";
+      return "Image Saved to Clipboard";
     case ImageSaveStatus.ERROR:
       return "Error";
     default:
       return "Share your MEV loss";
   }
-}
+};
 
 export default function TotalExtracted({
   solAmount,
@@ -45,19 +45,20 @@ export default function TotalExtracted({
 
   const router = useRouter();
   router.prefetch(`/mev/${address}`);
-  async function copyImageToClipboard(address: string) {
+
+  async function copyImageToClipboard(event: React.MouseEvent<HTMLButtonElement>, address: string) {
+    event.preventDefault();
     setImageSaveStatus(ImageSaveStatus.SAVING);
-    const response = await fetch(`/api/generate-mev-share-image?address=${address}`);
-    console.log({ response });
-    const blob = await response.blob();
-    console.log({ blob })
-    const clipboardItem = new ClipboardItem({ [blob.type]: blob });
-    await navigator.clipboard.write([clipboardItem]);
+
+    const imageToSave = new ClipboardItem({
+      "image/png": fetch(`/api/generate-mev-share-image?address=${address}`)
+        .then((response) => response.blob())
+        .then((blob) => new Blob([blob], { type: "image/png" })),
+    });
+    navigator.clipboard.write([imageToSave]);
+    toast.success("Image saved to clipboard");
     setImageSaveStatus(ImageSaveStatus.SAVED);
   }
-
-
-
 
   return (
     <div className={cn("bg-brand-10 p-6 shadow-3xl shadow-brand-80", "text-brand-30 uppercase font-primary text-3xl")}>
@@ -86,14 +87,7 @@ export default function TotalExtracted({
         </div>
       )}
       {progress > 50 && solAmount > 0 && (
-        <Button
-          className="w-full mt-8"
-          onClick={async () =>
-            await copyImageToClipboard(
-              address
-            )
-          }
-        >
+        <Button className="w-full mt-8" onPointerDown={async (event) => await copyImageToClipboard(event, address)}>
           {saveImageButtonText(imageSaveStatus)}
         </Button>
       )}
