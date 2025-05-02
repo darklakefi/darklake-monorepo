@@ -21,9 +21,8 @@ const Header = () => {
     <header className="flex flex-row justify-between items-center z-20 py-16">
       <div className="flex items-center justify-between gap-x-[11px]">
         <Link href="/" title="Darklake.fi" className="active:opacity-80">
-          <Image src="/images/logo-h-darklake.png" alt="darklake logo" height={24} width={147} />
+          <Image src="/images/logo-h-darklake-beta.svg" alt="darklake logo" height={24} width={213} />
         </Link>
-        <p className="font-primary text-lg text-brand-30 select-none">BETA</p>
       </div>
       {isResultsPage && lookupAddress ? (
         <ConnectedWalletDropdown
