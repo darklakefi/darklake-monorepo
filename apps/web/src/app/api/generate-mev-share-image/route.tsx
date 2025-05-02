@@ -3,13 +3,6 @@ import { getSiteUrl } from "@/utils/env";
 import { ImageResponse } from "@vercel/og";
 import { NextRequest } from "next/server";
 
-export const alt = "Check how much you got MEV'd at darklake.fi";
-export const size = {
-  width: 1080,
-  height: 1080,
-};
-export const contentType = "image/png";
-
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const address = searchParams.get("address");
