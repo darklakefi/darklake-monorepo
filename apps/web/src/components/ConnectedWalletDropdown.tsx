@@ -25,7 +25,7 @@ export default function ConnectedWalletDropdown(props: ConnectedWalletDropdownPr
             <i className="hn hn-wallet text-2xl leading-none"></i>
             <div className="flex flex-row items-center gap-2">
               {truncate(currentWalletAddress, 6)}
-              {open ? <i className="hn hn-angle-up text-[16px]"></i> : <i className="hn hn-angle-down text-[16px]"></i>}
+              {open ? <i className="hn hn-angle-up text-4"></i> : <i className="hn hn-angle-down text-4"></i>}
             </div>
           </PopoverButton>
           <PopoverPanel anchor="bottom" className="z-[1] mt-3 bg-brand-60 p-2 shadow-md shadow-brand-80">

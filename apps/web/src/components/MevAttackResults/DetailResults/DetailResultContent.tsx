@@ -21,22 +21,22 @@ const TAB_NAMES = [
 
 const sortOptions = [
   {
-    title: "DATE",
+    title: "OLDEST FIRST",
     orderBy: MevAttacksOrderBy.DATE,
     direction: SortDirection.ASC,
   },
   {
-    title: "DATE",
+    title: "NEWEST FIRST",
     orderBy: MevAttacksOrderBy.DATE,
     direction: SortDirection.DESC,
   },
   {
-    title: "AMOUNT",
+    title: "LARGEST LOSS",
     orderBy: MevAttacksOrderBy.AMOUNT_DRAINED,
     direction: SortDirection.DESC,
   },
   {
-    title: "AMOUNT",
+    title: "SMALLEST LOSS",
     orderBy: MevAttacksOrderBy.AMOUNT_DRAINED,
     direction: SortDirection.ASC,
   },
@@ -66,19 +66,15 @@ export default function DetailResultContent({ address }: { address: string }) {
           <Popover className="">
             {({ open }) => (
               <>
-                <PopoverButton as="div" className={cn(open ? "opacity-70" : "opacity-100")}>
+                <PopoverButton as="div" className={cn(open ? "opacity-70" : "opacity-100", "cursor-pointer")}>
                   <div className="flex flex-row items-center gap-2 text-[#1A9A56] p-2">
                     <button className="text-[18px] uppercase">sort by: {activeSortOption?.title}</button>
-                    {activeSortOption?.direction === SortDirection.ASC ? (
-                      <i className="hn hn-angle-up text-4"></i>
-                    ) : (
-                      <i className="hn hn-angle-down text-4"></i>
-                    )}
+                    {open ? <i className="hn hn-angle-up text-4"></i> : <i className="hn hn-angle-down text-4"></i>}
                   </div>
                 </PopoverButton>
                 <PopoverPanel anchor="bottom" className="z-[1] bg-brand-70 p-2 shadow-3xl shadow-brand-80">
                   {({ close }) => (
-                    <div className="flex flex-col p-2">
+                    <div className="flex flex-col p-2 cursor-pointer">
                       {sortOptions.map((option) => (
                         <div
                           key={`list-sort-${option.direction}-${option.orderBy}`}
@@ -88,7 +84,7 @@ export default function DetailResultContent({ address }: { address: string }) {
                           }}
                           className={cn(
                             "flex justify-center items-center",
-                            "text-[18px] uppercase gap-2 cursor-pointer px-2",
+                            "text-[18px] uppercase gap-2 px-2",
                             "hover:bg-brand-50",
                             option.orderBy === activeSortOption?.orderBy &&
                               option.direction === activeSortOption?.direction
@@ -97,11 +93,6 @@ export default function DetailResultContent({ address }: { address: string }) {
                           )}
                         >
                           <p>{option.title}</p>
-                          {option.direction === SortDirection.ASC ? (
-                            <i className="hn hn-angle-up text-4"></i>
-                          ) : (
-                            <i className="hn hn-angle-down text-4"></i>
-                          )}
                         </div>
                       ))}
                     </div>
