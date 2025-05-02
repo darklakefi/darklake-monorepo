@@ -17,7 +17,6 @@
   }
 }
 
-
 .Toastify__toast {
   @apply bg-neutral-dark text-neutral-grey uppercase font-secondary text-lg leading-6;
   @apply shadow-[4px_4px_0px_0px] shadow-brand-80;
