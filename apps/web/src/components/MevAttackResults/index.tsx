@@ -39,9 +39,9 @@ export default function MevAttackResults({ address }: { address: string }) {
       </div>
     </CheckMevAttackWrapper>
   ) : (
-    <div className="relative">
-      <div className="lg:flex flex-row space-between items-center relative lg:pb-20 max-sm:mb-20">
-        <div className="lg:w-[400px] max-lg:mb-20">
+    <div>
+      <div className="lg:flex flex-row gap-12 items-end">
+        <div className="lg:w-96 mb-20">
           <TotalExtracted
             solAmount={data?.data?.totalSolExtracted ?? 0}
             usdAmount={data?.data?.totalUsdExtracted}
@@ -51,7 +51,7 @@ export default function MevAttackResults({ address }: { address: string }) {
         </div>
         <WaddlesWithMessage solAmount={data?.data?.totalSolExtracted ?? 0} />
       </div>
-      <div className="bg-brand-70 p-6 shadow-3xl shadow-brand-80">
+      <div className="bg-brand-70 p-6 shadow-3xl shadow-brand-80 mb-20">
         <DetailResults address={address} />
       </div>
     </div>

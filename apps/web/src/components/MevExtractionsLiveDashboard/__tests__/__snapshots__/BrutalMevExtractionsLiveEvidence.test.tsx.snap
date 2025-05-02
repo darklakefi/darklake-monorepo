@@ -7,7 +7,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
       <h2
         class="text-3xl uppercase text-brand-30 font-primary mb-4"
       >
-        Brutal MEV Extractions 
+        Brutal MEV Extractions
         <span
           class="text-brand-20"
         >
@@ -27,7 +27,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
               class="flex flex-col"
             >
               <div
-                class="text-body-2 text-brand-20"
+                class="text-lg leading-6 text-brand-20"
               >
                 <span
                   class="uppercase"
@@ -37,13 +37,13 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 </span>
               </div>
               <div
-                class="text-body-2 text-brand-30"
+                class="text-lg leading-6 text-brand-30"
               >
-                TOKEN: 
+                TOKEN:
                 TRUMP
               </div>
               <div
-                class="text-body-2 text-brand-30"
+                class="text-lg leading-6 text-brand-30"
               >
                 2024-03-26 00:00 UTC
               </div>
@@ -52,13 +52,13 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
               class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
             >
               <div
-                class="text-body"
+                class="text-3xl leading-8"
               >
                 50
                  SOL LOST
               </div>
               <div
-                class="text-body-2"
+                class="text-lg leading-6"
               >
                 <div
                   class="text-lg flex flex-row overflow-hidden select-none"
@@ -81,21 +81,21 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="text-body-2 text-brand-20"
+                  class="text-lg leading-6 text-brand-20"
                 >
                   64% EXTRACTED
                 </div>
                 <div
-                  class="text-body-2 text-brand-30"
+                  class="text-lg leading-6 text-brand-30"
                 >
-                  FROM A 
+                  FROM A
                   100
                    SOL TRANSACTION
                 </div>
               </div>
             </div>
             <button
-              class="text-link text-brand-30 w-fit"
+              class="uppercase underline text-lg leading-6 text-brand-30 w-fit"
             >
               View attack breakdown
             </button>
@@ -111,7 +111,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
               class="flex flex-col"
             >
               <div
-                class="text-body-2 text-brand-20"
+                class="text-lg leading-6 text-brand-20"
               >
                 <span
                   class="uppercase"
@@ -121,13 +121,13 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 </span>
               </div>
               <div
-                class="text-body-2 text-brand-30"
+                class="text-lg leading-6 text-brand-30"
               >
-                TOKEN: 
+                TOKEN:
                 TRUMP
               </div>
               <div
-                class="text-body-2 text-brand-30"
+                class="text-lg leading-6 text-brand-30"
               >
                 2024-03-28 00:00 UTC
               </div>
@@ -136,13 +136,13 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
               class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
             >
               <div
-                class="text-body"
+                class="text-3xl leading-8"
               >
                 10
                  SOL LOST
               </div>
               <div
-                class="text-body-2"
+                class="text-lg leading-6"
               >
                 <div
                   class="text-lg flex flex-row overflow-hidden select-none"
@@ -165,21 +165,21 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="text-body-2 text-brand-20"
+                  class="text-lg leading-6 text-brand-20"
                 >
                   64% EXTRACTED
                 </div>
                 <div
-                  class="text-body-2 text-brand-30"
+                  class="text-lg leading-6 text-brand-30"
                 >
-                  FROM A 
+                  FROM A
                   200
                    SOL TRANSACTION
                 </div>
               </div>
             </div>
             <button
-              class="text-link text-brand-30 w-fit"
+              class="uppercase underline text-lg leading-6 text-brand-30 w-fit"
             >
               View attack breakdown
             </button>

@@ -1,7 +1,6 @@
 "use client";
 
-import { truncate } from "@/utils/common";
-import { cn } from "@/utils/common";
+import { cn, truncate } from "@/utils/common";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 
 interface ConnectedWalletDropdownProps {
@@ -32,7 +31,7 @@ export default function ConnectedWalletDropdown(props: ConnectedWalletDropdownPr
           <PopoverPanel anchor="bottom" className="z-[1] mt-3 bg-brand-60 p-2 shadow-md shadow-brand-80">
             {({ close }) => (
               <div
-                className="uppercase text-body-2 text-brand-30 cursor-pointer"
+                className="uppercase text-lg leading-6 text-brand-30 cursor-pointer"
                 onClick={() => {
                   close();
                   onOpenCheckOtherAddressModal?.();

@@ -11,8 +11,8 @@ describe("<SummaryCard />", () => {
           title="Total Extracted"
           content={
             <div className="flex flex-col gap-[2px] py-[1px]">
-              <div className="text-body text-brand-20">16.32 SOL</div>
-              <div className="text-body-2 text-brand-30">2,774.32 USDC</div>
+              <div className="text-3xl leading-8 text-brand-20">16.32 SOL</div>
+              <div className="text-lg leading-6 text-brand-30">2,774.32 USDC</div>
             </div>
           }
         />,
@@ -31,7 +31,7 @@ describe("<SummaryCard />", () => {
           title="Confirmed Attack"
           content={
             <div className="flex flex-col gap-[2px] py-[1px]">
-              <div className="text-body text-brand-20">47</div>
+              <div className="text-3xl leading-8 text-brand-20">47</div>
             </div>
           }
         />,

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/utils/common";
+import Image from "next/image";
 
 type WaddlesWithMessageProps = {
   solAmount: number;
@@ -9,25 +9,25 @@ type WaddlesWithMessageProps = {
 
 export default function WaddlesWithMessage({ solAmount }: WaddlesWithMessageProps) {
   const className = {
-    wrapper: "flex-1 sm:flex flex-row justify-center lg:justify-end max-lg:items-center max-lg:gap-x-10",
-    message: "text-brand-30 uppercase font-primary text-2xl text-right max-sm:text-center [&>strong]:text-brand-20",
-    image: "lg:absolute right-0 bottom-0 max-sm:hidden",
+    wrapper: "flex-1 sm:flex flex-row items-center lg:justify-end max-lg:items-center max-lg:gap-x-10 gap-6",
+    message: "flex-1 text-brand-30 uppercase font-primary text-2xl text-right max-sm:text-center max-w-80 mx-auto",
+    image: "max-sm:hidden self-end",
   };
 
   if (solAmount < 1) {
     return (
-      <div className={cn(className.wrapper, "lg:pr-[382px]")}>
-        <p className={cn(className.message, "sm:w-[274px]")}>
+      <div className={cn(className.wrapper, "")}>
+        <p className={cn(className.message, "")}>
           Well Played!
           <br />
           <br />
           Your wallet has managed to dodge most MEV attacks.
           <br />
           <br />
-          You&#39;re <strong>trading smarter than most.</strong>
+          You&#39;re <span className="text-brand-20">trading smarter than most.</span>
         </p>
         <Image
-          className={cn(className.image)}
+          className={className.image}
           src="/images/image-waddles-4.png"
           alt="Waddles"
           width={349.18}
@@ -37,17 +37,17 @@ export default function WaddlesWithMessage({ solAmount }: WaddlesWithMessageProp
     );
   }
 
-  if (solAmount > 10) {
+  if (solAmount < 10) {
     return (
-      <div className={cn(className.wrapper, "lg:pr-[350px]")}>
-        <p className={cn(className.message, "sm:w-[210px]")}>
+      <div className={className.wrapper}>
+        <p className={className.message}>
           Ouch!
           <br />
           <br />
-          Your wallet was <strong>heavily impacted</strong> by MEV attacks
+          Your wallet was <span className="text-brand-20">heavily impacted</span> by MEV attacks
         </p>
         <Image
-          className={cn(className.image, "max-lg:relative -bottom-5")}
+          className={cn(className.image, "translate-y-6")}
           src="/images/image-waddles-2.png"
           alt="Waddles"
           width={318}
@@ -58,12 +58,12 @@ export default function WaddlesWithMessage({ solAmount }: WaddlesWithMessageProp
   }
 
   return (
-    <div className={cn(className.wrapper, "lg:pr-[234px]")}>
-      <p className={cn(className.message, "sm:w-[307px]")}>
+    <div className={className.wrapper}>
+      <p className={className.message}>
         You&#39;ve lost some value to MEV -
         <br />
         <br />
-        not getting rekt, but still <strong>leaving money on the table.</strong>
+        not getting rekt, but still <span className="text-brand-20">leaving money on the table.</span>
       </p>
       <Image
         className={cn(className.image)}

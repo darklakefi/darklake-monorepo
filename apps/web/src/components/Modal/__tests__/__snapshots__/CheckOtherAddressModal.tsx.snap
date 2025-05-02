@@ -86,13 +86,13 @@ exports[`<CheckOtherAddressModal /> displays content successfully when open 1`] 
                               class="font-secondary text-lg max-md:text-xs leading-6 w-full text-brand-30 uppercase cursor-text"
                             >
                               Enter or
-                               
+
                               <button
                                 class="uppercase font-secondary text-lg leading-6 button underline bg-brand-50 text-brand-20 hover:bg-brand-50 focus:outline-none active:ring-[1px] active:bg-brand-50 active:ring-brand-20 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-50 px-3 py-1 max-md:text-xs"
                               >
                                 Paste
                               </button>
-                               
+
                               Solana address...
                             </div>
                           </div>
@@ -102,12 +102,12 @@ exports[`<CheckOtherAddressModal /> displays content successfully when open 1`] 
                         class="flex flex-col gap-1"
                       >
                         <div
-                          class="uppercase text-body-2 text-brand-30"
+                          class="uppercase text-lg leading-6 text-brand-30"
                         >
                           address currently added:
                         </div>
                         <div
-                          class="text-body-2 text-brand-20 break-all"
+                          class="text-lg leading-6 text-brand-20 break-all"
                         />
                       </div>
                     </div>

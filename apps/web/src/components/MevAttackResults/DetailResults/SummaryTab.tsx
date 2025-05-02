@@ -1,9 +1,9 @@
-import { MevAttack, MevTotalExtracted } from "@/types/Mev";
-import { useState } from "react";
-import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
-import { formatMoney } from "@/utils/number";
-import SummaryCard from "@/components/SummaryCard";
 import AttackDetailCard from "@/components/AttackDetailCard";
+import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
+import SummaryCard from "@/components/SummaryCard";
+import { MevAttack, MevTotalExtracted } from "@/types/Mev";
+import { formatMoney } from "@/utils/number";
+import { useState } from "react";
 
 type SummaryTabProps = {
   mevAttacks: MevAttack[];
@@ -30,18 +30,20 @@ const SummaryTab = ({ mevAttacks, totalAttacks, totalExtracted }: SummaryTabProp
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-row gap-4 opacit">
         <div className="flex-1">
           <SummaryCard
             title="Total Extracted"
             content={
               <div className="flex flex-col gap-1 py-0.5">
-                <div className="text-body text-brand-20">
+                <div className="text-3xl leading-8 text-brand-20">
                   {solAmountParts[0]}
                   {!!solAmountParts[1] && `.${solAmountParts[1]}`} SOL
                 </div>
                 {totalExtracted?.totalUsdExtracted && (
-                  <div className="text-body-2 text-brand-30">{formatMoney(totalExtracted?.totalUsdExtracted)} USDC</div>
+                  <div className="text-lg leading-6 text-brand-30">
+                    {formatMoney(totalExtracted?.totalUsdExtracted)} USDC
+                  </div>
                 )}
               </div>
             }
@@ -52,7 +54,7 @@ const SummaryTab = ({ mevAttacks, totalAttacks, totalExtracted }: SummaryTabProp
             title="Confirmed Attack"
             content={
               <div className="flex flex-col gap-1 py-0.5">
-                <div className="text-body text-brand-20">{totalAttacks}</div>
+                <div className="text-3xl leading-8 text-brand-20">{totalAttacks}</div>
               </div>
             }
           />
@@ -83,8 +85,8 @@ const BlurredMode = () => {
             title="Total Extracted"
             content={
               <div className="flex flex-col gap-1 py-0.5">
-                <div className="text-body text-brand-20">██.██ SOL</div>
-                <div className="text-body-2 text-brand-30">████.██ USDC</div>
+                <div className="text-3xl leading-8 text-brand-20">██.██ SOL</div>
+                <div className="text-lg leading-6 text-brand-30">████.██ USDC</div>
               </div>
             }
           />
@@ -94,7 +96,7 @@ const BlurredMode = () => {
             title="Confirmed Attack"
             content={
               <div className="flex flex-col gap-1 py-0.5">
-                <div className="text-body text-brand-20">██</div>
+                <div className="text-3xl leading-8 text-brand-20">██</div>
               </div>
             }
           />
