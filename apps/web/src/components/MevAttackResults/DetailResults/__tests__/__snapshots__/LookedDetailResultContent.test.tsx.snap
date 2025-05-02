@@ -36,10 +36,10 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                 class="flex-1"
               >
                 <div
-                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                  class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
                 >
                   <div
-                    class="text-lg leading-6 text-brand-30"
+                    class="text-lg leading-6 text-brand-30 uppercase"
                   >
                     Total Extracted
                   </div>
@@ -63,10 +63,10 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                 class="flex-1 max-md:hidden"
               >
                 <div
-                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                  class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
                 >
                   <div
-                    class="text-lg leading-6 text-brand-30"
+                    class="text-lg leading-6 text-brand-30 uppercase"
                   >
                     Confirmed Attack
                   </div>
@@ -285,24 +285,24 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
             class="flex flex-col gap-[20px] text-lg leading-6 text-center"
           >
             <div>
-               ********************************
+               ******************************** 
             </div>
             <div
               class="uppercase"
             >
-               * ACCESS DENIED *
+               * ACCESS DENIED * 
             </div>
             <div>
-               ********************************
+               ******************************** 
             </div>
           </div>
           <button
-            class="uppercase font-secondary text-lg leading-6 button bg-brand-10 text-brand-70 px-[12px] py-[5px] hover:bg-brand-20 focus:outline-none active:ring-[1px] active:bg-brand-10 active:ring-brand-10 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-10"
+            class="uppercase font-secondary button text-lg leading-6 bg-brand-10 text-brand-70 px-[12px] py-[5px] hover:bg-brand-20 focus:outline-none active:ring-[1px] active:bg-brand-10 active:ring-brand-10 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-10"
           >
             <span
               class="flex flex-row justify-center items-center"
             >
-              Connect
+              Connect 
               <i
                 class="hn hn-x text-brand-30 mx-2"
               />

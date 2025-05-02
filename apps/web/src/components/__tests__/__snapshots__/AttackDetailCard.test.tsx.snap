@@ -12,7 +12,7 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
         <div
           class="text-lg leading-6 text-brand-30"
         >
-          TOKEN:
+          TOKEN: 
           TRUMP
         </div>
         <div
@@ -61,7 +61,7 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
           <div
             class="text-lg leading-6 text-brand-30"
           >
-            FROM A
+            FROM A 
             100
              SOL TRANSACTION
           </div>
@@ -89,7 +89,7 @@ exports[`<AttackDetailCard /> displays attack detail 1`] = `
         <div
           class="text-lg leading-6 text-brand-30"
         >
-          TOKEN:
+          TOKEN: 
           TRUMP
         </div>
         <div
@@ -138,7 +138,7 @@ exports[`<AttackDetailCard /> displays attack detail 1`] = `
           <div
             class="text-lg leading-6 text-brand-30"
           >
-            FROM A
+            FROM A 
             100
              SOL TRANSACTION
           </div>

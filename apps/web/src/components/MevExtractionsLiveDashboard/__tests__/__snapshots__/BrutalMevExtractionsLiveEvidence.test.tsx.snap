@@ -7,7 +7,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
       <h2
         class="text-3xl uppercase text-brand-30 font-primary mb-4"
       >
-        Brutal MEV Extractions
+        Brutal MEV Extractions 
         <span
           class="text-brand-20"
         >
@@ -39,7 +39,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
               <div
                 class="text-lg leading-6 text-brand-30"
               >
-                TOKEN:
+                TOKEN: 
                 TRUMP
               </div>
               <div
@@ -88,7 +88,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 <div
                   class="text-lg leading-6 text-brand-30"
                 >
-                  FROM A
+                  FROM A 
                   100
                    SOL TRANSACTION
                 </div>
@@ -123,7 +123,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
               <div
                 class="text-lg leading-6 text-brand-30"
               >
-                TOKEN:
+                TOKEN: 
                 TRUMP
               </div>
               <div
@@ -172,7 +172,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 <div
                   class="text-lg leading-6 text-brand-30"
                 >
-                  FROM A
+                  FROM A 
                   200
                    SOL TRANSACTION
                 </div>
