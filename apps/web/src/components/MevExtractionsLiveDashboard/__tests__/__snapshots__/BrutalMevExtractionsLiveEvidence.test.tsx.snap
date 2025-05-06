@@ -37,7 +37,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 </span>
               </div>
               <div
-                class="text-lg leading-6 text-brand-30"
+                class="text-lg leading-6 text-brand-30 uppercase"
               >
                 TOKEN: 
                 TRUMP
@@ -81,7 +81,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="text-lg leading-6 text-brand-20"
+                  class="text-lg leading-6 text-brand-20 uppercase"
                 >
                   50% EXTRACTED
                 </div>
@@ -121,7 +121,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 </span>
               </div>
               <div
-                class="text-lg leading-6 text-brand-30"
+                class="text-lg leading-6 text-brand-30 uppercase"
               >
                 TOKEN: 
                 TRUMP
@@ -165,7 +165,7 @@ exports[`<BrutalMevExtractionsLiveEvidence /> renders successfully 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="text-lg leading-6 text-brand-20"
+                  class="text-lg leading-6 text-brand-20 uppercase"
                 >
                   5% EXTRACTED
                 </div>

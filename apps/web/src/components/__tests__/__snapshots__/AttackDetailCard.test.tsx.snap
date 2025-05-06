@@ -10,7 +10,7 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
         class="flex flex-col"
       >
         <div
-          class="text-lg leading-6 text-brand-30"
+          class="text-lg leading-6 text-brand-30 uppercase"
         >
           TOKEN: 
           TRUMP
@@ -54,7 +54,7 @@ exports[`<AttackDetailCard /> display attack detail with top index 1`] = `
           class="flex flex-col"
         >
           <div
-            class="text-lg leading-6 text-brand-20"
+            class="text-lg leading-6 text-brand-20 uppercase"
           >
             30% EXTRACTED
           </div>
@@ -87,7 +87,7 @@ exports[`<AttackDetailCard /> displays attack detail 1`] = `
         class="flex flex-col"
       >
         <div
-          class="text-lg leading-6 text-brand-30"
+          class="text-lg leading-6 text-brand-30 uppercase"
         >
           TOKEN: 
           TRUMP
@@ -131,7 +131,7 @@ exports[`<AttackDetailCard /> displays attack detail 1`] = `
           class="flex flex-col"
         >
           <div
-            class="text-lg leading-6 text-brand-20"
+            class="text-lg leading-6 text-brand-20 uppercase"
           >
             30% EXTRACTED
           </div>
