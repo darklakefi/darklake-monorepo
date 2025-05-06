@@ -67,6 +67,8 @@ export default {
         md: "4px 4px 0px 0px",
       },
       minWidth: {
+        sm: "320px",
+        "2xl": "628px",
         "3xl": "720px",
       },
     },
