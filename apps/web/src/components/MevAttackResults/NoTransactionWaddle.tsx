@@ -17,18 +17,11 @@ export default function NoTransactionWaddle() {
           <h1 className="font-primary text-3xl leading-7 text-brand-30 mb-8 md:min-w-2xl">
             <span className="text-brand-20">Try another one chief</span>
             <br />
-            <div className="md:max-w-sm">
-            You haven&apos;t made any 
-            transactions on Solana 
-            with this wallet.
-            </div>
+            <div className="md:max-w-sm">You haven&apos;t made any transactions on Solana with this wallet.</div>
           </h1>
           <AddressMevLookup />
         </div>
-        <div className={cn(
-          "flex items-center justify-end flex-1",
-            className.image
-          )}>
+        <div className={cn("flex items-center justify-end flex-1", className.image)}>
           <Image src="/images/waddles/pose6.png" alt="Waddles" width={350} height={477} />
         </div>
       </div>
