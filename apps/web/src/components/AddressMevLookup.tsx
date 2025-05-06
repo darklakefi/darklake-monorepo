@@ -99,7 +99,7 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
         )}
         {isInputVisible && (
           <div className="flex items-center">
-            <span className="font-secondary text-lg leading-6 tracking-normal text-brand-30 select-none mr-3">
+            <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">
               &gt;
             </span>
 
@@ -108,7 +108,7 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
               ref={inputRef}
               className={cn(
                 "w-full bg-transparent min-w-0 max-w-full border-none break-all",
-                "focus:outline-none font-secondary text-lg leading-6 tracking-normal text-brand-20",
+                "focus:outline-none font-secondary text-lg leading-6 text-brand-20",
               )}
               onInput={(e) => handleInputChange(e)}
               onBlur={() => {
