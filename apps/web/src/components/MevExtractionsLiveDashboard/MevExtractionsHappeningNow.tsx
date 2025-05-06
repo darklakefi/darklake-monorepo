@@ -34,13 +34,13 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
 
     const drainTodayContent = (
       <div className="flex flex-col gap-1 py-0.5">
-        <div className="text-body text-brand-20">
+        <div className="text-3xl leading-8 text-brand-20">
           {formattedDrainToday.solAmount.wholePart}
           {!!formattedDrainToday.solAmount.fractionalPart && `.${formattedDrainToday.solAmount.fractionalPart} `}
           SOL
         </div>
         {formattedDrainToday.usdAmount !== "0" && (
-          <div className="text-body-2 text-brand-30">{formattedDrainToday.usdAmount} USDC</div>
+          <div className="text-lg leading-6 text-brand-30">{formattedDrainToday.usdAmount} USDC</div>
         )}
       </div>
     );
@@ -62,13 +62,13 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
 
     const weekTotalContent = (
       <div className="flex flex-col gap-1 py-0.5">
-        <div className="text-body text-brand-20">
+        <div className="text-3xl leading-8 text-brand-20">
           {formattedWeekTotal.solAmount.wholePart}
           {!!formattedWeekTotal.solAmount.fractionalPart && `.${formattedWeekTotal.solAmount.fractionalPart} `}
           SOL
         </div>
         {formattedWeekTotal.usdAmount !== "0" && (
-          <div className="text-body-2 text-brand-30">{formattedWeekTotal.usdAmount} USDC</div>
+          <div className="text-lg leading-6 text-brand-30">{formattedWeekTotal.usdAmount} USDC</div>
         )}
       </div>
     );
@@ -95,9 +95,9 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
             title="Attacks Today"
             content={
               <div className="flex flex-col gap-1 py-0.5">
-                <div className="text-body text-brand-20">{attacksToday.attacksTodayCount}</div>
+                <div className="text-3xl leading-8 text-brand-20">{attacksToday.attacksTodayCount}</div>
                 {attacksToday.attacksWeekCount > 0 && (
-                  <div className="text-body-2 text-brand-30">{attacksToday.attacksWeekCount} this week</div>
+                  <div className="text-lg leading-6 text-brand-30">{attacksToday.attacksWeekCount} this week</div>
                 )}
               </div>
             }

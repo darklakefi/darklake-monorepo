@@ -10,8 +10,8 @@ export default function CheckOtherAddressModal(props: ModalProps) {
       <div className="flex flex-col gap-8 lg:min-w-3xl">
         <AddressMevLookup onSubmit={props.onClose} />
         <div className="flex flex-col gap-1">
-          <div className="uppercase text-body-2 text-brand-30">address currently added:</div>
-          <div className="text-body-2 text-brand-20 break-all">{lookupAddress}</div>
+          <div className="uppercase text-lg leading-6 text-brand-30">address currently added:</div>
+          <div className="text-lg leading-6 text-brand-20 break-all">{lookupAddress}</div>
         </div>
       </div>
     </Modal>

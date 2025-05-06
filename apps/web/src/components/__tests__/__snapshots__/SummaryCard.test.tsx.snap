@@ -4,10 +4,10 @@ exports[`<SummaryCard /> displays content successfully 1`] = `
 <body>
   <div>
     <div
-      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+      class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
     >
       <div
-        class="text-body-2 text-brand-30"
+        class="text-lg leading-6 text-brand-30 uppercase"
       >
         Total Extracted
       </div>
@@ -15,12 +15,12 @@ exports[`<SummaryCard /> displays content successfully 1`] = `
         class="flex flex-col gap-[2px] py-[1px]"
       >
         <div
-          class="text-body text-brand-20"
+          class="text-3xl leading-8 text-brand-20"
         >
           16.32 SOL
         </div>
         <div
-          class="text-body-2 text-brand-30"
+          class="text-lg leading-6 text-brand-30"
         >
           2,774.32 USDC
         </div>
@@ -34,10 +34,10 @@ exports[`<SummaryCard /> displays content successfully 2`] = `
 <body>
   <div>
     <div
-      class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+      class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
     >
       <div
-        class="text-body-2 text-brand-30"
+        class="text-lg leading-6 text-brand-30 uppercase"
       >
         Confirmed Attack
       </div>
@@ -45,7 +45,7 @@ exports[`<SummaryCard /> displays content successfully 2`] = `
         class="flex flex-col gap-[2px] py-[1px]"
       >
         <div
-          class="text-body text-brand-20"
+          class="text-3xl leading-8 text-brand-20"
         >
           47
         </div>
