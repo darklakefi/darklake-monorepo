@@ -4,19 +4,19 @@ exports[`<Footer /> renders successfully 1`] = `
 <body>
   <div>
     <footer
-      class="flex flex-col sm:flex-row justify-between items-center z-20"
+      class="flex flex-col sm:flex-row justify-between items-center z-20 py-20"
     >
       <div
         class="flex items-center justify-between gap-x-10 max-sm:mb-10"
       >
         <button
-          class="uppercase underline text-brand-30 text-lg leading-6 hover-with-active"
+          class="uppercase underline text-brand-30 text-lg leading-6 tracking-normal hover-with-active"
         >
           What is MEV?
         </button>
         <a
-          class="uppercase underline text-brand-30 text-lg leading-6 hover-with-active"
-          href="https://x.com/pyvitor"
+          class="uppercase underline text-brand-30 text-lg leading-6 tracking-normal hover-with-active"
+          href="https://x.com/messages/1701007592-920037331624759296"
           target="_blank"
           title="Report a bug"
         >

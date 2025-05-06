@@ -17,12 +17,14 @@ export default function DetailResultHeader({ address, processedTime, isSignedWit
       )}
     >
       <div className="flex flex-col">
-        <div className="text-lg leading-6 text-brand-20 max-sm:text-4">== CONFIDENTIAL: MEV INCIDENT REPORT ==</div>
-        <div className="flex flex-row flex-wrap gap-3 text-lg leading-6 text-brand-30">
+        <div className="text-lg leading-6 tracking-normal text-brand-20 max-sm:text-4">
+          == CONFIDENTIAL: MEV INCIDENT REPORT ==
+        </div>
+        <div className="flex flex-row flex-wrap gap-3 text-lg leading-6 tracking-normal text-brand-30">
           <div>VICTIM WALLET:&nbsp;</div>
           <div className="uppercase">{truncate(address)}</div>
         </div>
-        <div className="flex flex-row flex-wrap gap-3 text-lg leading-6 text-brand-30">
+        <div className="flex flex-row flex-wrap gap-3 text-lg leading-6 tracking-normal text-brand-30">
           <div>CASE PROCESSED:&nbsp;</div>
           <div>{format(processedTime, "yyyy-MM-dd HH:mm 'UTC'")}</div>
         </div>

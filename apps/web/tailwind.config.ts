@@ -10,7 +10,9 @@ const colors = {
     50: "#09351D",
     60: "#062916",
     70: "#041C0F",
-    80: "#010804",
+    80: "#03160B",
+    90: "#041C0F",
+    100: "#010804",
   },
   "modal-backdrop": "rgba(1,15,6,0.9)",
   neutral: {
@@ -55,6 +57,10 @@ export default {
       lineHeight: {
         "3xl": "30px",
       },
+      letterSpacing: {
+        normal: "0.01em",
+        wide: "0.02em",
+      },
       borderRadius: {
         "4xl": "2.5rem",
       },
@@ -68,6 +74,9 @@ export default {
       },
       minWidth: {
         "3xl": "720px",
+      },
+      maxWidth: {
+        "2xl": "38.5rem",
       },
     },
   },

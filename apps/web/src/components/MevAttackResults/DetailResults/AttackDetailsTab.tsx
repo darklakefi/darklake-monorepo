@@ -36,7 +36,7 @@ const AttackDetailsTab = ({ mevAttacks, hasMore, onLoadMore, isLoadingMore }: At
 
       {hasMore && !isLoadingMore && (
         <button className="w-fit text-center bg-brand-60 px-3 py-1 hover-with-active mx-auto" onClick={onLoadMore}>
-          <div className="text-lg leading-6 text-brand-20">Load More</div>
+          <div className="text-lg leading-6 tracking-normal text-brand-20">Load More</div>
         </button>
       )}
 
