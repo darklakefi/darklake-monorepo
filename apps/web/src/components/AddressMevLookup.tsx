@@ -99,9 +99,7 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
         )}
         {isInputVisible && (
           <div className="flex items-center">
-            <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">
-              &gt;
-            </span>
+            <span className="font-secondary text-lg leading-6 text-brand-30 select-none mr-3">&gt;</span>
 
             <div
               contentEditable={true}
