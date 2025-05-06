@@ -82,7 +82,7 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
               &gt;
             </span>
             <div
-              className="font-secondary text-lg max-md:text-xs leading-6 tracking-normal w-full text-brand-30 uppercase cursor-text"
+              className="font-secondary text-lg max-md:text-xs leading-6 w-full text-brand-30 uppercase cursor-text"
               onClick={(ref) => {
                 if (ref.currentTarget === ref.target) {
                   setIsInputVisible(true);
@@ -128,7 +128,8 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
         {!isSubmitDisabled && (
           <Link
             className={cn(
-              "font-secondary text-lg leading-6 tracking-normal uppercase bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20",
+              "font-secondary text-lg leading-6 tracking-normal uppercase",
+              "bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20",
               "disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10",
               "active:ring-offset-2 active:ring-offset-black ml-3 flex-shrink-0",
               "max-md:hidden",
@@ -154,7 +155,8 @@ const AddressMevLookup = (props: AddressMevLookupProps) => {
       {!isSubmitDisabled && (
         <Link
           className={cn(
-            "font-secondary text-lg leading-6 tracking-normal uppercase bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20",
+            "font-secondary text-lg leading-6 tracking-normal uppercase ",
+            "bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20",
             "disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10",
             "active:ring-offset-2 active:ring-offset-black flex-shrink-0",
             "text-center w-full max-md:block md:hidden",
