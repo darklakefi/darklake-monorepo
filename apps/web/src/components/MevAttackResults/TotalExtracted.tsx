@@ -2,11 +2,30 @@
 
 import Button from "@/components/Button";
 import ProgressBar from "@/components/ProgressBar";
-import { shareOnTwitter } from "@/utils/browser";
 import { cn } from "@/utils/common";
-import { getSiteUrl } from "@/utils/env";
 import { formatMoney } from "@/utils/number";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
+enum ImageSaveStatus {
+  IDLE = "IDLE",
+  SAVING = "SAVING",
+  SAVED = "SAVED",
+  ERROR = "ERROR",
+}
+
+const saveImageButtonText = (imageSaveStatus: ImageSaveStatus) => {
+  switch (imageSaveStatus) {
+    case ImageSaveStatus.SAVING:
+      return "Saving Image...";
+    case ImageSaveStatus.SAVED:
+      return "Image Saved to Clipboard";
+    case ImageSaveStatus.ERROR:
+      return "Error";
+    default:
+      return "Share your MEV loss";
+  }
+};
 
 export default function TotalExtracted({
   solAmount,
@@ -19,15 +38,27 @@ export default function TotalExtracted({
   address: string;
   processingBlocks?: { total: number; completed: number };
 }) {
+  const [imageSaveStatus, setImageSaveStatus] = useState<ImageSaveStatus>(ImageSaveStatus.IDLE);
   const solAmountFormatted = formatMoney(solAmount, 5);
   const solAmountParts = solAmountFormatted.split(".");
-
-  const siteUrl = (getSiteUrl() || "darklake.fi").replaceAll("http://", "").replaceAll("https://", "");
-
   const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
 
   const router = useRouter();
   router.prefetch(`/mev/${address}`);
+
+  async function copyImageToClipboard(event: React.MouseEvent<HTMLButtonElement>, address: string) {
+    event.preventDefault();
+    setImageSaveStatus(ImageSaveStatus.SAVING);
+
+    const imageToSave = new ClipboardItem({
+      "image/png": fetch(`/api/generate-mev-share-image?address=${address}`)
+        .then((response) => response.blob())
+        .then((blob) => new Blob([blob], { type: "image/png" })),
+    });
+    navigator.clipboard.write([imageToSave]);
+    toast.success("Image saved to clipboard");
+    setImageSaveStatus(ImageSaveStatus.SAVED);
+  }
 
   return (
     <div className={cn("bg-brand-10 p-6 shadow-3xl shadow-brand-80", "text-brand-30 uppercase font-primary text-3xl")}>
@@ -56,16 +87,8 @@ export default function TotalExtracted({
         </div>
       )}
       {progress > 50 && solAmount > 0 && (
-        <Button
-          className="w-full mt-8"
-          onClick={() =>
-            shareOnTwitter(
-              `I lost ${solAmountFormatted} SOL to MEV` +
-                `\n\nCheck how much you got MEV'd at ${siteUrl}/mev/${address}`,
-            )
-          }
-        >
-          Expose the truth on <i className="hn hn-x text-xl" />
+        <Button className="w-full mt-8" onPointerDown={async (event) => await copyImageToClipboard(event, address)}>
+          {saveImageButtonText(imageSaveStatus)}
         </Button>
       )}
     </div>
