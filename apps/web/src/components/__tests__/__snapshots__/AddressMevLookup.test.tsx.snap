@@ -18,7 +18,7 @@ exports[`<AddressMevLookup /> renders successfully 1`] = `
             &gt;
           </span>
           <div
-            class="font-secondary text-lg max-md:text-xs leading-6 tracking-normal w-full text-brand-30 uppercase cursor-text"
+            class="font-secondary text-lg max-md:text-xs leading-6 w-full text-brand-30 uppercase cursor-text"
           >
             Enter or
              
