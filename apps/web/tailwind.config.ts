@@ -57,6 +57,10 @@ export default {
       lineHeight: {
         "3xl": "30px",
       },
+      letterSpacing: {
+        normal: "0.01em",
+        wide: "0.02em",
+      },
       borderRadius: {
         "4xl": "2.5rem",
       },

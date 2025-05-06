@@ -32,7 +32,7 @@ export default function ToastContentExtended({
       {!!action && (
         <button
           className={cn(
-            "mt-[16px] text-lg leading-6 uppercase underline",
+            "mt-[16px] text-lg leading-6 tracking-normal uppercase underline",
             "disabled:opacity-50 focus:outline-none active:bg-transparent",
             "active:ring-[1px] active:ring-offset-[3px] active:ring-offset-black",
             toastProps?.type && typeToActionClassName[toastProps.type],

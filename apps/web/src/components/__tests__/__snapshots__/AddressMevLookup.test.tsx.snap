@@ -13,17 +13,17 @@ exports[`<AddressMevLookup /> renders successfully 1`] = `
           class="flex items-center w-full"
         >
           <span
-            class="font-secondary text-lg leading-6 text-brand-30 select-none mr-3"
+            class="font-secondary text-lg leading-6 tracking-normal text-brand-30 select-none mr-3"
           >
             &gt;
           </span>
           <div
-            class="font-secondary text-lg max-md:text-xs leading-6 w-full text-brand-30 uppercase cursor-text"
+            class="font-secondary text-lg max-md:text-xs leading-6 tracking-normal w-full text-brand-30 uppercase cursor-text"
           >
             Enter or
              
             <button
-              class="uppercase font-secondary button text-lg leading-6 underline bg-brand-50 text-brand-20 hover:bg-brand-50 focus:outline-none active:ring-[1px] active:bg-brand-50 active:ring-brand-20 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-50 px-3 py-1 max-md:text-xs"
+              class="uppercase font-secondary button text-lg leading-6 tracking-normal underline bg-brand-50 text-brand-20 hover:bg-brand-50 focus:outline-none active:ring-[1px] active:bg-brand-50 active:ring-brand-20 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-50 px-3 py-1 max-md:text-xs"
             >
               Paste
             </button>

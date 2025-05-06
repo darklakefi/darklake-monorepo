@@ -26,7 +26,7 @@ export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
   return (
     <Modal title="Attack breakdown" {...props}>
       <div className="lg:w-[960px]">
-        <div className="uppercase text-lg leading-6 text-brand-30 mb-6">
+        <div className="uppercase text-lg leading-6 tracking-normal text-brand-30 mb-6">
           <p>Token: {mevAttack.tokenName}</p>
           <p>Date: {format(mevAttack.timestamp, "yyyy-MM-dd hh:mm OOO")}</p>
         </div>
@@ -41,7 +41,7 @@ export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
           ].map((row) => (
             <div key={row.title} className="uppercase">
               <p className="text-3xl leading-9 text-brand-20">{row.value}</p>
-              <p className="text-lg leading-6 text-brand-30">{row.title}</p>
+              <p className="text-lg leading-6 tracking-normal text-brand-30">{row.title}</p>
             </div>
           ))}
         </div>

@@ -63,7 +63,7 @@ exports[`<Modal /> displays content successfully when open 1`] = `
                     </button>
                   </div>
                   <div
-                    class="font-secondary text-lg leading-6 text-brand-30"
+                    class="font-secondary text-lg leading-6 tracking-normal text-brand-30"
                   >
                     Some content.
                   </div>
