@@ -4,9 +4,10 @@ import TotalExtracted from "@/components/MevAttackResults/TotalExtracted";
 import WaddlesWithMessage from "@/components/MevAttackResults/WaddlesWithMessage";
 import useGetTotalExtracted from "@/hooks/api/useGetTotalExtracted";
 import { GetMevTotalExtractedResponse } from "@/types/Mev";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DetailResults from "./DetailResults";
 import { MevAttackLoadingScreen } from "./MevAttackLoadingScreen";
+import useCheckAddressExist from "@/hooks/api/useCheckAddressExist";
 
 interface MevAttackResultsProps {
   address: string;
@@ -17,12 +18,19 @@ export default function MevAttackResults({ address, mevAttackResults }: MevAttac
     mevAttackResults.processingBlocks.completed === mevAttackResults.processingBlocks.total;
   const [showLoadingScreen, setShowLoadingScreen] = useState(!blockProcessingComplete);
   const { data: dynamicData } = useGetTotalExtracted(address, mevAttackResults);
+  const { isAddressExist } = useCheckAddressExist(address);
 
   if (!blockProcessingComplete) {
     setTimeout(() => {
       setShowLoadingScreen(false);
     }, 5000);
   }
+
+  useEffect(() => {
+    if (isAddressExist === true) {
+      setShowLoadingScreen(false);
+    }
+  }, [isAddressExist]);
 
   if (showLoadingScreen) {
     return <MevAttackLoadingScreen />;

@@ -123,3 +123,12 @@ export interface GetMevSummaryResponse {
   extracted7days: MevAttacksSummary;
   mevAttacks: MevAttack[];
 }
+
+export class CheckAddressExistQuery {
+  @Validate(IsValidSolanaAddress)
+  address: string;
+}
+
+export interface CheckAddressExistResponse {
+  addressExist: boolean;
+}

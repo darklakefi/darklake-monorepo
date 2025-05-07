@@ -51,3 +51,18 @@
   background-position: center;
   background-size: contain;
 }
+
+.animate-dots::after {
+  content: "...";
+  display: inline-block;
+  letter-spacing: 0.02em;
+  text-align: left;
+  animation: dots 1s infinite;
+}
+
+@keyframes dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}

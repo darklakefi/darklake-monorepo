@@ -7,6 +7,7 @@ import { cn } from "@/utils/common";
 import { formatMoney } from "@/utils/number";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 enum ImageSaveStatus {
   IDLE = "IDLE",
@@ -68,8 +69,16 @@ export default function TotalExtracted({ address, mevAttackResults }: TotalExtra
       </div>
       {totalUsdExtracted && <p>{formatMoney(totalUsdExtracted)} USDC</p>}
       {!processingBlocks && (
-        <Button className="w-full mt-8" disabled>
-          / Analyzing blockchain evidence
+        <Button className="w-full mt-8 flex flex-row items-center gap-3" disabled>
+          <Image
+            priority
+            src="/images/loading.svg"
+            alt="Loading"
+            width={24}
+            height={24}
+            className="animate-spin"
+            /> 
+          Analyzing blockchain evidence
         </Button>
       )}
       {!!processingBlocks && progress !== 100 && processingBlocks.total > 0 && (
