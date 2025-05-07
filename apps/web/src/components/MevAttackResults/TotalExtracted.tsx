@@ -70,14 +70,7 @@ export default function TotalExtracted({ address, mevAttackResults }: TotalExtra
       {totalUsdExtracted && <p>{formatMoney(totalUsdExtracted)} USDC</p>}
       {!processingBlocks && (
         <Button className="w-full mt-8 flex flex-row items-center gap-3" disabled>
-          <Image
-            priority
-            src="/images/loading.svg"
-            alt="Loading"
-            width={24}
-            height={24}
-            className="animate-spin"
-            /> 
+          <Image priority src="/images/loading.svg" alt="Loading" width={24} height={24} className="animate-spin" />
           Analyzing blockchain evidence
         </Button>
       )}

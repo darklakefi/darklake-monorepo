@@ -325,7 +325,7 @@ export class MevService {
   async checkAddressExist(query: CheckAddressExistQuery): Promise<CheckAddressExistResponse> {
     const cacheKey = getCacheKeyWithParams(CacheKey.ADDRESS_EXIST, [query.address]);
     const cached = await this.cacheManager.get<boolean>(cacheKey);
-    
+
     if (cached !== undefined) {
       return { addressExist: cached };
     }
