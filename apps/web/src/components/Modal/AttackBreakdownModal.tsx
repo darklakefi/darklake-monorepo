@@ -1,7 +1,7 @@
 import Modal, { ModalProps } from "@/components/Modal";
 import { MevAttack, MevAttackSwapType } from "@/types/Mev";
 import { format } from "date-fns";
-import { formatPercentage } from "@/utils/number";
+import { formatMoney, formatPercentage } from "@/utils/number";
 import { cn, truncate } from "@/utils/common";
 
 interface AttackBreakdownModalProps extends ModalProps {
@@ -22,6 +22,8 @@ export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
   }
 
   const isVictimBuy = mevAttack.swapType === MevAttackSwapType.BUY;
+  const solAmountLostFormatted = formatMoney(mevAttack.solAmount.lost);
+  const solAmountSentFormatted = formatMoney(mevAttack.solAmount.sent);
 
   return (
     <Modal title="Attack breakdown" {...props}>
@@ -32,12 +34,12 @@ export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
         </div>
         <div className="flex flex-row justify-between items-center p-5 bg-brand-60 mb-6">
           {[
-            { title: "Total lost", value: `${mevAttack.solAmount.lost} SOL` },
+            { title: "Total lost", value: `${solAmountLostFormatted} SOL` },
             {
               title: "Extracted",
               value: `${formatPercentage((mevAttack.solAmount.lost / mevAttack.solAmount.sent) * 100)}%`,
             },
-            { title: "TX size", value: `${mevAttack.solAmount.sent} SOL` },
+            { title: "TX size", value: `${solAmountSentFormatted} SOL` },
           ].map((row) => (
             <div key={row.title} className="uppercase">
               <p className="text-3xl leading-9 text-brand-20">{row.value}</p>
@@ -60,8 +62,8 @@ export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
               title: "Victim Transaction",
               iconClassName: "hn-refresh-solid",
               details:
-                `Swap: ${isVictimBuy ? `${mevAttack.solAmount.sent} SOL` : mevAttack.tokenName} ` +
-                `→ ${isVictimBuy ? mevAttack.tokenName : `${mevAttack.solAmount.sent} SOL`} ` +
+                `Swap: ${isVictimBuy ? `${solAmountSentFormatted} SOL` : mevAttack.tokenName} ` +
+                `→ ${isVictimBuy ? mevAttack.tokenName : `${solAmountSentFormatted} SOL`} ` +
                 `– executed at ${isVictimBuy ? "inflated" : "dropped"} price`,
               transaction: mevAttack.transactions.victim,
             },
@@ -71,7 +73,7 @@ export default function AttackBreakdownModal(props: AttackBreakdownModalProps) {
               details:
                 `Attacker ${isVictimBuy ? "sells" : "buys"} ${mevAttack.tokenName} ` +
                 `tokens at ${isVictimBuy ? "peak" : "floor"} price ` +
-                `– value extracted: ${mevAttack.solAmount.lost} SOL`,
+                `– value extracted: ${solAmountLostFormatted} SOL`,
               transaction: mevAttack.transactions.frontRun,
             },
           ].map((row) => (

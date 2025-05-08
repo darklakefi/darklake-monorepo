@@ -21,7 +21,7 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
   const { drainToday, weekTotal, attacksToday } = props;
 
   const { drainTodayContent } = useMemo(() => {
-    const solAmountFormatted = formatMoney(drainToday?.amountSol ?? 0, 5);
+    const solAmountFormatted = formatMoney(drainToday?.amountSol ?? 0);
     const solAmountParts = solAmountFormatted.split(".");
 
     const formattedDrainToday = {
@@ -49,7 +49,7 @@ export default function MevExtractionsHappeningNow(props: MevExtractionsHappenin
   }, [drainToday]);
 
   const { weekTotalContent } = useMemo(() => {
-    const solAmountFormatted = formatMoney(weekTotal?.amountSol ?? 0, 5);
+    const solAmountFormatted = formatMoney(weekTotal?.amountSol ?? 0);
     const solAmountParts = solAmountFormatted.split(".");
 
     const formattedWeekTotal = {
