@@ -1,5 +1,6 @@
 import ProgressBar from "@/components/ProgressBar";
 import { MevAttack } from "@/types/Mev";
+import { formatMoney } from "@/utils/number";
 import { format } from "date-fns";
 import { ReactNode } from "react";
 
@@ -27,7 +28,7 @@ const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCar
         </div>
       </div>
       <div className="flex flex-col gap-3 py-4 border-t border-b border-brand-40">
-        <div className="text-3xl leading-8 tracking-wide">{mevAttack.solAmount.lost} SOL LOST</div>
+        <div className="text-3xl leading-8 tracking-wide">{formatMoney(mevAttack.solAmount.lost)} SOL LOST</div>
         <div className="text-lg leading-6 tracking-normal">
           <ProgressBar progress={extractedPercentageRounded} />
         </div>
@@ -36,7 +37,7 @@ const AttackDetailCard = ({ mevAttack, cardTitle, onOpenModal }: AttackDetailCar
             {`${extractedPercentageRounded}% EXTRACTED`}
           </div>
           <div className="text-lg leading-6 tracking-normal text-brand-30">
-            FROM A {mevAttack.solAmount.sent} SOL TRANSACTION
+            FROM A {formatMoney(mevAttack.solAmount.sent)} SOL TRANSACTION
           </div>
         </div>
       </div>

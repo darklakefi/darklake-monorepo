@@ -39,7 +39,7 @@ export default function TotalExtracted({
   processingBlocks?: { total: number; completed: number };
 }) {
   const [imageSaveStatus, setImageSaveStatus] = useState<ImageSaveStatus>(ImageSaveStatus.IDLE);
-  const solAmountFormatted = formatMoney(solAmount, 5);
+  const solAmountFormatted = formatMoney(solAmount);
   const solAmountParts = solAmountFormatted.split(".");
   const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
 

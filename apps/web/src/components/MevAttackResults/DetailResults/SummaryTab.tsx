@@ -25,7 +25,7 @@ const SummaryTab = ({ mevAttacks, totalAttacks, totalExtracted }: SummaryTabProp
     setIsOpenBreakdownModal(false);
   };
 
-  const solAmountFormatted = formatMoney(totalExtracted?.totalSolExtracted ?? 0, 5);
+  const solAmountFormatted = formatMoney(totalExtracted?.totalSolExtracted ?? 0);
   const solAmountParts = solAmountFormatted.split(".");
 
   return (
