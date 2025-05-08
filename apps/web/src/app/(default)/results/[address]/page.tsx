@@ -1,22 +1,18 @@
-"use client";
-
 import MevAttackResults from "@/components/MevAttackResults";
-import { LocalStorage } from "@/constants/storage";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import { isValidSolanaAddress } from "@/utils/blockchain";
-import { notFound, useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 
-export default function Page() {
-  const params = useParams<{ address: string }>();
-  const [lookupAddress, setLookupAddress] = useLocalStorage<string | null>(LocalStorage.LOOKUP_ADDRESS, null);
+interface PageProps {
+  params: Promise<{
+    address: string;
+  }>;
+}
 
-  if (!params.address || !isValidSolanaAddress(params.address)) {
+export default async function Page({ params }: PageProps) {
+  const { address } = await params;
+  if (!address || !isValidSolanaAddress(address)) {
     notFound();
   }
 
-  if (lookupAddress !== params.address) {
-    setLookupAddress(params.address);
-  }
-
-  return <MevAttackResults address={params.address} />;
+  return <MevAttackResults address={address} />;
 }

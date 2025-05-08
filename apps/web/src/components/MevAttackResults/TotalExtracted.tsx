@@ -4,7 +4,6 @@ import Button from "@/components/Button";
 import ProgressBar from "@/components/ProgressBar";
 import { cn } from "@/utils/common";
 import { formatMoney } from "@/utils/number";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 enum ImageSaveStatus {
@@ -42,9 +41,6 @@ export default function TotalExtracted({
   const solAmountFormatted = formatMoney(solAmount);
   const solAmountParts = solAmountFormatted.split(".");
   const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
-
-  const router = useRouter();
-  router.prefetch(`/mev/${address}`);
 
   async function copyImageToClipboard(event: React.MouseEvent<HTMLButtonElement>, address: string) {
     event.preventDefault();

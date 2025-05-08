@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
 import Tabs from "@/components/Tabs";
-import SummaryTab from "./SummaryTab";
-import AttackDetailsTab from "./AttackDetailsTab";
-import useGetTopAttacks from "@/hooks/api/useGetTopAttacks";
 import useGetAttackList from "@/hooks/api/useGetAttackList";
+import useGetTopAttacks from "@/hooks/api/useGetTopAttacks";
 import useGetTotalExtracted from "@/hooks/api/useGetTotalExtracted";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { cn } from "@/utils/common";
 import { MevAttacksOrderBy } from "@/types/Mev";
 import { SortDirection } from "@/types/Pagination";
+import { cn } from "@/utils/common";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { useMemo, useState } from "react";
+import AttackDetailsTab from "./AttackDetailsTab";
+import SummaryTab from "./SummaryTab";
 
 const TAB_NAMES = [
   {

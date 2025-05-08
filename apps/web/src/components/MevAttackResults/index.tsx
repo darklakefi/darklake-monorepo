@@ -1,17 +1,19 @@
-"use client";
-
-import CheckMevAttackWrapper from "@/components/MevAttackResults/CheckMevAttackWrapper";
 import TotalExtracted from "@/components/MevAttackResults/TotalExtracted";
 import WaddlesWithMessage from "@/components/MevAttackResults/WaddlesWithMessage";
-import useGetTotalExtracted from "@/hooks/api/useGetTotalExtracted";
+import axiosClient from "@/services/axiosClient";
+import { GetMevTotalExtractedResponse } from "@/types/Mev";
 import Image from "next/image";
+import CheckMevAttackWrapper from "./CheckMevAttackWrapper";
 import DetailResults from "./DetailResults";
 import NoTransactionWaddle from "./NoTransactionWaddle";
+export default async function MevAttackResults({ address }: { address: string }) {
+  const res = await axiosClient.get<GetMevTotalExtractedResponse>("v1/mev/total-extracted", {
+    params: {
+      address,
+    },
+  });
 
-import { useState } from "react";
-export default function MevAttackResults({ address }: { address: string }) {
-  const { data } = useGetTotalExtracted(address);
-  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+  const data = res.data;
 
   const accountHasNoTransactions = data?.processingBlocks.total === 0;
 
@@ -19,26 +21,26 @@ export default function MevAttackResults({ address }: { address: string }) {
     return <NoTransactionWaddle />;
   }
 
-  setTimeout(() => {
-    setShowLoadingScreen(false);
-  }, 5000);
+  if (data.processingBlocks.completed < data.processingBlocks.total * 0.1) {
+    return (
+      <CheckMevAttackWrapper>
+        <div className="flex items-center justify-between select-none">
+          <div className="flex-1">
+            <h1 className="font-primary text-3xl leading-7 text-brand-30 mb-8">
+              Analyzing The Blocks
+              <br />
+              <span className="text-brand-20">This might take a few seconds.</span>
+            </h1>
+          </div>
+          <div className="flex items-center justify-end flex-1">
+            <Image src="/images/waddles/pose6.png" alt="Waddles" width={350} height={477} />
+          </div>
+        </div>
+      </CheckMevAttackWrapper>
+    );
+  }
 
-  return showLoadingScreen ? (
-    <CheckMevAttackWrapper>
-      <div className="flex items-center justify-between select-none">
-        <div className="flex-1">
-          <h1 className="font-primary text-3xl leading-7 text-brand-30 mb-8">
-            Analyzing The Blocks
-            <br />
-            <span className="text-brand-20">This might take a few seconds.</span>
-          </h1>
-        </div>
-        <div className="flex items-center justify-end flex-1">
-          <Image src="/images/waddles/pose6.png" alt="Waddles" width={350} height={477} />
-        </div>
-      </div>
-    </CheckMevAttackWrapper>
-  ) : (
+  return (
     <div>
       <div className="lg:flex flex-row gap-12 items-end">
         <div className="lg:w-96 mb-20">
