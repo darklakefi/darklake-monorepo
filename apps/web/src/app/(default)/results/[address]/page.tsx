@@ -1,22 +1,35 @@
-"use client";
-
 import MevAttackResults from "@/components/MevAttackResults";
-import { LocalStorage } from "@/constants/storage";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import NoTransactionWaddle from "@/components/MevAttackResults/NoTransactionWaddle";
+import axiosClient from "@/services/axiosClient";
+import { GetMevTotalExtractedResponse } from "@/types/Mev";
 import { isValidSolanaAddress } from "@/utils/blockchain";
-import { notFound, useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 
-export default function Page() {
-  const params = useParams<{ address: string }>();
-  const [lookupAddress, setLookupAddress] = useLocalStorage<string | null>(LocalStorage.LOOKUP_ADDRESS, null);
+interface PageProps {
+  params: Promise<{
+    address: string;
+  }>;
+}
 
-  if (!params.address || !isValidSolanaAddress(params.address)) {
+export default async function Page({ params }: PageProps) {
+  const { address } = await params;
+  if (!address || !isValidSolanaAddress(address)) {
     notFound();
   }
 
-  if (lookupAddress !== params.address) {
-    setLookupAddress(params.address);
+  const res = await axiosClient.get<GetMevTotalExtractedResponse>("v1/mev/total-extracted", {
+    params: {
+      address,
+    },
+  });
+
+  const data = res.data;
+
+  const accountHasNoTransactions = data?.processingBlocks.total === 0;
+
+  if (accountHasNoTransactions) {
+    return <NoTransactionWaddle />;
   }
 
-  return <MevAttackResults address={params.address} />;
+  return <MevAttackResults address={address} mevAttackResults={data} />;
 }
