@@ -2,10 +2,12 @@
 
 import Button from "@/components/Button";
 import ProgressBar from "@/components/ProgressBar";
+import { GetMevTotalExtractedResponse } from "@/types/Mev";
 import { cn } from "@/utils/common";
 import { formatMoney } from "@/utils/number";
 import { useState } from "react";
 import { toast } from "react-toastify";
+
 enum ImageSaveStatus {
   IDLE = "IDLE",
   SAVING = "SAVING",
@@ -26,19 +28,18 @@ const saveImageButtonText = (imageSaveStatus: ImageSaveStatus) => {
   }
 };
 
-export default function TotalExtracted({
-  solAmount,
-  usdAmount,
-  address,
-  processingBlocks,
-}: {
-  solAmount: number;
-  usdAmount?: number;
+export interface TotalExtractedProps {
   address: string;
-  processingBlocks?: { total: number; completed: number };
-}) {
+  mevAttackResults: GetMevTotalExtractedResponse;
+}
+
+export default function TotalExtracted({ address, mevAttackResults }: TotalExtractedProps) {
   const [imageSaveStatus, setImageSaveStatus] = useState<ImageSaveStatus>(ImageSaveStatus.IDLE);
-  const solAmountFormatted = formatMoney(solAmount);
+
+  const { processingBlocks } = mevAttackResults;
+  const totalSolExtracted = mevAttackResults?.data?.totalSolExtracted ?? 0;
+  const totalUsdExtracted = mevAttackResults?.data?.totalUsdExtracted;
+  const solAmountFormatted = formatMoney(totalSolExtracted);
   const solAmountParts = solAmountFormatted.split(".");
   const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
 
@@ -65,7 +66,7 @@ export default function TotalExtracted({
           {!!solAmountParts[1] && `.${solAmountParts[1]}`} SOL
         </p>
       </div>
-      {usdAmount && <p>{formatMoney(usdAmount)} USDC</p>}
+      {totalUsdExtracted && <p>{formatMoney(totalUsdExtracted)} USDC</p>}
       {!processingBlocks && (
         <Button className="w-full mt-8" disabled>
           / Analyzing blockchain evidence
@@ -82,7 +83,7 @@ export default function TotalExtracted({
           </div>
         </div>
       )}
-      {progress > 50 && solAmount > 0 && (
+      {progress > 50 && totalSolExtracted > 0 && (
         <Button className="w-full mt-8" onPointerDown={async (event) => await copyImageToClipboard(event, address)}>
           {saveImageButtonText(imageSaveStatus)}
         </Button>

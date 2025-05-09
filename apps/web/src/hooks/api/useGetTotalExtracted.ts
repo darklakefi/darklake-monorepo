@@ -20,11 +20,12 @@ const getTotalExtracted = async ({
   return res.data;
 };
 
-const useGetTotalExtracted = (address: string) => {
+const useGetTotalExtracted = (address: string, initialData?: GetMevTotalExtractedResponse) => {
   const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ["getTotalExtracted", address],
     queryFn: getTotalExtracted,
-    enabled: !!address,
+    enabled: !!address && initialData?.processingBlocks?.completed === initialData?.processingBlocks?.total,
+    initialData,
     refetchInterval: 10_000,
   });
 
