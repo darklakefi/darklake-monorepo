@@ -30,7 +30,7 @@ const SummaryTab = ({ mevAttacks, totalAttacks, totalExtracted }: SummaryTabProp
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-row gap-4 opacit">
+      <div className="flex flex-row gap-4">
         <div className="flex-1">
           <SummaryCard
             title="Total Extracted"
@@ -86,7 +86,7 @@ const BlurredMode = () => {
             content={
               <div className="flex flex-col gap-1 py-0.5">
                 <div className="text-3xl leading-8 tracking-wide text-brand-20">██.██ SOL</div>
-                <div className="text-lg leading-6 tracking-normal tracking-wide text-brand-30">████.██ USDC</div>
+                <div className="text-lg leading-6 tracking-normal text-brand-30">████.██ USDC</div>
               </div>
             }
           />

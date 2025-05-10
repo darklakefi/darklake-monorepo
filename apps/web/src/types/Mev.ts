@@ -50,3 +50,7 @@ export interface GetMevSummaryResponse {
   extracted7days: MevAttacksSummary;
   mevAttacks: MevAttack[];
 }
+
+export interface CheckAddressExistResponse {
+  addressExist: boolean;
+}

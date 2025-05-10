@@ -12,6 +12,8 @@ import { PaginatedResponse, PaginatedResponseDataLimit } from "../types/Paginati
 import { formatSolAmount } from "../utils/blockchain";
 import { CacheTime, getCacheKeyWithParams } from "../utils/cache";
 import {
+  CheckAddressExistQuery,
+  CheckAddressExistResponse,
   GetMevAttacksQuery,
   GetMevSummaryResponse,
   GetMevTotalExtractedQuery,
@@ -28,6 +30,7 @@ enum CacheKey {
   MEV_EVENTS_PROCESSED_BLOCKS = "MEV_EVENTS_PROCESSED_BLOCKS",
   MEV_EVENTS_LOOKUP_BLOCKS = "MEV_EVENTS_LOOKUP_BLOCKS",
   MEV_EVENTS_SUMMARY = "MEV_EVENTS_SUMMARY",
+  ADDRESS_EXIST = "ADDRESS_EXIST",
 }
 
 @Injectable()
@@ -103,8 +106,19 @@ export class MevService {
 
   async getTotalExtracted(query: GetMevTotalExtractedQuery): Promise<GetMevTotalExtractedResponse> {
     const lookupBlocks = await this.getLookupBlocks(query.address);
+    // account has no transactions on solana
+    if (lookupBlocks.length === 0) {
+      return {
+        processingBlocks: {
+          completed: 0,
+          total: 0,
+        },
+      };
+    }
+
+    // no blocks processed yet
     const processedBlocks = await this.getProcessedBlocks(query.address, lookupBlocks);
-    if (processedBlocks.length === 0 && lookupBlocks.length === 0) {
+    if (processedBlocks.length === 0) {
       return {
         processingBlocks: {
           completed: 0,
@@ -306,5 +320,24 @@ export class MevService {
     }
 
     return sqlQuery;
+  }
+
+  async checkAddressExist(query: CheckAddressExistQuery): Promise<CheckAddressExistResponse> {
+    const cacheKey = getCacheKeyWithParams(CacheKey.ADDRESS_EXIST, [query.address]);
+    const cached = await this.cacheManager.get<boolean>(cacheKey);
+
+    if (cached !== undefined) {
+      return { addressExist: cached };
+    }
+
+    const address = query.address;
+    const addressExist = await this.prismaService.sandwichEvent.findFirst({
+      where: { victim_address: address },
+    });
+    const exists = !!addressExist;
+
+    await this.cacheManager.set(cacheKey, exists, CacheTime.ONE_DAY);
+
+    return { addressExist: exists };
   }
 }

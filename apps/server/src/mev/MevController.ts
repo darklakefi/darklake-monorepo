@@ -1,6 +1,6 @@
 import { Controller, Get, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 
-import { GetMevAttacksQuery, GetMevTotalExtractedQuery } from "./model/Mev";
+import { CheckAddressExistQuery, GetMevAttacksQuery, GetMevTotalExtractedQuery } from "./model/Mev";
 import { MevService } from "./MevService";
 import { SupabaseAuthGuard } from "../guard/SupabaseAuthGuard";
 
@@ -13,6 +13,11 @@ export class MevController {
   @UseGuards(SupabaseAuthGuard)
   getMevAttacks(@Query() query: GetMevAttacksQuery) {
     return this.mevService.getMevAttacks(query);
+  }
+
+  @Get("/check-address-exist")
+  checkAddressExist(@Query() query: CheckAddressExistQuery) {
+    return this.mevService.checkAddressExist(query);
   }
 
   @Get("/total-extracted")
