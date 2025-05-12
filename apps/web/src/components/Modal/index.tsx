@@ -54,7 +54,7 @@ export default function Modal({
                   <i className="hn hn-times text-brand-30 text-xl leading-5" />
                 </button>
               </div>
-              <div className="font-secondary text-lg leading-6 text-brand-30">{children}</div>
+              <div className="font-secondary text-lg leading-6 tracking-normal text-brand-30">{children}</div>
             </div>
           </div>
         </DialogPanel>

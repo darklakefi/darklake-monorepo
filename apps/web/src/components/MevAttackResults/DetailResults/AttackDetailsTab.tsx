@@ -1,8 +1,8 @@
 "use client";
 
-import { MevAttack } from "@/types/Mev";
 import AttackDetailCard from "@/components/AttackDetailCard";
 import AttackBreakdownModal from "@/components/Modal/AttackBreakdownModal";
+import { MevAttack } from "@/types/Mev";
 import { useState } from "react";
 
 type AttackDetailsTabProps = {
@@ -36,7 +36,7 @@ const AttackDetailsTab = ({ mevAttacks, hasMore, onLoadMore, isLoadingMore }: At
 
       {hasMore && !isLoadingMore && (
         <button className="w-fit text-center bg-brand-60 px-3 py-1 hover-with-active mx-auto" onClick={onLoadMore}>
-          <div className="text-body-2 text-brand-20">Load More</div>
+          <div className="text-lg leading-6 tracking-normal text-brand-20">Load More</div>
         </button>
       )}
 

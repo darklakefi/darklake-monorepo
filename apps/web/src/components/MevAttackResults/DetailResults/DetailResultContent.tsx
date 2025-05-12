@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
 import Tabs from "@/components/Tabs";
-import SummaryTab from "./SummaryTab";
-import AttackDetailsTab from "./AttackDetailsTab";
-import useGetTopAttacks from "@/hooks/api/useGetTopAttacks";
 import useGetAttackList from "@/hooks/api/useGetAttackList";
+import useGetTopAttacks from "@/hooks/api/useGetTopAttacks";
 import useGetTotalExtracted from "@/hooks/api/useGetTotalExtracted";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { cn } from "@/utils/common";
 import { MevAttacksOrderBy } from "@/types/Mev";
 import { SortDirection } from "@/types/Pagination";
+import { cn } from "@/utils/common";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { useMemo, useState } from "react";
+import AttackDetailsTab from "./AttackDetailsTab";
+import SummaryTab from "./SummaryTab";
 
 const TAB_NAMES = [
   {
@@ -21,22 +21,22 @@ const TAB_NAMES = [
 
 const sortOptions = [
   {
-    title: "DATE",
+    title: "NEWEST FIRST",
+    orderBy: MevAttacksOrderBy.DATE,
+    direction: SortDirection.DESC,
+  },
+  {
+    title: "OLDEST FIRST",
     orderBy: MevAttacksOrderBy.DATE,
     direction: SortDirection.ASC,
   },
   {
-    title: "DATE",
-    orderBy: MevAttacksOrderBy.DATE,
-    direction: SortDirection.DESC,
-  },
-  {
-    title: "AMOUNT",
+    title: "LARGEST FIRST",
     orderBy: MevAttacksOrderBy.AMOUNT_DRAINED,
     direction: SortDirection.DESC,
   },
   {
-    title: "AMOUNT",
+    title: "SMALLEST FIRST",
     orderBy: MevAttacksOrderBy.AMOUNT_DRAINED,
     direction: SortDirection.ASC,
   },
@@ -66,44 +66,38 @@ export default function DetailResultContent({ address }: { address: string }) {
           <Popover className="">
             {({ open }) => (
               <>
-                <PopoverButton as="div" className={cn(open ? "opacity-70" : "opacity-100")}>
+                <PopoverButton as="div" className={cn(open && "bg-brand-80", "cursor-pointer hover:opacity-70")}>
                   <div className="flex flex-row items-center gap-2 text-[#1A9A56] p-2">
-                    <button className="text-[18px] uppercase">sort by: {activeSortOption?.title}</button>
-                    {activeSortOption?.direction === SortDirection.ASC ? (
-                      <i className="hn hn-angle-up text-4"></i>
-                    ) : (
-                      <i className="hn hn-angle-down text-4"></i>
-                    )}
+                    <button className="text-lg uppercase">sort by: {activeSortOption?.title}</button>
+                    {open ? <i className="hn hn-angle-up text-lg"></i> : <i className="hn hn-angle-down text-lg"></i>}
                   </div>
                 </PopoverButton>
-                <PopoverPanel anchor="bottom" className="z-[1] bg-brand-70 p-2 shadow-3xl shadow-brand-80">
+                <PopoverPanel anchor="bottom" className="z-[1] bg-brand-80 shadow-md shadow-[#010F06] mt-1">
                   {({ close }) => (
-                    <div className="flex flex-col p-2">
-                      {sortOptions.map((option) => (
-                        <div
-                          key={`list-sort-${option.direction}-${option.orderBy}`}
-                          onClick={() => {
-                            setSort(option.orderBy, option.direction);
-                            close();
-                          }}
-                          className={cn(
-                            "flex justify-center items-center",
-                            "text-[18px] uppercase gap-2 cursor-pointer px-2",
-                            "hover:bg-brand-50",
-                            option.orderBy === activeSortOption?.orderBy &&
-                              option.direction === activeSortOption?.direction
-                              ? "bg-brand-40"
-                              : "",
-                          )}
-                        >
-                          <p>{option.title}</p>
-                          {option.direction === SortDirection.ASC ? (
-                            <i className="hn hn-angle-up text-4"></i>
-                          ) : (
-                            <i className="hn hn-angle-down text-4"></i>
-                          )}
-                        </div>
-                      ))}
+                    <div className="flex flex-col cursor-pointer">
+                      {sortOptions.map((option) => {
+                        const isActive =
+                          option.orderBy === activeSortOption?.orderBy &&
+                          option.direction === activeSortOption?.direction;
+                        return (
+                          <div
+                            key={`list-sort-${option.direction}-${option.orderBy}`}
+                            onClick={() => {
+                              setSort(option.orderBy, option.direction);
+                              close();
+                            }}
+                            className={cn(
+                              "flex justify-between items-center px-3 py-2 w-52",
+                              "text-lg uppercase",
+                              "hover:bg-brand-50",
+                              isActive ? "text-brand-20" : "text-brand-30",
+                            )}
+                          >
+                            <p>{option.title}</p>
+                            {isActive && <i className="hn hn-check text-lg"></i>}
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </PopoverPanel>

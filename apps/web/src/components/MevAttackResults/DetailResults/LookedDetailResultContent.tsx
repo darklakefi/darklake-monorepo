@@ -1,6 +1,6 @@
+import Button from "@/components/Button";
 import Tabs from "@/components/Tabs";
 import SummaryTab from "./SummaryTab";
-import Button from "@/components/Button";
 
 const TAB_NAMES = [
   {
@@ -35,7 +35,7 @@ export default function LookedDetailResultContent(props: LookedDetailResultConte
 
       <div className="absolute inset-0 flex items-center justify-center bg-[#010F06F2] bg-opacity-95">
         <div className="flex flex-col gap-[40px]">
-          <div className="flex flex-col gap-[20px] text-body-2 text-center">
+          <div className="flex flex-col gap-[20px] text-lg leading-6 tracking-normal text-center">
             <div> ******************************** </div>
             <div className="uppercase"> * ACCESS DENIED * </div>
             <div> ******************************** </div>

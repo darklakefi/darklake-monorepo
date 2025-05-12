@@ -36,10 +36,10 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                 class="flex-1"
               >
                 <div
-                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                  class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
                 >
                   <div
-                    class="text-body-2 text-brand-30"
+                    class="text-lg leading-6 tracking-normal text-brand-30 uppercase"
                   >
                     Total Extracted
                   </div>
@@ -47,12 +47,12 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     class="flex flex-col gap-1 py-0.5"
                   >
                     <div
-                      class="text-body text-brand-20"
+                      class="text-3xl leading-8 tracking-wide text-brand-20"
                     >
                       ██.██ SOL
                     </div>
                     <div
-                      class="text-body-2 text-brand-30"
+                      class="text-lg leading-6 tracking-normal text-brand-30"
                     >
                       ████.██ USDC
                     </div>
@@ -63,10 +63,10 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                 class="flex-1 max-md:hidden"
               >
                 <div
-                  class="flex flex-col bg-brand-60 gap-[16px] p-[16px] h-full"
+                  class="flex flex-col bg-brand-60 gap-4 p-4 h-full"
                 >
                   <div
-                    class="text-body-2 text-brand-30"
+                    class="text-lg leading-6 tracking-normal text-brand-30 uppercase"
                   >
                     Confirmed Attack
                   </div>
@@ -74,7 +74,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     class="flex flex-col gap-1 py-0.5"
                   >
                     <div
-                      class="text-body text-brand-20"
+                      class="text-3xl leading-8 tracking-wide text-brand-20"
                     >
                       ██
                     </div>
@@ -95,19 +95,19 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     class="flex flex-col"
                   >
                     <div
-                      class="text-body-2 text-brand-20"
+                      class="text-lg leading-6 tracking-normal text-brand-20"
                     >
                       #
                       1
                        LARGEST EXTRACTION EVENT
                     </div>
                     <div
-                      class="text-body-2 text-brand-30"
+                      class="text-lg leading-6 tracking-normal text-brand-30"
                     >
                       TOKEN: █████
                     </div>
                     <div
-                      class="text-body-2 text-brand-30"
+                      class="text-lg leading-6 tracking-normal text-brand-30"
                     >
                       ████-██-██ ██:██ UTC
                     </div>
@@ -116,12 +116,12 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
                   >
                     <div
-                      class="text-body"
+                      class="text-3xl leading-8 tracking-wide"
                     >
                       ██.██ SOL LOST
                     </div>
                     <div
-                      class="text-body-2"
+                      class="text-lg leading-6 tracking-normal"
                     >
                       ░░░░░░░░░░░░░░░░░░░░░░░░░░
                     </div>
@@ -129,19 +129,19 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                       class="flex flex-col"
                     >
                       <div
-                        class="text-body-2 text-brand-20"
+                        class="text-lg leading-6 tracking-normal text-brand-20"
                       >
                         ██% EXTRACTED
                       </div>
                       <div
-                        class="text-body-2 text-brand-30"
+                        class="text-lg leading-6 tracking-normal text-brand-30"
                       >
                         FROM A ██.██ SOL TRANSACTION
                       </div>
                     </div>
                   </div>
                   <button
-                    class="text-link text-brand-30 w-fit"
+                    class="uppercase underline text-lg leading-6 tracking-normal text-brand-30 w-fit"
                   >
                     View attack breakdown
                   </button>
@@ -157,19 +157,19 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     class="flex flex-col"
                   >
                     <div
-                      class="text-body-2 text-brand-20"
+                      class="text-lg leading-6 tracking-normal text-brand-20"
                     >
                       #
                       2
                        LARGEST EXTRACTION EVENT
                     </div>
                     <div
-                      class="text-body-2 text-brand-30"
+                      class="text-lg leading-6 tracking-normal text-brand-30"
                     >
                       TOKEN: █████
                     </div>
                     <div
-                      class="text-body-2 text-brand-30"
+                      class="text-lg leading-6 tracking-normal text-brand-30"
                     >
                       ████-██-██ ██:██ UTC
                     </div>
@@ -178,12 +178,12 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
                   >
                     <div
-                      class="text-body"
+                      class="text-3xl leading-8 tracking-wide"
                     >
                       ██.██ SOL LOST
                     </div>
                     <div
-                      class="text-body-2"
+                      class="text-lg leading-6 tracking-normal"
                     >
                       ░░░░░░░░░░░░░░░░░░░░░░░░░░
                     </div>
@@ -191,19 +191,19 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                       class="flex flex-col"
                     >
                       <div
-                        class="text-body-2 text-brand-20"
+                        class="text-lg leading-6 tracking-normal text-brand-20"
                       >
                         ██% EXTRACTED
                       </div>
                       <div
-                        class="text-body-2 text-brand-30"
+                        class="text-lg leading-6 tracking-normal text-brand-30"
                       >
                         FROM A ██.██ SOL TRANSACTION
                       </div>
                     </div>
                   </div>
                   <button
-                    class="text-link text-brand-30 w-fit"
+                    class="uppercase underline text-lg leading-6 tracking-normal text-brand-30 w-fit"
                   >
                     View attack breakdown
                   </button>
@@ -219,19 +219,19 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     class="flex flex-col"
                   >
                     <div
-                      class="text-body-2 text-brand-20"
+                      class="text-lg leading-6 tracking-normal text-brand-20"
                     >
                       #
                       3
                        LARGEST EXTRACTION EVENT
                     </div>
                     <div
-                      class="text-body-2 text-brand-30"
+                      class="text-lg leading-6 tracking-normal text-brand-30"
                     >
                       TOKEN: █████
                     </div>
                     <div
-                      class="text-body-2 text-brand-30"
+                      class="text-lg leading-6 tracking-normal text-brand-30"
                     >
                       ████-██-██ ██:██ UTC
                     </div>
@@ -240,12 +240,12 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                     class="flex flex-col gap-3 py-4 border-t border-b border-brand-40"
                   >
                     <div
-                      class="text-body"
+                      class="text-3xl leading-8 tracking-wide"
                     >
                       ██.██ SOL LOST
                     </div>
                     <div
-                      class="text-body-2"
+                      class="text-lg leading-6 tracking-normal"
                     >
                       ░░░░░░░░░░░░░░░░░░░░░░░░░░
                     </div>
@@ -253,19 +253,19 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
                       class="flex flex-col"
                     >
                       <div
-                        class="text-body-2 text-brand-20"
+                        class="text-lg leading-6 tracking-normal text-brand-20"
                       >
                         ██% EXTRACTED
                       </div>
                       <div
-                        class="text-body-2 text-brand-30"
+                        class="text-lg leading-6 tracking-normal text-brand-30"
                       >
                         FROM A ██.██ SOL TRANSACTION
                       </div>
                     </div>
                   </div>
                   <button
-                    class="text-link text-brand-30 w-fit"
+                    class="uppercase underline text-lg leading-6 tracking-normal text-brand-30 w-fit"
                   >
                     View attack breakdown
                   </button>
@@ -282,7 +282,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
           class="flex flex-col gap-[40px]"
         >
           <div
-            class="flex flex-col gap-[20px] text-body-2 text-center"
+            class="flex flex-col gap-[20px] text-lg leading-6 tracking-normal text-center"
           >
             <div>
                ******************************** 
@@ -297,7 +297,7 @@ exports[`<LookedDetailResultContent /> displays content successfully 1`] = `
             </div>
           </div>
           <button
-            class="uppercase font-secondary text-lg leading-6 button bg-brand-10 text-brand-70 px-[12px] py-[5px] hover:bg-brand-20 focus:outline-none active:ring-[1px] active:bg-brand-10 active:ring-brand-10 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-10"
+            class="uppercase font-secondary button text-lg leading-6 tracking-normal bg-brand-10 text-brand-70 px-[12px] py-[5px] hover:bg-brand-20 focus:outline-none active:ring-[1px] active:bg-brand-10 active:ring-brand-10 active:ring-offset-[3px] active:ring-offset-black disabled:active:bg-brand-10"
           >
             <span
               class="flex flex-row justify-center items-center"

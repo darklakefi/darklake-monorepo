@@ -2,32 +2,61 @@
 
 import Button from "@/components/Button";
 import ProgressBar from "@/components/ProgressBar";
-import { shareOnTwitter } from "@/utils/browser";
+import { GetMevTotalExtractedResponse } from "@/types/Mev";
 import { cn } from "@/utils/common";
-import { getSiteUrl } from "@/utils/env";
 import { formatMoney } from "@/utils/number";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import Image from "next/image";
 
-export default function TotalExtracted({
-  solAmount,
-  usdAmount,
-  address,
-  processingBlocks,
-}: {
-  solAmount: number;
-  usdAmount?: number;
+enum ImageSaveStatus {
+  IDLE = "IDLE",
+  SAVING = "SAVING",
+  SAVED = "SAVED",
+  ERROR = "ERROR",
+}
+
+const saveImageButtonText = (imageSaveStatus: ImageSaveStatus) => {
+  switch (imageSaveStatus) {
+    case ImageSaveStatus.SAVING:
+      return "Saving Image...";
+    case ImageSaveStatus.SAVED:
+      return "Image Saved to Clipboard";
+    case ImageSaveStatus.ERROR:
+      return "Error";
+    default:
+      return "Share your MEV loss";
+  }
+};
+
+export interface TotalExtractedProps {
   address: string;
-  processingBlocks?: { total: number; completed: number };
-}) {
-  const solAmountFormatted = formatMoney(solAmount, 5);
+  mevAttackResults: GetMevTotalExtractedResponse;
+}
+
+export default function TotalExtracted({ address, mevAttackResults }: TotalExtractedProps) {
+  const [imageSaveStatus, setImageSaveStatus] = useState<ImageSaveStatus>(ImageSaveStatus.IDLE);
+
+  const { processingBlocks } = mevAttackResults;
+  const totalSolExtracted = mevAttackResults?.data?.totalSolExtracted ?? 0;
+  const totalUsdExtracted = mevAttackResults?.data?.totalUsdExtracted;
+  const solAmountFormatted = formatMoney(totalSolExtracted);
   const solAmountParts = solAmountFormatted.split(".");
-
-  const siteUrl = (getSiteUrl() || "darklake.fi").replaceAll("http://", "").replaceAll("https://", "");
-
   const progress = processingBlocks ? (processingBlocks.completed / processingBlocks.total) * 100 : 0;
 
-  const router = useRouter();
-  router.prefetch(`/mev/${address}`);
+  async function copyImageToClipboard(event: React.MouseEvent<HTMLButtonElement>, address: string) {
+    event.preventDefault();
+    setImageSaveStatus(ImageSaveStatus.SAVING);
+
+    const imageToSave = new ClipboardItem({
+      "image/png": fetch(`/api/generate-mev-share-image?address=${address}`)
+        .then((response) => response.blob())
+        .then((blob) => new Blob([blob], { type: "image/png" })),
+    });
+    navigator.clipboard.write([imageToSave]);
+    toast.success("Image saved to clipboard");
+    setImageSaveStatus(ImageSaveStatus.SAVED);
+  }
 
   return (
     <div className={cn("bg-brand-10 p-6 shadow-3xl shadow-brand-80", "text-brand-30 uppercase font-primary text-3xl")}>
@@ -38,10 +67,11 @@ export default function TotalExtracted({
           {!!solAmountParts[1] && `.${solAmountParts[1]}`} SOL
         </p>
       </div>
-      {usdAmount && <p>{formatMoney(usdAmount)} USDC</p>}
+      {totalUsdExtracted && <p>{formatMoney(totalUsdExtracted)} USDC</p>}
       {!processingBlocks && (
-        <Button className="w-full mt-8" disabled>
-          / Analyzing blockchain evidence
+        <Button className="w-full mt-8 flex flex-row items-center gap-3" disabled>
+          <Image priority src="/images/loading.svg" alt="Loading" width={24} height={24} className="animate-spin" />
+          Analyzing blockchain evidence
         </Button>
       )}
       {!!processingBlocks && progress !== 100 && processingBlocks.total > 0 && (
@@ -55,17 +85,9 @@ export default function TotalExtracted({
           </div>
         </div>
       )}
-      {progress > 50 && solAmount > 0 && (
-        <Button
-          className="w-full mt-8"
-          onClick={() =>
-            shareOnTwitter(
-              `I lost ${solAmountFormatted} SOL to MEV` +
-                `\n\nCheck how much you got MEV'd at ${siteUrl}/mev/${address}`,
-            )
-          }
-        >
-          Expose the truth on <i className="hn hn-x text-xl" />
+      {progress > 50 && totalSolExtracted > 0 && (
+        <Button className="w-full mt-8" onPointerDown={async (event) => await copyImageToClipboard(event, address)}>
+          {saveImageButtonText(imageSaveStatus)}
         </Button>
       )}
     </div>

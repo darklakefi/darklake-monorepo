@@ -9,19 +9,19 @@ const Footer = () => {
   const { openModal } = useGlobalModal();
 
   return (
-    <footer className="flex flex-col sm:flex-row justify-between items-center z-20">
+    <footer className="flex flex-col sm:flex-row justify-between items-center z-20 py-20">
       <div className="flex items-center justify-between gap-x-10 max-sm:mb-10">
         <button
-          className="uppercase underline text-brand-30 text-lg leading-6 hover-with-active"
+          className="uppercase underline text-brand-30 text-lg leading-6 tracking-normal hover-with-active"
           onClick={() => openModal(GlobalModalType.WHAT_IS_MEV)}
         >
           What is MEV?
         </button>
         <a
-          href="https://x.com/pyvitor"
+          href={process.env.NEXT_PUBLIC_REPORT_BUG_URL}
           title="Report a bug"
           target="_blank"
-          className="uppercase underline text-brand-30 text-lg leading-6 hover-with-active"
+          className="uppercase underline text-brand-30 text-lg leading-6 tracking-normal hover-with-active"
         >
           Report a bug
         </a>

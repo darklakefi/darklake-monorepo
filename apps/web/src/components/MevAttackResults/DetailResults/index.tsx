@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
+import useSupabaseSession from "@/hooks/useSupabaseSession";
+import { signInWithTwitter } from "@/services/supabase";
 import DetailResultContent from "./DetailResultContent";
 import DetailResultHeader from "./DetailResultHeader";
 import LookedDetailResultContent from "./LookedDetailResultContent";
-import { signInWithTwitter } from "@/services/supabase";
-import useSupabaseSession from "@/hooks/useSupabaseSession";
 
 export default function DetailResults({ address }: { address: string }) {
   const [isConnectingTwitter, setIsConnectingTwitter] = useState(false);

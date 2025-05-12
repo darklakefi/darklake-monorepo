@@ -17,49 +17,8 @@
   }
 }
 
-@layer utilities {
-  .text-body-2 {
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 24px;
-    letter-spacing: 0.1em;
-  }
-
-  .text-body {
-    font-weight: 400;
-    font-size: 28px;
-    line-height: 34px;
-    letter-spacing: 0.2em;
-  }
-
-  .text-link {
-    text-transform: uppercase;
-    text-decoration: underline;
-    font-size: 18px;
-    line-height: 24px;
-  }
-
-  .text-link:hover {
-    opacity: 0.7;
-    transition: all 0.3s ease;
-  }
-
-  .text-link:active {
-    opacity: 0.5;
-    transition: all 0.3s ease;
-  }
-}
-
-.hover-with-active:hover {
-  opacity: 0.7;
-}
-
-.hover-with-active:active {
-  opacity: 0.5;
-}
-
 .Toastify__toast {
-  @apply bg-neutral-dark text-neutral-grey uppercase font-secondary text-lg leading-6;
+  @apply bg-neutral-dark text-neutral-grey uppercase font-secondary text-lg leading-6 tracking-normal;
   @apply shadow-[4px_4px_0px_0px] shadow-brand-80;
   width: 320px;
   padding: 16px 45px 16px 16px;
@@ -91,4 +50,27 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+}
+
+.animate-dots::after {
+  content: "...";
+  display: inline-block;
+  letter-spacing: 0.02em;
+  text-align: left;
+  animation: dots 1s infinite;
+}
+
+@keyframes dots {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
 }
