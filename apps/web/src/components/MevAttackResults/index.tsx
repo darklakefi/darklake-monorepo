@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import DetailResults from "./DetailResults";
 import { MevAttackLoadingScreen } from "./MevAttackLoadingScreen";
 import useCheckAddressExist from "@/hooks/api/useCheckAddressExist";
+import { LocalStorage } from "@/constants/storage";
+import useLocalStorage from "use-local-storage";
 
 interface MevAttackResultsProps {
   address: string;
@@ -19,6 +21,11 @@ export default function MevAttackResults({ address, mevAttackResults }: MevAttac
   const [showLoadingScreen, setShowLoadingScreen] = useState(!blockProcessingComplete);
   const { data: dynamicData } = useGetTotalExtracted(address, mevAttackResults);
   const { isAddressExist } = useCheckAddressExist(address);
+  const [, setLookupAddress] = useLocalStorage(LocalStorage.LOOKUP_ADDRESS, address);
+
+  useEffect(() => {
+    setLookupAddress(address);
+  }, [address, setLookupAddress]);
 
   if (!blockProcessingComplete) {
     setTimeout(() => {
