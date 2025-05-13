@@ -85,7 +85,7 @@ export default function TotalExtracted({ address, mevAttackResults }: TotalExtra
           </div>
         </div>
       )}
-      {(progress > 50 && totalSolExtracted > 0) || (progress > 80) && (
+      {((progress > 50 && totalSolExtracted > 0) || progress > 80) && (
         <Button className="w-full mt-8" onPointerDown={async (event) => await copyImageToClipboard(event, address)}>
           {saveImageButtonText(imageSaveStatus)}
         </Button>
