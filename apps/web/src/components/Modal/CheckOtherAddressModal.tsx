@@ -1,10 +1,10 @@
 import Modal, { ModalProps } from "@/components/Modal";
 import { LocalStorage } from "@/constants/storage";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import useLocalStorage from "use-local-storage";
 import AddressMevLookup from "../AddressMevLookup";
 
 export default function CheckOtherAddressModal(props: ModalProps) {
-  const [lookupAddress] = useLocalStorage<string | null>(LocalStorage.LOOKUP_ADDRESS, null);
+  const [lookupAddress] = useLocalStorage(LocalStorage.LOOKUP_ADDRESS, null);
   return (
     <Modal title="Check other address" {...props}>
       <div className="flex flex-col gap-8 lg:min-w-3xl">

@@ -78,7 +78,7 @@ export default {
         "3xl": "720px",
       },
       maxWidth: {
-        "2xl": "39rem",
+        "2xl": "39.5rem",
       },
     },
   },
