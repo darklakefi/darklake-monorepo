@@ -26,7 +26,7 @@ const Footer = () => {
           Report a bug
         </a>
         <a
-          href={process.env.NEXT_PUBLIC_BLOG_URL}
+          href={process.env.NEXT_PUBLIC_BLOG_URL || ""}
           title="Blog"
           target="_blank"
           className="uppercase underline text-brand-30 text-lg leading-6 tracking-normal hover-with-active"

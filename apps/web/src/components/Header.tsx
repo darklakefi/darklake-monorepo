@@ -37,7 +37,7 @@ const Header = () => {
               "active:ring-offset-2 active:ring-offset-black ml-3 flex-shrink-0",
               "max-md:hidden",
             )}
-            href={process.env.NEXT_PUBLIC_BLOG_URL}
+            href={process.env.NEXT_PUBLIC_BLOG_URL || ""}
             title="Learn More"
             target="_blank"
           >
