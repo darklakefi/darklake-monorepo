@@ -167,7 +167,7 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                             </p>
                             <a
                               class="underline"
-                              href="undefined/tx/someSignature"
+                              href="https://explorer.solana.com/tx/someSignature"
                               target="_blank"
                               title="View Transaction"
                             >
@@ -213,7 +213,7 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                             </p>
                             <a
                               class="underline"
-                              href="undefined/tx/someSignature"
+                              href="https://explorer.solana.com/tx/someSignature"
                               target="_blank"
                               title="View Transaction"
                             >
@@ -259,7 +259,7 @@ exports[`<AttackBreakdownModal /> displays content successfully when open 1`] = 
                             </p>
                             <a
                               class="underline"
-                              href="undefined/tx/someSignature"
+                              href="https://explorer.solana.com/tx/someSignature"
                               target="_blank"
                               title="View Transaction"
                             >
