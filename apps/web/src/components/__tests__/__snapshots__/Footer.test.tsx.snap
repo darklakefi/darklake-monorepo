@@ -16,11 +16,18 @@ exports[`<Footer /> renders successfully 1`] = `
         </button>
         <a
           class="uppercase underline text-brand-30 text-lg leading-6 tracking-normal hover-with-active"
-          href="https://x.com/messages/1701007592-920037331624759296"
           target="_blank"
           title="Report a bug"
         >
           Report a bug
+        </a>
+        <a
+          class="uppercase underline text-brand-30 text-lg leading-6 tracking-normal hover-with-active"
+          href=""
+          target="_blank"
+          title="Blog"
+        >
+          Blog
         </a>
       </div>
       <div
