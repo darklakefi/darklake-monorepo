@@ -32,6 +32,13 @@
 $ pnpm install
 ```
 
+## DB Setup
+
+```bash
+pnpm db:deploy
+pnpm db:prepare
+```
+
 ## Compile and run the project
 
 ```bash
