@@ -6,25 +6,43 @@ exports[`<Header /> renders successfully 1`] = `
     <header
       class="flex flex-row justify-between items-center z-20 py-16"
     >
+      <div>
+        <div
+          class="flex items-center justify-between gap-x-[11px]"
+        >
+          <a
+            class="active:opacity-80"
+            href="/"
+            title="Darklake.fi"
+          >
+            <img
+              alt="darklake logo"
+              data-nimg="1"
+              decoding="async"
+              height="24"
+              loading="lazy"
+              src="/images/logo-h-darklake-beta.svg"
+              style="color: transparent;"
+              width="213"
+            />
+          </a>
+        </div>
+      </div>
       <div
         class="flex items-center justify-between gap-x-[11px]"
       >
-        <a
-          class="active:opacity-80"
-          href="/"
-          title="Darklake.fi"
+        <div
+          class="flex items-center justify-between gap-x-[11px]"
         >
-          <img
-            alt="darklake logo"
-            data-nimg="1"
-            decoding="async"
-            height="24"
-            loading="lazy"
-            src="/images/logo-h-darklake-beta.svg"
-            style="color: transparent;"
-            width="213"
-          />
-        </a>
+          <a
+            class="font-secondary text-lg leading-6 tracking-normal uppercase bg-brand-10 text-brand-70 px-3 py-1 hover:bg-brand-20 disabled:opacity-50 focus:outline-none active:ring-1 active:bg-brand-10 active:ring-brand-10 active:ring-offset-2 active:ring-offset-black ml-3 flex-shrink-0 max-md:hidden"
+            href="https://blog.darklake.fi"
+            target="_blank"
+            title="Learn More"
+          >
+            Learn More
+          </a>
+        </div>
       </div>
     </header>
   </div>
