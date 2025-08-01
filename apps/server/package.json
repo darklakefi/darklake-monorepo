@@ -36,7 +36,7 @@
     "@solana/web3.js": "1.95.4",
     "@supabase/supabase-js": "^2.49.1",
     "axios": "^1.8.3",
-    "bignumber.js": "^9.1.2",
+    "bignumber.js": "^9.3.1",
     "cache-manager": "^6.4.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
