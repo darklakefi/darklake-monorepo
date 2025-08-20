@@ -1,5 +1,7 @@
 # Darklake
 
+**This is no longer an active repository.**
+
 Darklake is a decentralized exchange (DEX) protocol built on the Solana blockchain, inspired by Uniswap v3. It aims to provide efficient and flexible liquidity provision with concentrated liquidity and confidential swaps.
 
 Further information can be found in the [website](https://darklake.fi).
