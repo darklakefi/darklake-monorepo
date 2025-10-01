@@ -24,7 +24,7 @@
     "@metaplex-foundation/mpl-token-metadata": "^3.2.0",
     "@metaplex-foundation/umi-bundle-defaults": "^1.1.1",
     "@metaplex-foundation/umi": "^1.1.1",
-    "@nestjs/axios": "^4.0.0",
+    "@nestjs/axios": "^4.0.1",
     "@nestjs/cache-manager": "^3.0.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^4.0.1",
